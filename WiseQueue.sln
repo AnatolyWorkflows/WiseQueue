@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Client", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Server", "WiseQueue.Domain.Server\WiseQueue.Domain.Server.csproj", "{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extentions", "Extentions", "{0DA0E49B-7931-4630-8AA6-D5ABDB8FB762}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.NLogger", "WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj", "{1B294978-0598-46FC-83F9-6F4FBF0EF73F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,10 @@ Global
 		{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B294978-0598-46FC-83F9-6F4FBF0EF73F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B294978-0598-46FC-83F9-6F4FBF0EF73F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B294978-0598-46FC-83F9-6F4FBF0EF73F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B294978-0598-46FC-83F9-6F4FBF0EF73F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +74,6 @@ Global
 		{87F1056B-411A-4F53-8435-344103B74E43} = {108CCF45-052C-4B0C-A1B9-13F96E9E8F69}
 		{AE232F81-5F80-4993-A166-B49380BA0C84} = {108CCF45-052C-4B0C-A1B9-13F96E9E8F69}
 		{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8} = {108CCF45-052C-4B0C-A1B9-13F96E9E8F69}
+		{1B294978-0598-46FC-83F9-6F4FBF0EF73F} = {0DA0E49B-7931-4630-8AA6-D5ABDB8FB762}
 	EndGlobalSection
 EndGlobal

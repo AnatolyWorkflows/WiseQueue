@@ -5,7 +5,7 @@ namespace WiseQueue.Core.Common.Logging
     /// <summary>
     /// Interface shows that <c>object</c> is a logger.
     /// </summary>
-    public interface ILogger
+    public interface IWiseQueueLogger
     {
         #region Trace...
         /// <summary>
