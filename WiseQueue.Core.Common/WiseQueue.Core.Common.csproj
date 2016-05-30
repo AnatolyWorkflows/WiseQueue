@@ -39,8 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\IJsonConverter.cs" />
     <Compile Include="Logging\IWiseQueueLogger.cs" />
     <Compile Include="Logging\IWiseQueueLoggerFactory.cs" />
+    <Compile Include="Models\BaseLoggerObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
