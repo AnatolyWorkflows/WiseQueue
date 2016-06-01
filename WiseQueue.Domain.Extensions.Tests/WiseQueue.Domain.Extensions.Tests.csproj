@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2}</ProjectGuid>
+    <ProjectGuid>{3196E7BB-FA7D-4F98-BC66-269E3E923D97}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WiseQueue.Core.Common.Tests</RootNamespace>
-    <AssemblyName>WiseQueue.Core.Common.Tests</AssemblyName>
+    <RootNamespace>WiseQueue.Domain.Extensions.Tests</RootNamespace>
+    <AssemblyName>WiseQueue.Domain.Extensions.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,18 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Moq, Version=4.5.8.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.5.8\lib\net45\Moq.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -62,29 +50,22 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="JsonConverterTests.cs" />
+    <Compile Include="CachedExpressionCompilerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
-      <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
+      <Project>{ac44c918-e44b-4942-ae25-d7290b89093e}</Project>
       <Name>WiseQueue.Core.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\WiseQueue.Core.Tests\WiseQueue.Core.Tests.csproj">
       <Project>{34E81231-58F9-4270-A82F-FEA1DCB9DC01}</Project>
       <Name>WiseQueue.Core.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
-      <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
-      <Name>WiseQueue.Domain.Common</Name>
+    <ProjectReference Include="..\WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj">
+      <Project>{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}</Project>
+      <Name>WiseQueue.Domain.MicrosoftExpressionCache</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj">
-      <Project>{1B294978-0598-46FC-83F9-6F4FBF0EF73F}</Project>
-      <Name>WiseQueue.Domain.NLogger</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

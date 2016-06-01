@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using WiseQueue.Core.Tests;
 using JsonConverter = WiseQueue.Domain.Common.Converters.JsonConverter;
 
 namespace WiseQueue.Core.Common.Tests

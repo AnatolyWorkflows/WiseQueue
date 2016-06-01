@@ -1,7 +1,7 @@
 ﻿using WiseQueue.Core.Common.Logging;
 using WiseQueue.Domain.NLogger;
 
-namespace WiseQueue.Core.Common.Tests
+namespace WiseQueue.Core.Tests
 {
     /// <summary>
     /// Base class for all tests that are going to use logger.

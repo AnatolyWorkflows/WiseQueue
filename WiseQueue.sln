@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Common.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.MicrosoftExpressionCache", "WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj", "{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Extensions.Tests", "WiseQueue.Domain.Extensions.Tests\WiseQueue.Domain.Extensions.Tests.csproj", "{3196E7BB-FA7D-4F98-BC66-269E3E923D97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Tests", "WiseQueue.Core.Tests\WiseQueue.Core.Tests.csproj", "{34E81231-58F9-4270-A82F-FEA1DCB9DC01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,14 @@ Global
 		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3196E7BB-FA7D-4F98-BC66-269E3E923D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3196E7BB-FA7D-4F98-BC66-269E3E923D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3196E7BB-FA7D-4F98-BC66-269E3E923D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3196E7BB-FA7D-4F98-BC66-269E3E923D97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34E81231-58F9-4270-A82F-FEA1DCB9DC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34E81231-58F9-4270-A82F-FEA1DCB9DC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34E81231-58F9-4270-A82F-FEA1DCB9DC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34E81231-58F9-4270-A82F-FEA1DCB9DC01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +106,7 @@ Global
 		{7EC417DD-86DA-4F78-99F4-CA23BBCDC3C0} = {D2B3DDEA-5D60-4805-9193-39D048645CD7}
 		{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2} = {7EC417DD-86DA-4F78-99F4-CA23BBCDC3C0}
 		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F} = {0DA0E49B-7931-4630-8AA6-D5ABDB8FB762}
+		{3196E7BB-FA7D-4F98-BC66-269E3E923D97} = {7EC417DD-86DA-4F78-99F4-CA23BBCDC3C0}
+		{34E81231-58F9-4270-A82F-FEA1DCB9DC01} = {7EC417DD-86DA-4F78-99F4-CA23BBCDC3C0}
 	EndGlobalSection
 EndGlobal
