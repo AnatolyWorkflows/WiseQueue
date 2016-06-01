@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AC44C918-E44B-4942-AE25-D7290B89093E}</ProjectGuid>
+    <ProjectGuid>{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WiseQueue.Core.Common</RootNamespace>
-    <AssemblyName>WiseQueue.Core.Common</AssemblyName>
+    <RootNamespace>WiseQueue.Domain.MicrosoftExpressionCache</RootNamespace>
+    <AssemblyName>WiseQueue.Domain.MicrosoftExpressionCache</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,12 +39,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\ICachedExpressionCompiler.cs" />
-    <Compile Include="Converters\IJsonConverter.cs" />
-    <Compile Include="Logging\IWiseQueueLogger.cs" />
-    <Compile Include="Logging\IWiseQueueLoggerFactory.cs" />
-    <Compile Include="Models\BaseLoggerObject.cs" />
+    <Compile Include="CachedExpressionCompiler.cs" />
+    <Compile Include="ExpressionUtil\BinaryExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\CachedExpressionCompiler.cs" />
+    <Compile Include="ExpressionUtil\ConditionalExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ConstantExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\DefaultExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ExpressionFingerprintChain.cs" />
+    <Compile Include="ExpressionUtil\FingerprintingExpressionVisitor.cs" />
+    <Compile Include="ExpressionUtil\HashCodeCombiner.cs" />
+    <Compile Include="ExpressionUtil\Hoisted.cs" />
+    <Compile Include="ExpressionUtil\HoistingExpressionVisitor.cs" />
+    <Compile Include="ExpressionUtil\IndexExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\LambdaExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\MemberExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\MethodCallExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ParameterExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\TypeBinaryExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\UnaryExpressionFingerprint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
+      <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
+      <Name>WiseQueue.Core.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

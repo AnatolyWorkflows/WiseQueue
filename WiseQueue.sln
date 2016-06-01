@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7EC417DD-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Common.Tests", "WiseQueue.Core.Common.Tests\WiseQueue.Core.Common.Tests.csproj", "{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.MicrosoftExpressionCache", "WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj", "{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,5 +93,6 @@ Global
 		{1B294978-0598-46FC-83F9-6F4FBF0EF73F} = {0DA0E49B-7931-4630-8AA6-D5ABDB8FB762}
 		{7EC417DD-86DA-4F78-99F4-CA23BBCDC3C0} = {D2B3DDEA-5D60-4805-9193-39D048645CD7}
 		{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2} = {7EC417DD-86DA-4F78-99F4-CA23BBCDC3C0}
+		{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F} = {0DA0E49B-7931-4630-8AA6-D5ABDB8FB762}
 	EndGlobalSection
 EndGlobal
