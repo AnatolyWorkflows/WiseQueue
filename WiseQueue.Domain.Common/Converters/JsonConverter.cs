@@ -6,6 +6,9 @@ using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.Common.Converters
 {
+    /// <summary>
+    /// Converting object into JSON and JSON into the object.
+    /// </summary>
     public sealed class JsonConverter : BaseLoggerObject, IJsonConverter
     {
         #region Fields...
