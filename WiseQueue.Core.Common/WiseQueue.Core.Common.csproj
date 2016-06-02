@@ -41,6 +41,9 @@
   <ItemGroup>
     <Compile Include="Caching\ICachedExpressionCompiler.cs" />
     <Compile Include="Converters\IJsonConverter.cs" />
+    <Compile Include="Entities\TaskActivationDetailsEntity.cs" />
+    <Compile Include="Entities\TaskEntity.cs" />
+    <Compile Include="Entities\TaskStates.cs" />
     <Compile Include="Logging\IWiseQueueLogger.cs" />
     <Compile Include="Logging\IWiseQueueLoggerFactory.cs" />
     <Compile Include="Models\BaseLoggerObject.cs" />

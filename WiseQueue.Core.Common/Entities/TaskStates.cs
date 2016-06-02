@@ -1,12 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WiseQueue.Core.Common.Entities
+﻿namespace WiseQueue.Core.Common.Entities
 {
-    class TaskStates
+    /// <summary>
+    /// <c>List</c> of available task's state.
+    /// </summary>
+    public enum TaskStates
     {
+        /// <summary>
+        /// Shows that this is a new task.
+        /// </summary>
+        New = 1,
+        /// <summary>
+        /// Shows that this task has been taken into processing by one of the servers.
+        /// </summary>
+        Pending = 2,
+        /// <summary>
+        /// Shows that this task has been executed in one of the servers.
+        /// </summary>
+        Running = 3,
+        /// <summary>
+        /// Shows that task has been successfully completed.
+        /// </summary>
+        Successed = 4,
+        /// <summary>
+        /// Shows that task has been failed.
+        /// </summary>
+        Failed = 5
     }
 }
