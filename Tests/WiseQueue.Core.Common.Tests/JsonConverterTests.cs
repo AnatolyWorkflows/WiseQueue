@@ -1,12 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using NUnit.Framework;
 using WiseQueue.Core.Tests;
+using Assert = NUnit.Framework.Assert;
 using JsonConverter = WiseQueue.Domain.Common.Converters.JsonConverter;
 
 namespace WiseQueue.Core.Common.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class JsonConverterTests: BaseTestWithLogger
     {
         private class TestClass
@@ -15,7 +16,7 @@ namespace WiseQueue.Core.Common.Tests
             public string Name { get; set; }
         }
 
-        [TestMethod]
+        [Test]
         public void JsonConvertConstructorTest()
         {
             JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
@@ -23,24 +24,29 @@ namespace WiseQueue.Core.Common.Tests
             Assert.IsNotNull(jsonConverter);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void JsonConvertConstructorWithBadJsonSettingsTest()
         {
-            JsonConverter jsonConverter = new JsonConverter(null, LoggerFactory);
-            Assert.IsNull(jsonConverter);
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new JsonConverter(null, LoggerFactory));
+
+            Assert.AreEqual("jsonSerializerSettings", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void JsonConvertConstructorWithBadLoggerFactoryTest()
         {
             JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
-            JsonConverter jsonConverter = new JsonConverter(jsonSerializerSettings, null);
-            Assert.IsNull(jsonConverter);
+
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new JsonConverter(jsonSerializerSettings, null));
+
+            Assert.AreEqual("loggerFactory", exception.ParamName);
         }
 
-        [TestMethod]
+        [Test]
         public void JsonConvertTest()
         {
             JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();           
@@ -64,7 +70,7 @@ namespace WiseQueue.Core.Common.Tests
             Assert.AreEqual(expected.Name, actual.Name);
         }
 
-        [TestMethod]
+        [Test]
         public void JsonGenericConvertTest()
         {
             JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();

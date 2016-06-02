@@ -1,0 +1,27 @@
+# Travis-CI Build for WiseQueue
+# see travis-ci.org for details
+
+language: csharp
+sudo: required
+
+# Make sure build dependencies are installed.
+install:
+ - travis_retry nuget install packages/packages.config -OutputDirectory packages
+ - travis_retry nuget restore WiseQueue.sln
+ 
+cache: 
+ - apt
+ - directories:
+   - packages
+
+# Run the build script
+script:
+ - xbuild /p:Configuration=Release /verbosity:minimal WiseQueue.sln
+ - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./tests/WiseQueue.Core.Common.Tests/bin/Release/WiseQueue.Core.Common.Tests.dll
+ - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./tests/WiseQueue.Core.Tests/bin/Release/WiseQueue.Core.Tests.dll
+ - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./tests/WiseQueue.Domain.Extensions.Tests/bin/Release/WiseQueue.Domain.Extensions.Tests.dll
+
+# Only watch the master branch.
+branches:
+ only:
+   - master

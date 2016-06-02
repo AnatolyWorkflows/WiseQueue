@@ -1,68 +1,81 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WiseQueue.Core.Common.Entities;
 
 namespace WiseQueue.Core.Common.Tests.EntitiesTests
 {
-    [TestClass]
+    [TestFixture]
     public class TaskActivationDetailsEntityTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void TaskActivationDetailsEntityConstructorInstanceTypeIsNullTest()
         {
             string instanceType = null;
             string method = Guid.NewGuid().ToString();
             string parametersTypes = Guid.NewGuid().ToString();
             string arguments = Guid.NewGuid().ToString();
-            TaskActivationDetailsEntity item = new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments);
-            Assert.Fail("The TaskActivationDetailsEntity instance has been created with wrong parameter: {0}", item);
+
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+
+            Assert.AreEqual("instanceType", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void TaskActivationDetailsEntityConstructorMethodIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = null;
             string parametersTypes = Guid.NewGuid().ToString();
             string arguments = Guid.NewGuid().ToString();
-            TaskActivationDetailsEntity item = new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments);
-            Assert.Fail("The TaskActivationDetailsEntity instance has been created with wrong parameter: {0}", item);
+
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+
+            Assert.AreEqual("method", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void TaskActivationDetailsEntityConstructorParametersTypesIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
             string parametersTypes = null;
             string arguments = Guid.NewGuid().ToString();
-            TaskActivationDetailsEntity item = new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments);
-            Assert.Fail("The TaskActivationDetailsEntity instance has been created with wrong parameter: {0}", item);
+
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+
+            Assert.AreEqual("parametersTypes", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void TaskActivationDetailsEntityConstructorArgumentsIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
             string parametersTypes = Guid.NewGuid().ToString();
             string arguments = null;
-            TaskActivationDetailsEntity item = new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments);
-            Assert.Fail("The TaskActivationDetailsEntity instance has been created with wrong parameter: {0}", item);
+
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+
+            Assert.AreEqual("arguments", exception.ParamName);
         }
 
-        [TestMethod]
+        [Test]
         public void TaskActivationDetailsEntityConstructorTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
             string parametersTypes = Guid.NewGuid().ToString();
             string arguments = Guid.NewGuid().ToString();
-            TaskActivationDetailsEntity item = new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments);
+            TaskActivationDetailsEntity item = new TaskActivationDetailsEntity(instanceType, method, parametersTypes,
+                arguments);
             Assert.IsNotNull(item);
         }
     }

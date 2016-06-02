@@ -1,30 +1,32 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WiseQueue.Core.Tests;
 using WiseQueue.Domain.MicrosoftExpressionCache;
 
 namespace WiseQueue.Domain.Extensions.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class CachedExpressionCompilerTests: BaseTestWithLogger
     {
-        [TestMethod]
+        [Test]
         public void CachedExpressionCompilerConstructorTest()
         {
             CachedExpressionCompiler cachedExpressionCompiler = new CachedExpressionCompiler(LoggerFactory);
             Assert.IsNotNull(cachedExpressionCompiler);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void CachedExpressionCompilerConstructorWithNullParameterTest()
         {
-            CachedExpressionCompiler cachedExpressionCompiler = new CachedExpressionCompiler(null);
-            Assert.IsNull(cachedExpressionCompiler);
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new CachedExpressionCompiler(null));
+
+            Assert.AreEqual("loggerFactory", exception.ParamName);
         }
 
-        [TestMethod]
+        [Test]
         public void CachedExpressionCompilerTest()
         {
             CachedExpressionCompiler cachedExpressionCompiler = new CachedExpressionCompiler(LoggerFactory);

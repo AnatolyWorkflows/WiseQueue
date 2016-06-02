@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using WiseQueue.Core.Common.Entities;
 
 namespace WiseQueue.Core.Common.Tests.EntitiesTests
 {
-    [TestClass]
+    [TestFixture]
     public class TaskEntityTests
     {
-        [TestMethod]
+        [Test]
         public void TaskEntityConstructorTest()
         {
             Int64 id = 1;
@@ -22,56 +22,68 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
             Assert.AreEqual(taskActivationDetails.ToString(), taskEntity.TaskActivationDetails.ToString());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void TaskEntityConstructorWithNegativeIdTest()
         {
             Int64 id = -1;
             Int64 queueId = 1;
             TaskActivationDetailsEntity taskActivationDetails = new TaskActivationDetailsEntity(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
             TaskStates taskState = TaskStates.Pending;
-            TaskEntity taskEntity = new TaskEntity(id, queueId, taskActivationDetails, taskState);
-            Assert.Fail("The TaskEntity instance has been created with wrong parameter: {0}", taskEntity);
+
+            ArgumentOutOfRangeException exception =
+                Assert.Throws<ArgumentOutOfRangeException>(
+                    () => new TaskEntity(id, queueId, taskActivationDetails, taskState));
+
+            Assert.AreEqual("id", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void TaskEntityConstructorWithNegativeQueueIdTest()
         {
             Int64 id = 1;
             Int64 queueId = -1;
             TaskActivationDetailsEntity taskActivationDetails = new TaskActivationDetailsEntity(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
             TaskStates taskState = TaskStates.Pending;
-            TaskEntity taskEntity = new TaskEntity(id, queueId, taskActivationDetails, taskState);
-            Assert.Fail("The TaskEntity instance has been created with wrong parameter: {0}", taskEntity);
+
+            ArgumentOutOfRangeException exception =
+                Assert.Throws<ArgumentOutOfRangeException>(
+                    () => new TaskEntity(id, queueId, taskActivationDetails, taskState));
+
+            Assert.AreEqual("queueId", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void TaskEntityConstructorWithOutTaskActivationDetailsEntityTest()
         {
             Int64 id = 1;
             Int64 queueId = 1;
             TaskActivationDetailsEntity taskActivationDetails = null;
             TaskStates taskState = TaskStates.Pending;
-            TaskEntity taskEntity = new TaskEntity(id, queueId, taskActivationDetails, taskState);
-            Assert.Fail("The TaskEntity instance has been created with wrong parameter: {0}", taskEntity);
+
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new TaskEntity(id, queueId, taskActivationDetails, taskState));
+
+            Assert.AreEqual("taskActivationDetails", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void TaskEntityConstructorWithWrongStateTest()
         {
             Int64 id = 1;
             Int64 queueId = 1;
             TaskActivationDetailsEntity taskActivationDetails = new TaskActivationDetailsEntity(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
             TaskStates taskState = TaskStates.New;
-            TaskEntity taskEntity = new TaskEntity(id, queueId, taskActivationDetails, taskState);
-            Assert.Fail("The TaskEntity instance has been created with wrong parameter: {0}", taskEntity);
+
+            ArgumentException exception =
+                Assert.Throws<ArgumentException>(
+                    () => new TaskEntity(id, queueId, taskActivationDetails, taskState));
+
+            Assert.AreEqual("taskState", exception.ParamName);
         }
 
 
-        [TestMethod]
+        [Test]
         public void NewTaskEntityConstructorTest()
         {
             Int64 queueId = 1;
@@ -84,24 +96,30 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
             Assert.AreEqual(taskActivationDetails.ToString(), taskEntity.TaskActivationDetails.ToString());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void NewTaskEntityConstructorWithWrongQueueIdTest()
         {
             Int64 queueId = -1;
             TaskActivationDetailsEntity taskActivationDetails = new TaskActivationDetailsEntity(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-            TaskEntity taskEntity = new TaskEntity(queueId, taskActivationDetails);
-            Assert.Fail("The TaskEntity instance has been created with wrong parameter: {0}", taskEntity);
+
+            ArgumentOutOfRangeException exception =
+                Assert.Throws<ArgumentOutOfRangeException>(
+                    () => new TaskEntity(queueId, taskActivationDetails));
+
+            Assert.AreEqual("queueId", exception.ParamName);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void NewTaskEntityConstructorWithNullTaskActivationDetailsEntityTest()
         {
             Int64 queueId = 1;
             TaskActivationDetailsEntity taskActivationDetails = null;
-            TaskEntity taskEntity = new TaskEntity(queueId, taskActivationDetails);
-            Assert.Fail("The TaskEntity instance has been created with wrong parameter: {0}", taskEntity);
+
+            ArgumentNullException exception =
+                Assert.Throws<ArgumentNullException>(
+                    () => new TaskEntity(queueId, taskActivationDetails));
+
+            Assert.AreEqual("taskActivationDetails", exception.ParamName);
         }
     }
 }
