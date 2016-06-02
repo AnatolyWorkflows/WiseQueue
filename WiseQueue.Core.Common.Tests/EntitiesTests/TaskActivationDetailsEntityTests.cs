@@ -9,7 +9,7 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TaskActivationDetailsEntityConstructorInstanceTypeIsNull()
+        public void TaskActivationDetailsEntityConstructorInstanceTypeIsNullTest()
         {
             string instanceType = null;
             string method = Guid.NewGuid().ToString();
@@ -21,7 +21,7 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TaskActivationDetailsEntityConstructorMethodIsNull()
+        public void TaskActivationDetailsEntityConstructorMethodIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = null;
@@ -33,7 +33,7 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TaskActivationDetailsEntityConstructorParametersTypesIsNull()
+        public void TaskActivationDetailsEntityConstructorParametersTypesIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
@@ -45,7 +45,7 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void TaskActivationDetailsEntityConstructorArgumentsIsNull()
+        public void TaskActivationDetailsEntityConstructorArgumentsIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
@@ -56,7 +56,7 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
         }
 
         [TestMethod]
-        public void TaskActivationDetailsEntityConstructor()
+        public void TaskActivationDetailsEntityConstructorTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();

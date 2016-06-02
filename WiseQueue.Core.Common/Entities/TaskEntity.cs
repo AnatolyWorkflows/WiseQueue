@@ -69,6 +69,7 @@ namespace WiseQueue.Core.Common.Entities
         /// <param name="taskActivationDetails">Task's serialized data.</param>
         /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskActivationDetails"/> is <see langword="null" />.</exception>        
+        /// <remarks>This constructor should be used only for new tasks entities.</remarks>
         public TaskEntity(Int64 queueId, TaskActivationDetailsEntity taskActivationDetails)
         {
             if (queueId <= 0)
@@ -92,6 +93,7 @@ namespace WiseQueue.Core.Common.Entities
         /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskActivationDetails"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentException">Task state should be Pending.</exception>
+        /// <remarks>This constructor should be used only for a tasks entities that have been panding.</remarks>
         public TaskEntity(Int64 id, Int64 queueId, TaskActivationDetailsEntity taskActivationDetails, TaskStates taskState)
         {
             if (id <= 0)
