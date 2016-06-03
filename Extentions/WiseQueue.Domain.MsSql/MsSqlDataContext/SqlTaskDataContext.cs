@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Logging;
@@ -38,9 +39,34 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// </summary>
         /// <param name="taskEntity">The <see cref="TaskEntity"/> instance.</param>
         /// <returns>The task's identifier.</returns>
-        public long InsertTask(TaskEntity taskEntity)
+        /// <exception cref="ArgumentException">Task's identifier should be 0.</exception>
+        public Int64 InsertTask(TaskEntity taskEntity)
         {
-            throw new NotImplementedException();
+            if (taskEntity.Id != 0)
+                throw new ArgumentException("Task's identifier should be 0. Now it is " + taskEntity.Id, "taskEntity");
+
+            const string insertStatement =
+                "INSERT INTO dbo.Tasks ([State], [InstanceType], [Method], [ParametersTypes], [Arguments], [QueueId]) VALUES " +
+                                       "({0},     '{1}',         '{2}',         '{3}',          '{4}',      {5}); " +
+                "SELECT CAST(scope_identity() AS bigint)";
+
+            string instanceType = taskEntity.TaskActivationDetails.InstanceType;
+            string method = taskEntity.TaskActivationDetails.Method;
+            string parametersTypes = taskEntity.TaskActivationDetails.ParametersTypes;
+            string arguments = taskEntity.TaskActivationDetails.Arguments;
+            Int64 queueId = taskEntity.QueueId;
+            string sqlCommand = string.Format(insertStatement, (short)taskEntity.TaskState, instanceType, method, parametersTypes, arguments, queueId);
+
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                connection.Open();
+                using (IDbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = sqlCommand;
+                    Int64 jobId = (Int64)command.ExecuteScalar();
+                    return jobId;
+                }
+            }
         }
 
         /// <summary>

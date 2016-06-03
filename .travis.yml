@@ -6,7 +6,6 @@ sudo: required
 solution: WiseQueue.sln
 
 before_install:
-  - mv -f src/.nuget/NuGet.mono.targets src/.nuget/NuGet.targets
   - export EnableNuGetPackageRestore=true
 
 # Make sure build dependencies are installed.
