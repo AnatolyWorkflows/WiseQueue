@@ -6,11 +6,23 @@ using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
-    public class SqlWorkflowDataContext : BaseLoggerObject, ITaskDataContext
+    /// <summary>
+    /// SQL data context that will be used for working with tasks.
+    /// </summary>
+    public class SqlTaskDataContext : BaseLoggerObject, ITaskDataContext
     {
+        /// <summary>
+        /// The <see cref="ISqlConnectionFactory"/> instance.
+        /// </summary>
         private readonly ISqlConnectionFactory connectionFactory;
 
-        public SqlWorkflowDataContext(ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="connectionFactory">The <see cref="ISqlConnectionFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionFactory"/> is <see langword="null" />.</exception>
+        public SqlTaskDataContext(ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (connectionFactory == null)

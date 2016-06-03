@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
+    /// <summary>
+    /// Interface shows that object is a Sql connection factory.
+    /// </summary>
     public interface ISqlConnectionFactory
     {
+        /// <summary>
+        /// Create a new connection.
+        /// </summary>
+        /// <returns>The <see cref="IDbConnection"/> instance.</returns>
         IDbConnection CreateConnection();
     }
 }

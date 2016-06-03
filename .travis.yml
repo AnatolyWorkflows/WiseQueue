@@ -5,9 +5,13 @@ language: csharp
 sudo: required
 solution: WiseQueue.sln
 
+before_install:
+  - mv -f src/.nuget/NuGet.mono.targets src/.nuget/NuGet.targets
+  - export EnableNuGetPackageRestore=true
+
 # Make sure build dependencies are installed.
 install:
- - travis_retry nuget install .nuget/packages.config -SolutionDirectory packages
+# - travis_retry nuget install .nuget/packages.config -SolutionDirectory packages
  - travis_retry nuget restore WiseQueue.sln -Verbosity detailed
  
 #cache: 

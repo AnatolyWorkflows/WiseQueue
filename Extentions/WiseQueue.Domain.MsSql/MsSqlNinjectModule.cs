@@ -5,10 +5,21 @@ using WiseQueue.Domain.MsSql.MsSqlDataContext;
 
 namespace WiseQueue.Domain.MsSql
 {
+    /// <summary>
+    /// Ninject configuration for SQL extension.
+    /// </summary>
     public sealed class MsSqlNinjectModule : NinjectModule
     {
+        /// <summary>
+        /// Connection string.
+        /// </summary>
         private readonly string connectionString;
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="connectionString">Connection string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="connectionString"/> is <see langword="null" />.</exception>
         public MsSqlNinjectModule(string connectionString)
         {
             if (string.IsNullOrWhiteSpace(connectionString))
@@ -19,11 +30,13 @@ namespace WiseQueue.Domain.MsSql
 
         #region Overrides of NinjectModule
 
-        /// <summary>Loads the module into the kernel.</summary>
+        /// <summary>
+        /// Loads the module into the kernel.
+        /// </summary>
         public override void Load()
         {
             Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
-            Bind<ITaskDataContext>().To<SqlWorkflowDataContext>();
+            Bind<ITaskDataContext>().To<SqlTaskDataContext>();
         }
 
         #endregion
