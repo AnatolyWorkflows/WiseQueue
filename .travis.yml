@@ -3,11 +3,12 @@
 
 language: csharp
 sudo: required
+solution: WiseQueue.sln
 
 # Make sure build dependencies are installed.
 install:
- # - travis_retry nuget install .nuget/packages.config -OutputDirectory packages
- - travis_retry nuget restore WiseQueue.sln
+ - travis_retry nuget install .nuget/packages.config -SolutionDirectory packages
+ - travis_retry nuget restore WiseQueue.sln -Verbosity detailed
  
 #cache: 
 # - apt
