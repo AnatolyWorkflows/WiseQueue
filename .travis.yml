@@ -2,7 +2,7 @@
 # see travis-ci.org for details
 
 language: csharp
-sudo: required
+sudo: false
 solution: WiseQueue.sln
 
 before_install:
