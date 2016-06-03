@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Caching\ICachedExpressionCompiler.cs" />
     <Compile Include="Converters\IJsonConverter.cs" />
+    <Compile Include="DataContexts\ITaskDataContext.cs" />
     <Compile Include="Entities\TaskActivationDetailsEntity.cs" />
     <Compile Include="Entities\TaskEntity.cs" />
     <Compile Include="Entities\TaskStates.cs" />

@@ -6,7 +6,7 @@ sudo: required
 
 # Make sure build dependencies are installed.
 install:
- - travis_retry nuget install packages/packages.config -OutputDirectory packages
+ - travis_retry nuget install .nuget/packages.config -OutputDirectory packages
  - travis_retry nuget restore WiseQueue.sln
  
 cache: 
