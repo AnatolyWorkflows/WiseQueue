@@ -6,17 +6,17 @@ sudo: required
 
 # Make sure build dependencies are installed.
 install:
- - travis_retry nuget install .nuget/packages.config -OutputDirectory packages
+ # - travis_retry nuget install .nuget/packages.config -OutputDirectory packages
  - travis_retry nuget restore WiseQueue.sln
  
-cache: 
- - apt
- - directories:
-   - packages
+#cache: 
+# - apt
+# - directories:
+#   - packages
 
 # Run the build script
 script:
- - xbuild /p:Configuration=Release /verbosity:minimal WiseQueue.sln
+ - xbuild /p:Configuration=Release WiseQueue.sln
  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./tests/WiseQueue.Core.Common.Tests/bin/Release/WiseQueue.Core.Common.Tests.dll
  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./tests/WiseQueue.Core.Tests/bin/Release/WiseQueue.Core.Tests.dll
  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./tests/WiseQueue.Domain.Extensions.Tests/bin/Release/WiseQueue.Domain.Extensions.Tests.dll

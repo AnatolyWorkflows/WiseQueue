@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{85B7D30F-0285-4B79-AC94-330ED0B15DEA}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WiseQueue</RootNamespace>
-    <AssemblyName>WiseQueue</AssemblyName>
+    <RootNamespace>WiseQueue.Domain.MicrosoftExpressionCache</RootNamespace>
+    <AssemblyName>WiseQueue.Domain.MicrosoftExpressionCache</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,21 +39,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CachedExpressionCompiler.cs" />
+    <Compile Include="ExpressionUtil\BinaryExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\CachedExpressionCompiler.cs" />
+    <Compile Include="ExpressionUtil\ConditionalExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ConstantExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\DefaultExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ExpressionFingerprintChain.cs" />
+    <Compile Include="ExpressionUtil\FingerprintingExpressionVisitor.cs" />
+    <Compile Include="ExpressionUtil\HashCodeCombiner.cs" />
+    <Compile Include="ExpressionUtil\Hoisted.cs" />
+    <Compile Include="ExpressionUtil\HoistingExpressionVisitor.cs" />
+    <Compile Include="ExpressionUtil\IndexExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\LambdaExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\MemberExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\MethodCallExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\ParameterExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\TypeBinaryExpressionFingerprint.cs" />
+    <Compile Include="ExpressionUtil\UnaryExpressionFingerprint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
+    <ProjectReference Include="..\..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Extentions\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj">
-      <Project>{1B294978-0598-46FC-83F9-6F4FBF0EF73F}</Project>
-      <Name>WiseQueue.Domain.NLogger</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -72,21 +72,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
-      <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
-      <Name>WiseQueue.Core.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WiseQueue.Core.Tests\WiseQueue.Core.Tests.csproj">
       <Project>{34E81231-58F9-4270-A82F-FEA1DCB9DC01}</Project>
       <Name>WiseQueue.Core.Tests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
-      <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
-      <Name>WiseQueue.Domain.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj">
-      <Project>{1B294978-0598-46FC-83F9-6F4FBF0EF73F}</Project>
-      <Name>WiseQueue.Domain.NLogger</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
