@@ -58,6 +58,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
+      <Project>{ac44c918-e44b-4942-ae25-d7290b89093e}</Project>
+      <Name>WiseQueue.Core.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extentions\WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj">
+      <Project>{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}</Project>
+      <Name>WiseQueue.Domain.MicrosoftExpressionCache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WiseQueue.Core.Tests\WiseQueue.Core.Tests.csproj">
       <Project>{34E81231-58F9-4270-A82F-FEA1DCB9DC01}</Project>
       <Name>WiseQueue.Core.Tests</Name>
