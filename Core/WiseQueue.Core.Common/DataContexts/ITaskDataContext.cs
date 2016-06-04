@@ -1,5 +1,6 @@
 ﻿using System;
 using WiseQueue.Core.Common.Entities;
+using WiseQueue.Core.Common.Specifications;
 
 namespace WiseQueue.Core.Common.DataContexts
 {
@@ -18,7 +19,8 @@ namespace WiseQueue.Core.Common.DataContexts
         /// <summary>
         /// Get available task from the storage.
         /// </summary>
+        /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
         /// <returns>The <see cref="TaskEntity"/> instance if it has been found. Otherwise, null.</returns>
-        TaskEntity GetAvailableTask();
+        TaskEntity GetAvailableTask(TaskRequestSpecification specification);
     }
 }
