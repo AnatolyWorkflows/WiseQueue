@@ -46,6 +46,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.MsSql", "E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.NLogger", "Extentions\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj", "{1B294978-0598-46FC-83F9-6F4FBF0EF73F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{BDC90431-2FC1-444E-BB62-3A9930A42993}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\DatabaseScripts.sql = Scripts\DatabaseScripts.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
