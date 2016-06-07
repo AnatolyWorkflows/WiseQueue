@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NlogWiseQueueConfiguration.cs" />
     <Compile Include="WiseQueueNLogLogger.cs" />
     <Compile Include="WiseQueueNLogLoggerFactory.cs" />
     <Compile Include="NLogLoggerNinjectModule.cs" />

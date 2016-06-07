@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ninject;
-using WiseQueue.Core.Common.Logging;
+using WiseQueue.Core.Common;
+using WiseQueue.Domain.Common;
 using WiseQueue.Domain.NLogger;
+using WiseQueue.Domain.MsSql;
 
 namespace WiseQueue
 {
@@ -13,14 +10,14 @@ namespace WiseQueue
     {
         static void Main(string[] args)
         {
-            using (var kernel = new StandardKernel())
+            string connectionString = "connection string";
+            using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
+                .UseNLog()
+                .UseSqlServer(connectionString))
             {
-                //TODO: Remove to Global Configuration.
-                kernel.Load(new NLogLoggerNinjectModule());
-
-                IWiseQueueLoggerFactory loggerFactory = kernel.Get<IWiseQueueLoggerFactory>();
-                IWiseQueueLogger logger = loggerFactory.Create("Main");
-                logger.WriteInfo("Press enter...");
+                //IWiseQueueLoggerFactory loggerFactory = kernel.Get<IWiseQueueLoggerFactory>();
+                //IWiseQueueLogger logger = loggerFactory.Create("Main");
+                //logger.WriteInfo("Press enter...");
 
                 Console.ReadLine();
             }

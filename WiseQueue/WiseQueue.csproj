@@ -57,6 +57,14 @@
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
+      <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
+      <Name>WiseQueue.Domain.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Extentions\WiseQueue.Domain.MsSql\WiseQueue.Domain.MsSql.csproj">
+      <Project>{1475f837-95c8-46a8-89d2-cefe6b45c28c}</Project>
+      <Name>WiseQueue.Domain.MsSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Extentions\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj">
       <Project>{1B294978-0598-46FC-83F9-6F4FBF0EF73F}</Project>
       <Name>WiseQueue.Domain.NLogger</Name>
