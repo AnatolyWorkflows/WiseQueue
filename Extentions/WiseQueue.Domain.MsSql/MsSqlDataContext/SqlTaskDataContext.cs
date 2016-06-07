@@ -160,6 +160,30 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             }
         }
 
+        /// <summary>
+        /// Set task's state.
+        /// </summary>
+        /// <param name="id">The task's identifier.</param>
+        /// <param name="taskState">New task's state that we are going to set.</param>
+        public void SetTaskState(Int64 id, TaskStates taskState)
+        {
+            const string updateStatement = "UPDATE {0}.{1} SET [State]={2}, [CompletedAt]='{3}' WHERE [Id] = {4}";
+
+            string data = "TODO";// taskSerialization.Serialize(task.Action);
+            string sqlCommand = string.Format(updateStatement, schemaName, taskTableName, (short)taskState, DateTime.UtcNow.ToString("s"), id);
+
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                connection.Open();
+                using (IDbCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = sqlCommand;
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+
         #endregion
     }
 }

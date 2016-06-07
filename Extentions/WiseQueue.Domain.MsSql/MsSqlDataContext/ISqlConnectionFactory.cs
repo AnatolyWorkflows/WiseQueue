@@ -3,7 +3,7 @@
 namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
     /// <summary>
-    /// Interface shows that object is a Sql connection factory.
+    /// Interface shows that <c>object</c> is a Sql connection factory.
     /// </summary>
     public interface ISqlConnectionFactory
     {

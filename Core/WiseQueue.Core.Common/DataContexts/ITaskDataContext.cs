@@ -22,5 +22,12 @@ namespace WiseQueue.Core.Common.DataContexts
         /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
         /// <returns>The <see cref="TaskEntity"/> instance if it has been found. Otherwise, null.</returns>
         TaskEntity GetAvailableTask(TaskRequestSpecification specification);
+
+        /// <summary>
+        /// Set task's state.
+        /// </summary>
+        /// <param name="id">The task's identifier.</param>
+        /// <param name="taskState">New task's state that we are going to set.</param>
+        void SetTaskState(Int64 id, TaskStates taskState);
     }
 }
