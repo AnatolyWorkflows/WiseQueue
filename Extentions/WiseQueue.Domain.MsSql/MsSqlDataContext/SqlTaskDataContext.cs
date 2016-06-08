@@ -6,6 +6,7 @@ using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Specifications;
+using WiseQueue.Domain.MsSql.MsSqlDataContext.QueryObjects;
 
 namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
@@ -69,27 +70,13 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             if (taskEntity.Id != 0)
                 throw new ArgumentException("Task's identifier should be 0. Now it is " + taskEntity.Id, "taskEntity");
 
-            const string insertStatement =
-                "INSERT INTO {0}.{1} ([State], [InstanceType], [Method], [ParametersTypes], [Arguments], [QueueId]) VALUES " +
-                                       "({2},     '{3}',         '{4}',         '{5}',          '{6}',      {7}); " +
-                "SELECT CAST(scope_identity() AS bigint)";
-
-            string instanceType = taskEntity.TaskActivationDetails.InstanceType;
-            string method = taskEntity.TaskActivationDetails.Method;
-            string parametersTypes = taskEntity.TaskActivationDetails.ParametersTypes;
-            string arguments = taskEntity.TaskActivationDetails.Arguments;
-            Int64 queueId = taskEntity.QueueId;
-            string sqlCommand = string.Format(insertStatement, schemaName, taskTableName, (short)taskEntity.TaskState, instanceType, method, parametersTypes, arguments, queueId);
+            //This command can be reused.
+            InsertTaskQueryObject queryObject = new InsertTaskQueryObject(schemaName, taskTableName, logger);
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                connection.Open();
-                using (IDbCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = sqlCommand;
-                    Int64 jobId = (Int64)command.ExecuteScalar();
-                    return jobId;
-                }
+                Int64 taskId = queryObject.Execute(taskEntity, connection);
+                return taskId;
             }
         }
 
