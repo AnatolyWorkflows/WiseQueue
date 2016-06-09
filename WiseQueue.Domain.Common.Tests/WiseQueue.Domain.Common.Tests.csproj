@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{87F1056B-411A-4F53-8435-344103B74E43}</ProjectGuid>
+    <ProjectGuid>{D0BB6F52-4C31-49CF-A133-9ABC31D32282}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WiseQueue.Domain.Common</RootNamespace>
-    <AssemblyName>WiseQueue.Domain.Common</AssemblyName>
+    <RootNamespace>WiseQueue.Domain.Common.Tests</RootNamespace>
+    <AssemblyName>WiseQueue.Domain.Common.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -32,12 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -49,17 +45,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\EntityModelConverters\TaskConverter.cs" />
-    <Compile Include="Converters\JsonConverter.cs" />
-    <Compile Include="Management\QueueManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WiseQueueConfiguration.cs" />
-    <Compile Include="WiseQueueGlobalConfiguration.cs" />
+    <Compile Include="TaskConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
+    <ProjectReference Include="..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
+      <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
+      <Name>WiseQueue.Domain.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests\WiseQueue.Core.Tests\WiseQueue.Core.Tests.csproj">
+      <Project>{34E81231-58F9-4270-A82F-FEA1DCB9DC01}</Project>
+      <Name>WiseQueue.Core.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

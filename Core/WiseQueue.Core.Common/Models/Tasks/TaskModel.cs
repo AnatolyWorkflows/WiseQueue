@@ -93,7 +93,6 @@ namespace WiseQueue.Core.Common.Models.Tasks
         /// <exception cref="ArgumentOutOfRangeException">The task identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskActivationDetails"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">Task state should be Pending.</exception>
         /// <remarks>This constructor should be used only for a tasks entities that have been panding.</remarks>
         public TaskModel(Int64 id, Int64 queueId, TaskActivationDetailsModel taskActivationDetails, TaskStates taskState)
         {
@@ -103,8 +102,6 @@ namespace WiseQueue.Core.Common.Models.Tasks
                 throw new ArgumentOutOfRangeException("queueId", "The queue identifier should be greate than 0.");
             if (taskActivationDetails == null)
                 throw new ArgumentNullException("taskActivationDetails");
-            if (taskState != TaskStates.Pending)
-                throw new ArgumentException("Task state should be Pending. Now it is " + taskState, "taskState");
 
             this.id = id;
             this.queueId = queueId;

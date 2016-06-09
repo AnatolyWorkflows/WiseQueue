@@ -69,22 +69,6 @@ namespace WiseQueue.Core.Common.Tests.ModelsTests.Tasks
         }
 
         [Test]
-        public void TaskModelConstructorWithWrongStateTest()
-        {
-            Int64 id = 1;
-            Int64 queueId = 1;
-            TaskActivationDetailsModel taskActivationDetails = new TaskActivationDetailsModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-            TaskStates taskState = TaskStates.New;
-
-            ArgumentException exception =
-                Assert.Throws<ArgumentException>(
-                    () => new TaskModel(id, queueId, taskActivationDetails, taskState));
-
-            Assert.AreEqual("taskState", exception.ParamName);
-        }
-
-
-        [Test]
         public void NewTaskModelConstructorTest()
         {
             Int64 queueId = 1;
@@ -118,7 +102,8 @@ namespace WiseQueue.Core.Common.Tests.ModelsTests.Tasks
 
             ArgumentNullException exception =
                 Assert.Throws<ArgumentNullException>(
-                    () => new TaskModel(queueId, taskActivationDetails));
+                    // ReSharper disable once ExpressionIsAlwaysNull
+                    () => new TaskModel(queueId: queueId, taskActivationDetails: taskActivationDetails));
 
             Assert.AreEqual("taskActivationDetails", exception.ParamName);
         }
