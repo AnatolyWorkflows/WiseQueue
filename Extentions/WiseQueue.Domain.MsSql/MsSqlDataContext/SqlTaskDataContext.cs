@@ -2,7 +2,6 @@
 using System.Data;
 using System.Text;
 using WiseQueue.Core.Common.DataContexts;
-using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
@@ -84,7 +83,6 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                connection.Open();
                 using (IDbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = sqlCommand;
@@ -133,7 +131,6 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {                
-                connection.Open();
                 using (connection.BeginTransaction(IsolationLevel.ReadCommitted))
                 {
                     using (IDbCommand command = connection.CreateCommand())
@@ -179,7 +176,6 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                connection.Open();
                 using (IDbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = sqlCommand;

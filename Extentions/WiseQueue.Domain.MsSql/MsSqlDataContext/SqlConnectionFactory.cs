@@ -43,7 +43,10 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <returns>The <see cref="IDbConnection"/> instance.</returns>
         public IDbConnection CreateConnection()
         {
-            return new SqlConnection(connectionString);
+            IDbConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            return connection;
         }
 
         #endregion
