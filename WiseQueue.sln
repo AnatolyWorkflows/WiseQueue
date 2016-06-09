@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{A6150D13-E2E1-4EDC-9E5A-3939CB4B47D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Common.Tests", "WiseQueue.Domain.Common.Tests\WiseQueue.Domain.Common.Tests.csproj", "{D0BB6F52-4C31-49CF-A133-9ABC31D32282}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Common.Tests", "Tests\WiseQueue.Domain.Common.Tests\WiseQueue.Domain.Common.Tests.csproj", "{D0BB6F52-4C31-49CF-A133-9ABC31D32282}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
