@@ -1,4 +1,4 @@
-﻿namespace WiseQueue.Core.Common.Entities
+﻿namespace WiseQueue.Core.Common.Entities.Tasks
 {
     /// <summary>
     /// <c>List</c> of available task's state.

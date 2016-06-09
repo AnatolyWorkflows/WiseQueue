@@ -15,10 +15,6 @@ namespace WiseQueue
                 .UseNLog()
                 .UseSqlServer(connectionString))
             {
-                //IWiseQueueLoggerFactory loggerFactory = kernel.Get<IWiseQueueLoggerFactory>();
-                //IWiseQueueLogger logger = loggerFactory.Create("Main");
-                //logger.WriteInfo("Press enter...");
-
                 Console.ReadLine();
             }
         }

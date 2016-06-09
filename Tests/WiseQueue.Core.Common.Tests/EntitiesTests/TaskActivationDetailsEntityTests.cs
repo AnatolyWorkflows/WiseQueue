@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using WiseQueue.Core.Common.Entities;
+using WiseQueue.Core.Common.Entities.Tasks;
 
 namespace WiseQueue.Core.Common.Tests.EntitiesTests
 {

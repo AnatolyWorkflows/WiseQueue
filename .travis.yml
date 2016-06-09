@@ -10,8 +10,9 @@ before_install:
 
 # Make sure build dependencies are installed.
 install:
- - travis_retry nuget install .nuget/packages.config -SolutionDirectory packages
- - travis_retry nuget restore WiseQueue.sln -Verbosity detailed
+ #- travis_retry nuget install .nuget/packages.config -SolutionDirectory packages
+ - travis_retry nuget restore WiseQueue.sln -Verbosity detailed -SolutionDirectory packages
+ - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
  
 #cache: 
 # - apt

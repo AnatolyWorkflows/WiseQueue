@@ -87,8 +87,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                 using (IDbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = sqlCommand;
-                    Int64 jobId = (Int64)command.ExecuteScalar();
-                    return jobId;
+                    Int64 taskId = (Int64)command.ExecuteScalar();
+                    return taskId;
                 }
             }
         }
