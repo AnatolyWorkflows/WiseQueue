@@ -7,109 +7,44 @@ namespace WiseQueue.Core.Common.Entities.Tasks
     /// </summary>
     public class TaskEntity
     {
-        #region Fields...
-        /// <summary>
-        /// Task's identifier.
-        /// </summary>
-        private readonly Int64 id;
-        /// <summary>
-        /// The queue's identifier where the task will be put.
-        /// </summary>
-        private readonly Int64 queueId;
-        /// <summary>
-        /// Task's activation details.
-        /// </summary>
-        private readonly TaskActivationDetailsEntity taskActivationDetails;
-        /// <summary>
-        /// Task's state.
-        /// </summary>
-        private readonly TaskStates taskState;
-        #endregion
-
         #region Properties...
 
         /// <summary>
         /// Task's identifier.
         /// </summary>
-        public Int64 Id
-        {
-            get { return id; }
-        }
+        public Int64 Id { get; set; }
 
         /// <summary>
         /// The queue's identifier where the task will be put.
         /// </summary>
-        public Int64 QueueId
-        {
-            get { return queueId; }
-        }
-
-        /// <summary>
-        /// Task's activation details.
-        /// </summary>
-        public TaskActivationDetailsEntity TaskActivationDetails
-        {
-            get { return taskActivationDetails; }
-        }
+        public Int64 QueueId { get; set; }
 
         /// <summary>
         /// Task's state.
         /// </summary>
-        public TaskStates TaskState
-        {
-            get { return taskState; }
-        }
+        public TaskStates TaskState { get; set; }
+
+        /// <summary>
+        /// Information about class that will be used for executing method.
+        /// </summary>
+        public string InstanceType { get; set; }
+
+        /// <summary>
+        /// Information about method that will be executed.
+        /// </summary>
+        public string Method { get; set; }
+
+        /// <summary>
+        /// Parameters' types that are using in the method.
+        /// </summary>
+        public string ParametersTypes { get; set; }
+
+        /// <summary>
+        /// Arguments' values that are using in the method.
+        /// </summary>
+        public string Arguments { get; set; }
 
         #endregion
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="queueId">The queue's identifier where the task will be put.</param>
-        /// <param name="taskActivationDetails">Task's serialized data.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="taskActivationDetails"/> is <see langword="null" />.</exception>        
-        /// <remarks>This constructor should be used only for new tasks entities.</remarks>
-        public TaskEntity(Int64 queueId, TaskActivationDetailsEntity taskActivationDetails)
-        {
-            if (queueId <= 0)
-                throw new ArgumentOutOfRangeException("queueId", "The queue identifier should be greate than 0.");
-            if (taskActivationDetails == null)
-                throw new ArgumentNullException("taskActivationDetails");
-
-            this.queueId = queueId;
-            this.taskActivationDetails = taskActivationDetails;
-            taskState = TaskStates.New;
-        }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="id">Task's identifier.</param>
-        /// <param name="queueId">The queue's identifier where the task will be put.</param>
-        /// <param name="taskActivationDetails">Task's serialized data.</param>
-        /// <param name="taskState">Task's state.</param>
-        /// <exception cref="ArgumentOutOfRangeException">The task identifier should be greate than 0.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="taskActivationDetails"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">Task state should be Pending.</exception>
-        /// <remarks>This constructor should be used only for a tasks entities that have been panding.</remarks>
-        public TaskEntity(Int64 id, Int64 queueId, TaskActivationDetailsEntity taskActivationDetails, TaskStates taskState)
-        {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException("id", "The task identifier should be greate than 0.");
-            if (queueId <= 0)
-                throw new ArgumentOutOfRangeException("queueId", "The queue identifier should be greate than 0.");
-            if (taskActivationDetails == null)
-                throw new ArgumentNullException("taskActivationDetails");
-            if (taskState != TaskStates.Pending)
-                throw new ArgumentException("Task state should be Pending. Now it is " + taskState, "taskState");
-
-            this.id = id;
-            this.queueId = queueId;
-            this.taskActivationDetails = taskActivationDetails;
-            this.taskState = taskState;
-        }
 
         #region Overrides of Object
 
@@ -119,7 +54,8 @@ namespace WiseQueue.Core.Common.Entities.Tasks
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return string.Format("Id: {0}; TaskState: {1}; QueueId: {2}; taskActivationDetails: {3}", id, taskState, queueId, taskActivationDetails);
+            return string.Format("Id: {0}; TaskState: {1}; QueueId: {2}; taskActivationDetails: {3}", Id, TaskState,
+                QueueId, "TODO:"); //TODO: ToString().
         }
 
         #endregion

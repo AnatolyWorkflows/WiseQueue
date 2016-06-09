@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace WiseQueue.Core.Common.Entities.Tasks
+namespace WiseQueue.Core.Common.Models.Tasks
 {
     /// <summary>
     /// Class contains all information about the task that has been serialized.
     /// </summary>
-    public class TaskActivationDetailsEntity
+    public class TaskActivationDetailsModel
     {
         #region Fields...
         /// <summary>
@@ -72,7 +72,7 @@ namespace WiseQueue.Core.Common.Entities.Tasks
         /// <exception cref="ArgumentNullException"><paramref name="method"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="parametersTypes"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="arguments"/> is <see langword="null" />.</exception>
-        public TaskActivationDetailsEntity(string instanceType, string method, string parametersTypes, string arguments)
+        public TaskActivationDetailsModel(string instanceType, string method, string parametersTypes, string arguments)
         {
             if (string.IsNullOrWhiteSpace(instanceType)) 
                 throw new ArgumentNullException("instanceType");

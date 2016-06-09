@@ -74,10 +74,10 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                        "({2},     '{3}',         '{4}',         '{5}',          '{6}',      {7}); " +
                 "SELECT CAST(scope_identity() AS bigint)";
 
-            string instanceType = taskEntity.TaskActivationDetails.InstanceType;
-            string method = taskEntity.TaskActivationDetails.Method;
-            string parametersTypes = taskEntity.TaskActivationDetails.ParametersTypes;
-            string arguments = taskEntity.TaskActivationDetails.Arguments;
+            string instanceType = taskEntity.InstanceType;
+            string method = taskEntity.Method;
+            string parametersTypes = taskEntity.ParametersTypes;
+            string arguments = taskEntity.Arguments;
             Int64 queueId = taskEntity.QueueId;
             string sqlCommand = string.Format(insertStatement, schemaName, taskTableName, (short)taskEntity.TaskState, instanceType, method, parametersTypes, arguments, queueId);
 
@@ -148,11 +148,17 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                 string methodDetails = (string) rdr["Method"];
                                 string parameterDetails = (string) rdr["ParametersTypes"];
                                 string argumentDetails = (string) rdr["Arguments"];
-                                TaskActivationDetailsEntity taskActivationDetailsEntity =
-                                    new TaskActivationDetailsEntity(typeDetails, methodDetails, parameterDetails,
-                                        argumentDetails);
-
-                                TaskEntity result = new TaskEntity(id, queueId, taskActivationDetailsEntity, taskState);
+                                TaskEntity result = new TaskEntity
+                                {
+                                    Id = id,
+                                    QueueId = queueId,
+                                    TaskState = taskState,
+                                    InstanceType = typeDetails,
+                                    Method = methodDetails,
+                                    ParametersTypes = parameterDetails,
+                                    Arguments = argumentDetails
+                                };
+                                
                                 return result;
                             }
                         }

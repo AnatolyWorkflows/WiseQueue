@@ -1,15 +1,14 @@
 ﻿using System;
 using NUnit.Framework;
-using WiseQueue.Core.Common.Entities;
-using WiseQueue.Core.Common.Entities.Tasks;
+using WiseQueue.Core.Common.Models.Tasks;
 
-namespace WiseQueue.Core.Common.Tests.EntitiesTests
+namespace WiseQueue.Core.Common.Tests.ModelsTests.Tasks
 {
     [TestFixture]
-    public class TaskActivationDetailsEntityTests
+    public class TaskActivationDetailsModelTests
     {
         [Test]
-        public void TaskActivationDetailsEntityConstructorInstanceTypeIsNullTest()
+        public void TaskActivationDetailsModelConstructorInstanceTypeIsNullTest()
         {
             string instanceType = null;
             string method = Guid.NewGuid().ToString();
@@ -18,13 +17,13 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
 
             ArgumentNullException exception =
                 Assert.Throws<ArgumentNullException>(
-                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+                    () => new TaskActivationDetailsModel(instanceType, method, parametersTypes, arguments));
 
             Assert.AreEqual("instanceType", exception.ParamName);
         }
 
         [Test]
-        public void TaskActivationDetailsEntityConstructorMethodIsNullTest()
+        public void TaskActivationDetailsModelConstructorMethodIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = null;
@@ -33,13 +32,13 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
 
             ArgumentNullException exception =
                 Assert.Throws<ArgumentNullException>(
-                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+                    () => new TaskActivationDetailsModel(instanceType, method, parametersTypes, arguments));
 
             Assert.AreEqual("method", exception.ParamName);
         }
 
         [Test]
-        public void TaskActivationDetailsEntityConstructorParametersTypesIsNullTest()
+        public void TaskActivationDetailsModelConstructorParametersTypesIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
@@ -48,13 +47,13 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
 
             ArgumentNullException exception =
                 Assert.Throws<ArgumentNullException>(
-                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+                    () => new TaskActivationDetailsModel(instanceType, method, parametersTypes, arguments));
 
             Assert.AreEqual("parametersTypes", exception.ParamName);
         }
 
         [Test]
-        public void TaskActivationDetailsEntityConstructorArgumentsIsNullTest()
+        public void TaskActivationDetailsModelConstructorArgumentsIsNullTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
@@ -63,19 +62,19 @@ namespace WiseQueue.Core.Common.Tests.EntitiesTests
 
             ArgumentNullException exception =
                 Assert.Throws<ArgumentNullException>(
-                    () => new TaskActivationDetailsEntity(instanceType, method, parametersTypes, arguments));
+                    () => new TaskActivationDetailsModel(instanceType, method, parametersTypes, arguments));
 
             Assert.AreEqual("arguments", exception.ParamName);
         }
 
         [Test]
-        public void TaskActivationDetailsEntityConstructorTest()
+        public void TaskActivationDetailsModelConstructorTest()
         {
             string instanceType = Guid.NewGuid().ToString();
             string method = Guid.NewGuid().ToString();
             string parametersTypes = Guid.NewGuid().ToString();
             string arguments = Guid.NewGuid().ToString();
-            TaskActivationDetailsEntity item = new TaskActivationDetailsEntity(instanceType, method, parametersTypes,
+            TaskActivationDetailsModel item = new TaskActivationDetailsModel(instanceType, method, parametersTypes,
                 arguments);
             Assert.IsNotNull(item);
         }
