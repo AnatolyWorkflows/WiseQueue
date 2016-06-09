@@ -48,12 +48,14 @@
     <Compile Include="Caching\ICachedExpressionCompiler.cs" />
     <Compile Include="Converters\IJsonConverter.cs" />
     <Compile Include="DataContexts\ITaskDataContext.cs" />
-    <Compile Include="Entities\TaskActivationDetailsEntity.cs" />
-    <Compile Include="Entities\TaskEntity.cs" />
-    <Compile Include="Entities\TaskStates.cs" />
+    <Compile Include="Entities\QueueEntity.cs" />
+    <Compile Include="Entities\Tasks\TaskActivationDetailsEntity.cs" />
+    <Compile Include="Entities\Tasks\TaskEntity.cs" />
+    <Compile Include="Entities\Tasks\TaskStates.cs" />
     <Compile Include="IWiseQueueConfiguration.cs" />
     <Compile Include="Logging\IWiseQueueLogger.cs" />
     <Compile Include="Logging\IWiseQueueLoggerFactory.cs" />
+    <Compile Include="Management\IQueueManager.cs" />
     <Compile Include="Models\BaseLoggerObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Specifications\TaskRequestSpecification.cs" />

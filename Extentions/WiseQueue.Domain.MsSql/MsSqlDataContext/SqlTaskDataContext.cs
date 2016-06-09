@@ -3,6 +3,7 @@ using System.Data;
 using System.Text;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities;
+using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Specifications;

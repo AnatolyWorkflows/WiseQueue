@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WiseQueue.Core.Common.Entities
+namespace WiseQueue.Core.Common.Entities.Tasks
 {
     /// <summary>
     /// Class contains all information about the task that has been serialized.

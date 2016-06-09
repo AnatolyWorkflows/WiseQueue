@@ -1,5 +1,6 @@
 ﻿using System;
 using WiseQueue.Core.Common.Entities;
+using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Specifications;
 
 namespace WiseQueue.Core.Common.DataContexts

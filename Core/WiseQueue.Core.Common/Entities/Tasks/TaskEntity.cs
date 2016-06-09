@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WiseQueue.Core.Common.Entities
+namespace WiseQueue.Core.Common.Entities.Tasks
 {
     /// <summary>
     /// Class contains all fields that are using to store information about a task.
