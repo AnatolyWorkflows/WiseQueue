@@ -41,6 +41,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MsSqlDataContext\QueryObjects\BaseQueryObject.cs" />
+    <Compile Include="MsSqlDataContext\QueryObjects\GetAvailableTaskQueryObject.cs" />
     <Compile Include="MsSqlDataContext\QueryObjects\InsertTaskQueryObject.cs" />
     <Compile Include="MsSqlWiseQueueConfiguration.cs" />
     <Compile Include="MsSqlDataContext\ISqlConnectionFactory.cs" />
