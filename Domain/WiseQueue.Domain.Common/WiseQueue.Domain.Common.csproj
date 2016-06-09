@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\EntityModelConverters\QueueConverter.cs" />
     <Compile Include="Converters\EntityModelConverters\TaskConverter.cs" />
     <Compile Include="Converters\JsonConverter.cs" />
     <Compile Include="Management\QueueManager.cs" />

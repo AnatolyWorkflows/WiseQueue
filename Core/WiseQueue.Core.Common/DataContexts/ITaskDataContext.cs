@@ -1,12 +1,11 @@
 ﻿using System;
-using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Specifications;
 
 namespace WiseQueue.Core.Common.DataContexts
 {
     /// <summary>
-    /// Interface shows that <c>object</c> is a task data context.
+    /// Interface shows that <c>object</c> is a tasks' data context.
     /// </summary>
     public interface ITaskDataContext
     {

@@ -31,7 +31,7 @@ namespace WiseQueue.Core.Common.Models
         /// </summary>
         /// <param name="name">Queue's <c>name</c>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
-        public QueueModel(string name)
+        public QueueModel(string name): this(name, string.Empty)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name");
@@ -45,13 +45,10 @@ namespace WiseQueue.Core.Common.Models
         /// <param name="name">Queue's <c>name</c>.</param>
         /// <param name="description">Queue's <c>description</c>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="description"/> is <see langword="null" />.</exception>
         public QueueModel(string name, string description)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name");
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentNullException("description");
 
             Name = name;
             Description = description;
@@ -62,9 +59,26 @@ namespace WiseQueue.Core.Common.Models
         /// </summary>
         /// <param name="id">Queue's identifier.</param>
         /// <param name="name">Queue's <c>name</c>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">The identifier should be great than 0.</exception>
+        public QueueModel(Int64 id, string name): this(id, name, string.Empty)
+        {
+            if (id <= 0)
+                throw new ArgumentOutOfRangeException("id", "The identifier should be great than 0.");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name");
+
+            Id = id;
+            Name = name;
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="id">Queue's identifier.</param>
+        /// <param name="name">Queue's <c>name</c>.</param>
         /// <param name="description">Queue's <c>description</c>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="description"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The identifier should be great than 0.</exception>
         public QueueModel(Int64 id, string name, string description)
         {
@@ -72,8 +86,6 @@ namespace WiseQueue.Core.Common.Models
                 throw new ArgumentOutOfRangeException("id", "The identifier should be great than 0.");
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException("name");
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentNullException("description");
 
             Id = id;
             Name = name;

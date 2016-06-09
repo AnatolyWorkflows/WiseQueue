@@ -5,7 +5,7 @@ namespace WiseQueue.Core.Common.Entities
     /// <summary>
     /// Queue entity.
     /// </summary>
-    public class QueueModel
+    public class QueueEntity
     {
         #region Properties...
 

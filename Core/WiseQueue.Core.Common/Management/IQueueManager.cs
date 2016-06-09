@@ -11,26 +11,26 @@ namespace WiseQueue.Core.Common.Management
         /// <summary>
         /// Get default queue.
         /// </summary>
-        /// <returns>The <see cref="QueueModel"/> instance.</returns>
-        QueueModel GetDefaultQueue();
+        /// <returns>The <see cref="QueueEntity"/> instance.</returns>
+        QueueEntity GetDefaultQueue();
 
         /// <summary>
         /// Check queue by name.
         /// </summary>
         /// <param name="queueName">The queue's name.</param>
-        /// <returns>The <see cref="QueueModel"/> instance. </returns>
+        /// <returns>The <see cref="QueueEntity"/> instance. </returns>
         /// <remarks>
         /// Depends on settings:
         ///     1) If there is no queue Exception will be generated.
         ///     2) If there is no queue it will be created.
         /// </remarks>
-        QueueModel CheckQueueByName(string queueName);
+        QueueEntity CheckQueueByName(string queueName);
 
         /// <summary>
         /// Get queues that available for current server.
         /// </summary>
-        /// <returns><c>List</c> of <see cref="QueueModel"/>.</returns>
-        IReadOnlyCollection<QueueModel> GetAvailableQueues();
+        /// <returns><c>List</c> of <see cref="QueueEntity"/>.</returns>
+        IReadOnlyCollection<QueueEntity> GetAvailableQueues();
     }
 
 }
