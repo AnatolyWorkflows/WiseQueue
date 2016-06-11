@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
-using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
@@ -49,8 +48,8 @@ namespace WiseQueue.Domain.Common.Management
         /// <summary>
         /// Get default queue.
         /// </summary>
-        /// <returns>The <see cref="QueueEntity"/> instance.</returns>
-        public QueueEntity GetDefaultQueue()
+        /// <returns>The <see cref="QueueModel"/> instance.</returns>
+        public QueueModel GetDefaultQueue()
         {
             throw new NotImplementedException();
         }
@@ -59,13 +58,13 @@ namespace WiseQueue.Domain.Common.Management
         /// Check queue by name.
         /// </summary>
         /// <param name="queueName">The queue's name.</param>
-        /// <returns>The <see cref="QueueEntity"/> instance. </returns>
+        /// <returns>The <see cref="QueueModel"/> instance. </returns>
         /// <remarks>
         /// Depends on settings:
         ///     1) If there is no queue Exception will be generated.
         ///     2) If there is no queue it will be created.
         /// </remarks>
-        public QueueEntity CheckQueueByName(string queueName)
+        public QueueModel CheckQueueByName(string queueName)
         {
             throw new NotImplementedException();
         }
@@ -73,8 +72,8 @@ namespace WiseQueue.Domain.Common.Management
         /// <summary>
         /// Get queues that available for current server.
         /// </summary>
-        /// <returns><c>List</c> of <see cref="QueueEntity"/>.</returns>
-        public IReadOnlyCollection<QueueEntity> GetAvailableQueues()
+        /// <returns><c>List</c> of <see cref="QueueModel"/>.</returns>
+        public IReadOnlyCollection<QueueModel> GetAvailableQueues()
         {
             throw new NotImplementedException();
         }

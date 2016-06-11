@@ -21,6 +21,12 @@ namespace WiseQueue.Domain.Common
             kernel.Load(ninjectModule);
         }
 
+        public TComponent Get<TComponent>()
+        {
+            TComponent result = kernel.Get<TComponent>();
+            return result;
+        }
+
         #endregion
 
         #region Overrides of DisposableObject

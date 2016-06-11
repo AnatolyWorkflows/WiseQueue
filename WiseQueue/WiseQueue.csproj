@@ -59,6 +59,10 @@
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Domain\WiseQueue.Domain.Client\WiseQueue.Domain.Client.csproj">
+      <Project>{AE232F81-5F80-4993-A166-B49380BA0C84}</Project>
+      <Name>WiseQueue.Domain.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
       <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
       <Name>WiseQueue.Domain.Common</Name>

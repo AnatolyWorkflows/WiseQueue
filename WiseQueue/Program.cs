@@ -1,5 +1,6 @@
 ﻿using System;
 using WiseQueue.Core.Common;
+using WiseQueue.Domain.Client.Management;
 using WiseQueue.Domain.Common;
 using WiseQueue.Domain.NLogger;
 using WiseQueue.Domain.MsSql;
@@ -8,6 +9,15 @@ namespace WiseQueue
 {
     class Program
     {
+        private class MyClass
+        {
+            public void Test(string msg)
+            {
+                Console.WriteLine("MSG: {0}", msg);
+            }
+        }
+
+
         static void Main(string[] args)
         {
             string connectionString = "connection string";
@@ -22,8 +32,8 @@ namespace WiseQueue
                 .UseSqlServer(connectionString))
             {
 
-
-
+                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
+                
                 Console.ReadLine();
             }
         }

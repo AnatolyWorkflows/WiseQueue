@@ -39,7 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Management\ClientManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
+      <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
+      <Name>WiseQueue.Core.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
+      <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
+      <Name>WiseQueue.Domain.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
