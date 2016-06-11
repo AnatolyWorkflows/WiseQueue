@@ -12,6 +12,7 @@ namespace WiseQueue.Domain.Common
         public WiseQueueConfiguration()
         {
             kernel = new StandardKernel();
+            kernel.Load(new CommonNinjectModule());
         }
 
         #region Implementation of IWiseQueueConfiguration

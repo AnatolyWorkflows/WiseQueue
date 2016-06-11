@@ -51,7 +51,7 @@ namespace WiseQueue.Domain.Common.Management
         /// <returns>The <see cref="QueueModel"/> instance.</returns>
         public QueueModel GetDefaultQueue()
         {
-            throw new NotImplementedException();
+            return new QueueModel(int.MaxValue, "Mock", "This is a mock object.");
         }
 
         /// <summary>

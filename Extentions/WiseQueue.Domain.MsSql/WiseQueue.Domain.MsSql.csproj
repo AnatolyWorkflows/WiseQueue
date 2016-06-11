@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsSqlDataContext\QueueDataContext.cs" />
     <Compile Include="MsSqlWiseQueueConfiguration.cs" />
     <Compile Include="MsSqlDataContext\ISqlConnectionFactory.cs" />
     <Compile Include="MsSqlDataContext\SqlConnectionFactory.cs" />

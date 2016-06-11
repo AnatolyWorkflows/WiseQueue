@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonNinjectModule.cs" />
     <Compile Include="Converters\EntityModelConverters\QueueConverter.cs" />
     <Compile Include="Converters\EntityModelConverters\TaskConverter.cs" />
     <Compile Include="Converters\ExpressionConverter.cs" />
@@ -63,6 +64,10 @@
     <ProjectReference Include="..\..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Extentions\WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj">
+      <Project>{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}</Project>
+      <Name>WiseQueue.Domain.MicrosoftExpressionCache</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

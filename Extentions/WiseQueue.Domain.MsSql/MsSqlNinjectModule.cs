@@ -36,6 +36,8 @@ namespace WiseQueue.Domain.MsSql
         public override void Load()
         {
             Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
+
+            Bind<IQueueDataContext>().To<QueueDataContext>();
             Bind<ITaskDataContext>().To<SqlTaskDataContext>();
         }
 
