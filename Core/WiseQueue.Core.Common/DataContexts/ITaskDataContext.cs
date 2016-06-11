@@ -1,5 +1,6 @@
 ﻿using System;
 using WiseQueue.Core.Common.Entities.Tasks;
+using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
 
 namespace WiseQueue.Core.Common.DataContexts
@@ -12,16 +13,16 @@ namespace WiseQueue.Core.Common.DataContexts
         /// <summary>
         /// Insert a task into the storage.
         /// </summary>
-        /// <param name="taskEntity">The <see cref="TaskEntity"/> instance.</param>
+        /// <param name="taskEntity">The <see cref="TaskModel"/> instance.</param>
         /// <returns>The task's identifier.</returns>
-        Int64 InsertTask(TaskEntity taskEntity);
+        Int64 InsertTask(TaskModel taskEntity);
 
         /// <summary>
         /// Get available task from the storage.
         /// </summary>
         /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
-        /// <returns>The <see cref="TaskEntity"/> instance if it has been found. Otherwise, null.</returns>
-        TaskEntity GetAvailableTask(TaskRequestSpecification specification);
+        /// <returns>The <see cref="TaskModel"/> instance if it has been found. Otherwise, null.</returns>
+        TaskModel GetAvailableTask(TaskRequestSpecification specification);
 
         /// <summary>
         /// Set task's state.

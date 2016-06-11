@@ -9,10 +9,10 @@ namespace WiseQueue.Core.Common.Management
     public interface ITaskManager
     {
         /// <summary>
-        /// Enqueue a new <c>task</c>.
+        /// StartTask a new <c>task</c>.
         /// </summary>
         /// <param name="task">The <c>task</c>.</param>
         /// <returns>The task's identifier.</returns>
-        Int64 Enqueue(Expression task);
+        Int64 StartTask(Expression<Action> task);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using WiseQueue.Core.Common;
+using WiseQueue.Domain.Client;
 using WiseQueue.Domain.Client.Management;
 using WiseQueue.Domain.Common;
 using WiseQueue.Domain.NLogger;
@@ -29,9 +30,9 @@ namespace WiseQueue
 
             using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
                 .UseNLog()
+                .UseClient()
                 .UseSqlServer(connectionString))
             {
-
                 Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
                 
                 Console.ReadLine();

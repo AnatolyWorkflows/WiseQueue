@@ -36,7 +36,7 @@ namespace WiseQueue.Domain.Client.Management
         /// <returns>The task's identifier.</returns>
         public Int64 StartTask(Expression<Action> task)
         {
-            Int64 taskId = taskManager.Enqueue(task);
+            Int64 taskId = taskManager.StartTask(task);
             return taskId;
         }
 

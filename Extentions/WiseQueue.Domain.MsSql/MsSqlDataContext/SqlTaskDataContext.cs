@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Data;
 using System.Text;
+using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
+using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
 
 namespace WiseQueue.Domain.MsSql.MsSqlDataContext
@@ -30,6 +32,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
         #region Fields...
 
+        private readonly ITaskConverter taskConverter;
+
         /// <summary>
         /// The <see cref="ISqlConnectionFactory"/> instance.
         /// </summary>
@@ -42,15 +46,20 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="taskConverter">The <see cref="ITaskConverter"/> instance.</param>
         /// <param name="connectionFactory">The <see cref="ISqlConnectionFactory"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="taskConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="connectionFactory"/> is <see langword="null" />.</exception>
-        public SqlTaskDataContext(ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
+        public SqlTaskDataContext(ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            if (taskConverter == null) 
+                throw new ArgumentNullException("taskConverter");
             if (connectionFactory == null)
                 throw new ArgumentNullException("connectionFactory");
 
+            this.taskConverter = taskConverter;
             this.connectionFactory = connectionFactory;
         }
 
@@ -61,13 +70,15 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Insert a task into the storage.
         /// </summary>
-        /// <param name="taskEntity">The <see cref="TaskEntity"/> instance.</param>
+        /// <param name="taskModel">The <see cref="TaskModel"/> instance.</param>
         /// <returns>The task's identifier.</returns>
         /// <exception cref="ArgumentException">Task's identifier should be 0.</exception>
-        public Int64 InsertTask(TaskEntity taskEntity)
+        public Int64 InsertTask(TaskModel taskModel)
         {
-            if (taskEntity.Id != 0)
-                throw new ArgumentException("Task's identifier should be 0. Now it is " + taskEntity.Id, "taskEntity");
+            if (taskModel.Id != 0)
+                throw new ArgumentException("Task's identifier should be 0. Now it is " + taskModel.Id, "taskModel");
+
+            TaskEntity taskEntity = taskConverter.Convert(taskModel);
 
             const string insertStatement =
                 "INSERT INTO {0}.{1} ([State], [InstanceType], [Method], [ParametersTypes], [Arguments], [QueueId]) VALUES " +
@@ -99,7 +110,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
         /// <returns>The <see cref="TaskEntity"/> instance if it has been found. Otherwise, null.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="specification"/> is <see langword="null" />.</exception>
-        public TaskEntity GetAvailableTask(TaskRequestSpecification specification)
+        public TaskModel GetAvailableTask(TaskRequestSpecification specification)
         {
             if (specification == null)
                 throw new ArgumentNullException("specification");
@@ -148,7 +159,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                 string methodDetails = (string) rdr["Method"];
                                 string parameterDetails = (string) rdr["ParametersTypes"];
                                 string argumentDetails = (string) rdr["Arguments"];
-                                TaskEntity result = new TaskEntity
+                                TaskEntity taskEntity = new TaskEntity
                                 {
                                     Id = id,
                                     QueueId = queueId,
@@ -158,7 +169,9 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                     ParametersTypes = parameterDetails,
                                     Arguments = argumentDetails
                                 };
-                                
+
+                                TaskModel result = taskConverter.Convert(taskEntity);
+
                                 return result;
                             }
                         }
