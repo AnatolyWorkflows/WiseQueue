@@ -3,9 +3,11 @@ using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Utils;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 using WiseQueue.Domain.Common.Management;
+using WiseQueue.Domain.Common.Utils;
 using WiseQueue.Domain.MicrosoftExpressionCache;
 
 namespace WiseQueue.Domain.Common
@@ -19,6 +21,8 @@ namespace WiseQueue.Domain.Common
         /// </summary>
         public override void Load()
         {
+            Bind<IResourceReader>().To<ResourceReader>();
+
             Bind<ITaskConverter>().To<TaskConverter>();
             Bind<IQueueConverter>().To<QueueConverter>();
             

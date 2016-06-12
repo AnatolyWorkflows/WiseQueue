@@ -57,6 +57,7 @@
     <Compile Include="Management\QueueManager.cs" />
     <Compile Include="Management\TaskManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ResourceReader.cs" />
     <Compile Include="WiseQueueConfiguration.cs" />
     <Compile Include="WiseQueueGlobalConfiguration.cs" />
   </ItemGroup>

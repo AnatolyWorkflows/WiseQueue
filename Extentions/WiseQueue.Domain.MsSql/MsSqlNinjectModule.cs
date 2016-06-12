@@ -35,6 +35,7 @@ namespace WiseQueue.Domain.MsSql
         /// </summary>
         public override void Load()
         {
+            Bind<ISqlServerInstaller>().To<SqlServerInstaller>();
             Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
 
             Bind<IQueueDataContext>().To<QueueDataContext>();

@@ -32,6 +32,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
         #region Fields...
 
+        private readonly ISqlServerInstaller sqlServerInstaller;
         private readonly ITaskConverter taskConverter;
 
         /// <summary>
@@ -46,21 +47,31 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="sqlServerInstaller">The <see cref="ISqlServerInstaller"/> instance.</param>
         /// <param name="taskConverter">The <see cref="ITaskConverter"/> instance.</param>
         /// <param name="connectionFactory">The <see cref="ISqlConnectionFactory"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="sqlServerInstaller"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="connectionFactory"/> is <see langword="null" />.</exception>
-        public SqlTaskDataContext(ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
+        public SqlTaskDataContext(ISqlServerInstaller sqlServerInstaller, ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            if (sqlServerInstaller == null) 
+                throw new ArgumentNullException("sqlServerInstaller");
             if (taskConverter == null) 
                 throw new ArgumentNullException("taskConverter");
             if (connectionFactory == null)
                 throw new ArgumentNullException("connectionFactory");
 
+            this.sqlServerInstaller = sqlServerInstaller;
             this.taskConverter = taskConverter;
             this.connectionFactory = connectionFactory;
+
+            using (IDbConnection connection = connectionFactory.CreateDatabaseAndConnection())
+            {
+                sqlServerInstaller.Install(connection);
+            }
         }
 
         #endregion
