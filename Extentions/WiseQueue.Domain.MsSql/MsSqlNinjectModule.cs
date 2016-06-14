@@ -2,6 +2,7 @@
 using Ninject.Modules;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Domain.MsSql.MsSqlDataContext;
+using WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation;
 
 namespace WiseQueue.Domain.MsSql
 {

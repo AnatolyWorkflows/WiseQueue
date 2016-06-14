@@ -5,7 +5,7 @@ using System.Text;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 
-namespace WiseQueue.Domain.MsSql.MsSqlDataContext
+namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
 {
     /// <summary>
     /// Simple SQL connections factory.

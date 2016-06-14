@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 
-namespace WiseQueue.Domain.MsSql.MsSqlDataContext
+namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
 {
     class QueueDataContext : BaseLoggerObject, IQueueDataContext
     {

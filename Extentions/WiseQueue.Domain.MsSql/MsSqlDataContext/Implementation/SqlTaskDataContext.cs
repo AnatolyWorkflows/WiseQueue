@@ -9,7 +9,7 @@ using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
 
-namespace WiseQueue.Domain.MsSql.MsSqlDataContext
+namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
 {
     /// <summary>
     /// SQL data context that will be used for working with tasks.
