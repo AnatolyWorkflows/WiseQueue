@@ -13,21 +13,21 @@ namespace WiseQueue.Domain.MsSql
     public sealed class MsSqlNinjectModule : NinjectModule
     {
         /// <summary>
-        /// Connection string.
+        /// Name or connection string.
         /// </summary>
-        private readonly string connectionString;
+        private readonly string nameOrConnectionString;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="connectionString">Connection string.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionString"/> is <see langword="null" />.</exception>
-        public MsSqlNinjectModule(string connectionString)
+        /// <param name="nameOrConnectionString">Name or connection string.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="nameOrConnectionString"/> is <see langword="null" />.</exception>
+        public MsSqlNinjectModule(string nameOrConnectionString)
         {
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new ArgumentNullException("connectionString");
+            if (string.IsNullOrWhiteSpace(nameOrConnectionString))
+                throw new ArgumentNullException("nameOrConnectionString");
 
-            this.connectionString = connectionString;
+            this.nameOrConnectionString = nameOrConnectionString;
         }
 
         #region Overrides of NinjectModule
@@ -37,9 +37,10 @@ namespace WiseQueue.Domain.MsSql
         /// </summary>
         public override void Load()
         {
-            Bind<MsSqlSettings>().ToSelf().InSingletonScope();
+            Bind<MsSqlSettings>().ToSelf().InSingletonScope().WithConstructorArgument("nameOrConnectionString", nameOrConnectionString);
+
             Bind<ISqlServerInstaller>().To<SqlServerInstaller>();
-            Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
+            Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope();
 
             Bind<IQueueDataContext>().To<QueueDataContext>();
             Bind<ITaskDataContext>().To<SqlTaskDataContext>();
