@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -32,19 +33,21 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="connectionString">Connection string</param>
-        /// <exception cref="ArgumentNullException"><paramref name="connectionString"/> is <see langword="null" />.</exception>
-        public MsSqlSettings(string connectionString)
+        /// <param name="nameOrConnectionString">Name or connection string</param>
+        /// <exception cref="ArgumentNullException"><paramref name="nameOrConnectionString"/> is <see langword="null" />.</exception>
+        public MsSqlSettings(string nameOrConnectionString)
         {
-            if (string.IsNullOrWhiteSpace(connectionString)) 
-                throw new ArgumentNullException("connectionString");
+            if (string.IsNullOrWhiteSpace(nameOrConnectionString))
+                throw new ArgumentNullException("nameOrConnectionString");
 
+            string connectionString = GetConnectionString(nameOrConnectionString);
             ConnectionString = connectionString;
 
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
+            
             //connectionString = "Data Source=(local);" +
             //                   "Initial Catalog=TestCreation;" +
             //                   "Integrated Security=SSPI;";
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionString);
             InitialCatalog = builder.InitialCatalog;
 
             StringBuilder stringBuilder = new StringBuilder();            
@@ -57,6 +60,21 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
             //TODO: Login and Password
 
             MasterConnectionString = stringBuilder.ToString();
-        }        
+        }
+
+        /// <summary>
+        /// Get connection string from the <see cref="ConfigurationManager"/> if it is available.
+        /// </summary>
+        /// <param name="nameOrConnectionString">Name or connection string.</param>
+        /// <returns>The connection string.</returns>
+        private string GetConnectionString(string nameOrConnectionString)
+        {
+            ConnectionStringSettings connectionStringSetting = ConfigurationManager.ConnectionStrings[nameOrConnectionString];
+
+            if (connectionStringSetting == null)
+                return nameOrConnectionString;
+
+            return connectionStringSetting.ConnectionString;
+        }
     }
 }
