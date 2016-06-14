@@ -5,7 +5,7 @@ using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 
-namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
+namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
     class QueueDataContext : BaseLoggerObject, IQueueDataContext
     {

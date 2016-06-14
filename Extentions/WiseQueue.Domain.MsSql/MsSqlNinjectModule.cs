@@ -2,7 +2,8 @@
 using Ninject.Modules;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Domain.MsSql.MsSqlDataContext;
-using WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation;
+using WiseQueue.Domain.MsSql.Utils;
+using WiseQueue.Domain.MsSql.Utils.Implementation;
 
 namespace WiseQueue.Domain.MsSql
 {
@@ -36,6 +37,7 @@ namespace WiseQueue.Domain.MsSql
         /// </summary>
         public override void Load()
         {
+            Bind<MsSqlSettings>().ToSelf().InSingletonScope();
             Bind<ISqlServerInstaller>().To<SqlServerInstaller>();
             Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope().WithConstructorArgument("connectionString", connectionString);
 

@@ -8,8 +8,9 @@ using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
+using WiseQueue.Domain.MsSql.Utils;
 
-namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
+namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
     /// <summary>
     /// SQL data context that will be used for working with tasks.
@@ -105,7 +106,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                using (IDbCommand command = connection.CreateCommand())
+                using (IDbCommand command = connectionFactory.CreateCommand(connection))
                 {
                     command.CommandText = sqlCommand;
                     Int64 taskId = (Int64)command.ExecuteScalar();
@@ -155,7 +156,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
             {                
                 using (connection.BeginTransaction(IsolationLevel.ReadCommitted))
                 {
-                    using (IDbCommand command = connection.CreateCommand())
+                    using (IDbCommand command = connectionFactory.CreateCommand(connection))
                     {
                         command.CommandText = stringBuilder.ToString();
                         using (IDataReader rdr = command.ExecuteReader())
@@ -206,7 +207,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                using (IDbCommand command = connection.CreateCommand())
+                using (IDbCommand command = connectionFactory.CreateCommand(connection))
                 {
                     command.CommandText = sqlCommand;
                     command.ExecuteNonQuery();

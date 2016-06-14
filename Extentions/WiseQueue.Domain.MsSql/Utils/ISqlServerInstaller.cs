@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace WiseQueue.Domain.MsSql.MsSqlDataContext
+namespace WiseQueue.Domain.MsSql.Utils
 {
     /// <summary>
     /// Interface shows that <c>object</c> can install WiseQueue database into the MsSql server.

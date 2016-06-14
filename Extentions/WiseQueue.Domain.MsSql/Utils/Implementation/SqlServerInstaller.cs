@@ -4,7 +4,7 @@ using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Utils;
 
-namespace WiseQueue.Domain.MsSql.MsSqlDataContext.Implementation
+namespace WiseQueue.Domain.MsSql.Utils.Implementation
 {
     class SqlServerInstaller : BaseLoggerObject, ISqlServerInstaller
     {

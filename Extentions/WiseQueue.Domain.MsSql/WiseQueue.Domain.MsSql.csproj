@@ -45,13 +45,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MsSqlDataContext\ISqlServerInstaller.cs" />
-    <Compile Include="MsSqlDataContext\Implementation\QueueDataContext.cs" />
-    <Compile Include="MsSqlDataContext\Implementation\SqlServerInstaller.cs" />
+    <Compile Include="Utils\Implementation\MsSqlSettings.cs" />
+    <Compile Include="Utils\ISqlServerInstaller.cs" />
+    <Compile Include="MsSqlDataContext\QueueDataContext.cs" />
+    <Compile Include="Utils\Implementation\SqlServerInstaller.cs" />
     <Compile Include="MsSqlWiseQueueConfiguration.cs" />
-    <Compile Include="MsSqlDataContext\ISqlConnectionFactory.cs" />
-    <Compile Include="MsSqlDataContext\Implementation\SqlConnectionFactory.cs" />
-    <Compile Include="MsSqlDataContext\Implementation\SqlTaskDataContext.cs" />
+    <Compile Include="Utils\ISqlConnectionFactory.cs" />
+    <Compile Include="Utils\Implementation\SqlConnectionFactory.cs" />
+    <Compile Include="MsSqlDataContext\SqlTaskDataContext.cs" />
     <Compile Include="MsSqlNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
