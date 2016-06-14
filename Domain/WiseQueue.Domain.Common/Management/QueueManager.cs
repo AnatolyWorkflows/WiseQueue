@@ -13,6 +13,13 @@ namespace WiseQueue.Domain.Common.Management
     /// </summary>
     public class QueueManager : BaseLoggerObject, IQueueManager
     {
+        #region Consts...
+        /// <summary>
+        /// Default queue name.
+        /// </summary>
+        private const string defaultQueueName = "default"; //TODO: Move to settings.
+        #endregion
+
         #region Fields...
 
         /// <summary>
@@ -54,7 +61,8 @@ namespace WiseQueue.Domain.Common.Management
         /// <returns>The <see cref="QueueModel"/> instance.</returns>
         public QueueModel GetDefaultQueue()
         {
-            return new QueueModel(int.MaxValue, "Mock", "This is a mock object.");
+            QueueModel queueModel = queueDataContext.GetQueueByName(defaultQueueName);
+            return queueModel;
         }
 
         /// <summary>

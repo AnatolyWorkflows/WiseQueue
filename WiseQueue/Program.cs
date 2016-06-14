@@ -24,7 +24,7 @@ namespace WiseQueue
             string connectionString = "connection string";
 
             connectionString = "Data Source=(local);" +
-                               "Initial Catalog=WiseQueue;" +
+                               "Initial Catalog=WiseQueues;" +
                                "Integrated Security=SSPI;";
 
 

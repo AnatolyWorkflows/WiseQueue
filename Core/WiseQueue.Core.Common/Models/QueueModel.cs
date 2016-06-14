@@ -93,5 +93,16 @@ namespace WiseQueue.Core.Common.Models
         }
 
         #endregion
+
+        #region Overrides of Object
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString()
+        {
+            return string.Format("Id: {0}; Name: {1}; Description: {2}", Id, Name, Description);
+        }
+
+        #endregion
     }
 }

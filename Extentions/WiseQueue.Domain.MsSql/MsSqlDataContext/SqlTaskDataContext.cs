@@ -9,6 +9,7 @@ using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
 using WiseQueue.Domain.MsSql.Utils;
+using WiseQueue.Domain.MsSql.Utils.Implementation;
 
 namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
@@ -18,11 +19,6 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
     public class SqlTaskDataContext : BaseLoggerObject, ITaskDataContext
     {
         #region Consts...
-
-        /// <summary>
-        /// Database schema.
-        /// </summary>
-        private const string schemaName = "dbo"; //TODO: move to settings.
 
         /// <summary>
         /// Table's name where all tasks are stored.
@@ -41,7 +37,14 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
         #region Fields...
 
-        private readonly ISqlServerInstaller sqlServerInstaller;
+        /// <summary>
+        /// Sql settings.
+        /// </summary>
+        private readonly MsSqlSettings sqlSettings;
+
+        /// <summary>
+        /// Task converter.
+        /// </summary>
         private readonly ITaskConverter taskConverter;
 
         /// <summary>
@@ -55,32 +58,27 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
         /// <summary>
         /// Constructor.
-        /// </summary>
-        /// <param name="sqlServerInstaller">The <see cref="ISqlServerInstaller"/> instance.</param>
+        /// </summary>        
+        /// <param name="sqlSettings">Sql settings.</param>
         /// <param name="taskConverter">The <see cref="ITaskConverter"/> instance.</param>
         /// <param name="connectionFactory">The <see cref="ISqlConnectionFactory"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="sqlServerInstaller"/> is <see langword="null" />.</exception>
+        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>     
+        /// <exception cref="ArgumentNullException"><paramref name="sqlSettings"/> is <see langword="null" />.</exception>   
         /// <exception cref="ArgumentNullException"><paramref name="taskConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="connectionFactory"/> is <see langword="null" />.</exception>
-        public SqlTaskDataContext(ISqlServerInstaller sqlServerInstaller, ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
+        public SqlTaskDataContext(MsSqlSettings sqlSettings, ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            if (sqlServerInstaller == null) 
-                throw new ArgumentNullException("sqlServerInstaller");
+            if (sqlSettings == null)
+                throw new ArgumentNullException("sqlSettings");
             if (taskConverter == null) 
                 throw new ArgumentNullException("taskConverter");
             if (connectionFactory == null)
                 throw new ArgumentNullException("connectionFactory");
 
-            this.sqlServerInstaller = sqlServerInstaller;
+            this.sqlSettings = sqlSettings;
             this.taskConverter = taskConverter;
-            this.connectionFactory = connectionFactory;
-
-            using (IDbConnection connection = connectionFactory.CreateDatabaseAndConnection())
-            {
-                sqlServerInstaller.Install(connection);
-            }
+            this.connectionFactory = connectionFactory;            
         }
 
         #endregion
@@ -100,7 +98,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             if (taskModel.Id != 0)
                 throw new ArgumentException("Task's identifier should be 0. Now it is " + taskModel.Id, "taskModel");
 
-            logger.WriteTrace("Converting {0} intot the TaskEntity...", taskModel);
+            logger.WriteTrace("Converting {0} into the TaskEntity...", taskModel);
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
             logger.WriteTrace("{0} has been converted. Generating sql command for {1}...", taskModel, taskEntity);
 
@@ -109,7 +107,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             string parametersTypes = taskEntity.ParametersTypes;
             string arguments = taskEntity.Arguments;
             Int64 queueId = taskEntity.QueueId;
-            string sqlCommand = string.Format(insertStatement, schemaName, taskTableName, (short)taskEntity.TaskState, instanceType, method, parametersTypes, arguments, queueId);
+            string sqlCommand = string.Format(insertStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, (short)taskEntity.TaskState, instanceType, method, parametersTypes, arguments, queueId);
 
             logger.WriteTrace("The SqlCommand has been generated. Result: {0}", sqlCommand);
 
@@ -152,7 +150,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             stringBuilder.AppendLine("[CompletedAt] [datetime] NULL);");
 
             DateTime expiredAt = DateTime.UtcNow.Add(specification.Timeout);
-            stringBuilder.AppendFormat("UPDATE TOP (1) {0}.{1} ", schemaName, taskTableName);
+            stringBuilder.AppendFormat("UPDATE TOP (1) {0}.{1} ", sqlSettings.WiseQueueDefaultSchema, taskTableName);
             stringBuilder.AppendFormat("SET State = {0}, ", (short)TaskStates.Pending);
             stringBuilder.AppendFormat("ServerId = {0}, ", specification.ServerId);
             stringBuilder.AppendFormat("ExpiredAt = '{0}' ", expiredAt.ToString("s"));
@@ -215,7 +213,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             const string updateStatement = "UPDATE {0}.{1} SET [State]={2}, [CompletedAt]='{3}' WHERE [Id] = {4}";
 
             string data = "TODO";// taskSerialization.Serialize(task.Action);
-            string sqlCommand = string.Format(updateStatement, schemaName, taskTableName, (short)taskState, DateTime.UtcNow.ToString("s"), id);
+            string sqlCommand = string.Format(updateStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, (short)taskState, DateTime.UtcNow.ToString("s"), id);
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {

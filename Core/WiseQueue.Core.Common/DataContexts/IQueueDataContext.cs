@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WiseQueue.Core.Common.Entities;
+using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Core.Common.DataContexts
 {
@@ -13,20 +14,20 @@ namespace WiseQueue.Core.Common.DataContexts
         /// Get queue by its name.
         /// </summary>
         /// <param name="queueName">The queue name.</param>
-        /// <returns>The <see cref="QueueEntity"/> instance.</returns>
-        QueueEntity GetQueueByName(string queueName);
+        /// <returns>The <see cref="QueueModel"/> instance.</returns>
+        QueueModel GetQueueByName(string queueName);
 
         /// <summary>
         /// Insert queue.
         /// </summary>
-        /// <param name="queueEntity">The <see cref="QueueEntity"/> instance.</param>
+        /// <param name="queueEntity">The <see cref="QueueModel"/> instance.</param>
         /// <returns>The queue identifier.</returns>
-        Int64 InsertQueue(QueueEntity queueEntity);
+        Int64 InsertQueue(QueueModel queueEntity);
 
         /// <summary>
         /// Get available queues.
         /// </summary>
         /// <returns><c>List</c> of <see cref="QueueEntity"/> instances.</returns>
-        IReadOnlyCollection<QueueEntity> GetAvailableQueues();
+        IReadOnlyCollection<QueueModel> GetAvailableQueues();
     }
 }

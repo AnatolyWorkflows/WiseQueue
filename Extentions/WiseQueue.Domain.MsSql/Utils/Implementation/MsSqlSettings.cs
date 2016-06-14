@@ -28,6 +28,11 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         /// Initial catalog for WiseQueue database.
         /// </summary>
         public string InitialCatalog { get; private set; }
+
+        /// <summary>
+        /// Schema that will be used by default.
+        /// </summary>
+        public string WiseQueueDefaultSchema { get; private set; }
         #endregion
 
         /// <summary>
@@ -39,6 +44,8 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         {
             if (string.IsNullOrWhiteSpace(nameOrConnectionString))
                 throw new ArgumentNullException("nameOrConnectionString");
+
+            WiseQueueDefaultSchema = "WiseQueues";
 
             string connectionString = GetConnectionString(nameOrConnectionString);
             ConnectionString = connectionString;

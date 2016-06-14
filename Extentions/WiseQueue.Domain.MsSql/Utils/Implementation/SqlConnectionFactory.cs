@@ -24,15 +24,24 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         /// Constructor.
         /// </summary>
         /// <param name="sqlSettings">MsSql settings including connection string and different timeouts.</param>
+        /// <param name="sqlServerInstaller">The <see cref="ISqlServerInstaller"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="sqlSettings"/> is <see langword="null" />.</exception>
-        public SqlConnectionFactory(MsSqlSettings sqlSettings, IWiseQueueLoggerFactory loggerFactory)
+        /// <exception cref="ArgumentNullException"><paramref name="sqlServerInstaller"/> is <see langword="null" />.</exception>
+        public SqlConnectionFactory(MsSqlSettings sqlSettings, ISqlServerInstaller sqlServerInstaller, IWiseQueueLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (sqlSettings == null)
                 throw new ArgumentNullException("sqlSettings");
+            if (sqlServerInstaller == null) 
+                throw new ArgumentNullException("sqlServerInstaller");
 
             this.sqlSettings = sqlSettings;
+
+            using (IDbConnection connection = CreateDatabaseAndConnection())
+            {
+                sqlServerInstaller.Install(connection);
+            }
         }
 
         #region Implementation of ISqlConnectionFactory
