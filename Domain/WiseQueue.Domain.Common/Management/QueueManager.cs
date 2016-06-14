@@ -8,6 +8,9 @@ using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.Common.Management
 {
+    /// <summary>
+    /// <c>Queue</c> manager. Its main responsibility is queues management.
+    /// </summary>
     public class QueueManager : BaseLoggerObject, IQueueManager
     {
         #region Fields...

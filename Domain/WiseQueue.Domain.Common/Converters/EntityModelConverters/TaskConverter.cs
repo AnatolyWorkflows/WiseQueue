@@ -47,6 +47,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
         /// <returns>The <see cref="TaskEntity"/> instance.</returns>
         public TaskEntity Convert(TaskModel taskModel)
         {
+            logger.WriteTrace("Converting {0} into the TaskEntity...", taskModel);
             TaskEntity entity = new TaskEntity
             {
                 Id = taskModel.Id,
@@ -57,6 +58,8 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
                 Arguments = taskModel.TaskActivationDetails.Arguments,
                 TaskState = taskModel.TaskState
             };
+
+            logger.WriteTrace("Converting {0} into the TaskEntity has been successfully completed. Result = {1}", taskModel, entity);
 
             return entity;
         }

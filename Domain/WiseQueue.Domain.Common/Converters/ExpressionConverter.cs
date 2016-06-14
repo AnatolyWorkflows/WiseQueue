@@ -11,8 +11,12 @@ using WiseQueue.Core.Common.Models.Tasks;
 
 namespace WiseQueue.Domain.Common.Converters
 {
+    /// <summary>
+    /// <c>Convert</c> <see cref="Expression"/> into the <see cref="TaskActivationDetailsModel"/> and back.
+    /// </summary>
     public class ExpressionConverter : BaseLoggerObject, IExpressionConverter
     {
+        #region Fields...
         /// <summary>
         /// The <see cref="IJsonConverter"/> instance.
         /// </summary>
@@ -22,6 +26,7 @@ namespace WiseQueue.Domain.Common.Converters
         /// The <see cref="ICachedExpressionCompiler"/> instance.
         /// </summary>
         private readonly ICachedExpressionCompiler cachedExpressionCompiler;
+        #endregion
 
         /// <summary>
         /// Constructor.
@@ -73,6 +78,8 @@ namespace WiseQueue.Domain.Common.Converters
         /// <exception cref="InvalidOperationException">Expression object should be not null.</exception>
         public TaskActivationDetailsModel Convert(Expression<Action> action)
         {
+            logger.WriteTrace("Converting Expression<Action> into the TaskActivationDetailsModel...");
+
             if (action == null)
                 throw new ArgumentNullException("action");
 
@@ -104,6 +111,8 @@ namespace WiseQueue.Domain.Common.Converters
             string parameterDetails = jsonConverter.ConvertToJson(method.GetParameters().Select(x => x.ParameterType).ToArray());
             string argumentDetails = jsonConverter.ConvertToJson(arguments);
             TaskActivationDetailsModel result = new TaskActivationDetailsModel(typeDetails, methodDetails, parameterDetails, argumentDetails);
+
+            logger.WriteTrace("Converting Expression<Action> into the TaskActivationDetailsModel has been successfully completed.");
 
             return result;
         }

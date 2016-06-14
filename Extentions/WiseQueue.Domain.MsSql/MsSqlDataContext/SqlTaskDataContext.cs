@@ -29,6 +29,14 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// </summary>
         private const string taskTableName = "Tasks"; //TODO: move to settings.
 
+        /// <summary>
+        /// Insert statement.
+        /// </summary>
+        private const string insertStatement =
+                "INSERT INTO {0}.{1} ([State], [InstanceType], [Method], [ParametersTypes], [Arguments], [QueueId]) VALUES " +
+                                       "({2},     '{3}',         '{4}',         '{5}',          '{6}',      {7}); " +
+                "SELECT CAST(scope_identity() AS bigint)";
+
         #endregion
 
         #region Fields...
@@ -87,15 +95,14 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <exception cref="ArgumentException">Task's identifier should be 0.</exception>
         public Int64 InsertTask(TaskModel taskModel)
         {
+            logger.WriteTrace("Inserting {0} into the database...", taskModel);
+
             if (taskModel.Id != 0)
                 throw new ArgumentException("Task's identifier should be 0. Now it is " + taskModel.Id, "taskModel");
 
+            logger.WriteTrace("Converting {0} intot the TaskEntity...", taskModel);
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
-
-            const string insertStatement =
-                "INSERT INTO {0}.{1} ([State], [InstanceType], [Method], [ParametersTypes], [Arguments], [QueueId]) VALUES " +
-                                       "({2},     '{3}',         '{4}',         '{5}',          '{6}',      {7}); " +
-                "SELECT CAST(scope_identity() AS bigint)";
+            logger.WriteTrace("{0} has been converted. Generating sql command for {1}...", taskModel, taskEntity);
 
             string instanceType = taskEntity.InstanceType;
             string method = taskEntity.Method;
@@ -104,15 +111,20 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             Int64 queueId = taskEntity.QueueId;
             string sqlCommand = string.Format(insertStatement, schemaName, taskTableName, (short)taskEntity.TaskState, instanceType, method, parametersTypes, arguments, queueId);
 
+            logger.WriteTrace("The SqlCommand has been generated. Result: {0}", sqlCommand);
+
+            logger.WriteTrace("Executing sql command...");
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
                 using (IDbCommand command = connectionFactory.CreateCommand(connection))
                 {
                     command.CommandText = sqlCommand;
                     Int64 taskId = (Int64)command.ExecuteScalar();
+
+                    logger.WriteTrace("The command has been executed. TaskId = {0}", taskId);
                     return taskId;
                 }
-            }
+            }            
         }
 
 

@@ -9,8 +9,12 @@ using WiseQueue.Core.Common.Models.Tasks;
 
 namespace WiseQueue.Domain.Common.Management
 {
+    /// <summary>
+    /// Task manager. Its main responsibility is tasks management.
+    /// </summary>
     public class TaskManager: BaseLoggerObject, ITaskManager
     {
+        #region Fields...
         /// <summary>
         /// The <see cref="IExpressionConverter"/> instance.
         /// </summary>
@@ -25,6 +29,7 @@ namespace WiseQueue.Domain.Common.Management
         /// The <see cref="IQueueManager"/> instance.
         /// </summary>
         private readonly IQueueManager queueManager;
+        #endregion
 
         /// <summary>
         /// Constructor.
@@ -60,12 +65,21 @@ namespace WiseQueue.Domain.Common.Management
         /// <returns>The task's identifier.</returns>
         public Int64 StartTask(Expression<Action> task)
         {
+            logger.WriteDebug("Preparing a new task... Getting a default queue...");
+
             QueueModel defaultQueue = queueManager.GetDefaultQueue();
+
+            logger.WriteTrace("The default queue ({0}) has been got. Converting expression into the task model...");
 
             TaskActivationDetailsModel taskActivationDetails = expressionConverter.Convert(task);
             TaskModel taskModel = new TaskModel(defaultQueue.Id, taskActivationDetails);
 
+            logger.WriteTrace("The expression has been converted. Inserting the task into the database...");
+
             Int64 taskId = taskDataContext.InsertTask(taskModel);
+
+            logger.WriteDebug("The task has been inserted. Task identifier = {0}", taskId);
+
             return taskId;
         }
 

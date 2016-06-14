@@ -36,7 +36,11 @@ namespace WiseQueue.Domain.Client.Management
         /// <returns>The task's identifier.</returns>
         public Int64 StartTask(Expression<Action> task)
         {
+            logger.WriteDebug("Starting a new task...");
+
             Int64 taskId = taskManager.StartTask(task);
+
+            logger.WriteDebug("The task has been put into the database. Task identifier = {0}", taskId);
             return taskId;
         }
 
