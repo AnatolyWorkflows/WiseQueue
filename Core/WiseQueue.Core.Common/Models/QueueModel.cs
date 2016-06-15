@@ -30,13 +30,8 @@ namespace WiseQueue.Core.Common.Models
         /// Constructor.
         /// </summary>
         /// <param name="name">Queue's <c>name</c>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
         public QueueModel(string name): this(name, string.Empty)
         {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("name");
-
-            Name = name;
         }
 
         /// <summary>
@@ -59,17 +54,8 @@ namespace WiseQueue.Core.Common.Models
         /// </summary>
         /// <param name="id">Queue's identifier.</param>
         /// <param name="name">Queue's <c>name</c>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The identifier should be great than 0.</exception>
         public QueueModel(Int64 id, string name): this(id, name, string.Empty)
         {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException("id", "The identifier should be great than 0.");
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException("name");
-
-            Id = id;
-            Name = name;
         }
 
         /// <summary>
@@ -96,7 +82,9 @@ namespace WiseQueue.Core.Common.Models
 
         #region Overrides of Object
 
-        /// <summary>Returns a string that represents the current object.</summary>
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {

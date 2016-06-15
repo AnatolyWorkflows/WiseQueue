@@ -51,10 +51,15 @@
     <Compile Include="Converters\IExpressionConverter.cs" />
     <Compile Include="Converters\IJsonConverter.cs" />
     <Compile Include="DataContexts\IQueueDataContext.cs" />
+    <Compile Include="DataContexts\IServerDataContext.cs" />
     <Compile Include="DataContexts\ITaskDataContext.cs" />
     <Compile Include="Entities\QueueEntity.cs" />
+    <Compile Include="Entities\Server\ServerEntity.cs" />
+    <Compile Include="Entities\Server\ServerHeartbeatEntity.cs" />
     <Compile Include="Management\IClientManager.cs" />
     <Compile Include="Management\ITaskManager.cs" />
+    <Compile Include="Models\Servers\ServerHeartbeatModel.cs" />
+    <Compile Include="Models\Servers\ServerModel.cs" />
     <Compile Include="Models\Tasks\TaskActivationDetailsModel.cs" />
     <Compile Include="Entities\Tasks\TaskEntity.cs" />
     <Compile Include="Entities\Tasks\TaskStates.cs" />
