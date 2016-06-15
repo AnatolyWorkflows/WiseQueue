@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsSqlDataContext\ServerDataContext.cs" />
     <Compile Include="Utils\Implementation\MsSqlSettings.cs" />
     <Compile Include="Utils\ISqlServerInstaller.cs" />
     <Compile Include="MsSqlDataContext\QueueDataContext.cs" />

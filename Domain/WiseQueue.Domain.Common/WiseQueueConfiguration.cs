@@ -2,6 +2,7 @@
 using Ninject.Infrastructure.Disposal;
 using Ninject.Modules;
 using WiseQueue.Core.Common;
+using WiseQueue.Core.Common.Management;
 
 namespace WiseQueue.Domain.Common
 {
@@ -28,6 +29,12 @@ namespace WiseQueue.Domain.Common
             return result;
         }
 
+        public void Activate()
+        {
+            IServerManager serverManager = kernel.Get<IServerManager>();
+            serverManager.Start();
+        }
+
         #endregion
 
         #region Overrides of DisposableObject
@@ -36,7 +43,12 @@ namespace WiseQueue.Domain.Common
         public override void Dispose(bool disposing)
         {
             if (!kernel.IsDisposed)
+            {
+                IServerManager serverManager = kernel.Get<IServerManager>();
+                serverManager.Stop();
+
                 kernel.Dispose();
+            }
 
             base.Dispose(disposing);
         }

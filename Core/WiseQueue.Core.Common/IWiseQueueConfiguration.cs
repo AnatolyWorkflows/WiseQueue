@@ -10,5 +10,7 @@ namespace WiseQueue.Core.Common
         void AddNinjectModule(NinjectModule ninjectModule);
 
         TComponent Get<TComponent>();
+
+        void Activate();
     }
 }

@@ -33,6 +33,8 @@ namespace WiseQueue
                 .UseClient()
                 .UseSqlServer(connectionString))
             {
+                configuration.Activate();
+
                 Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
                 
                 Console.ReadLine();

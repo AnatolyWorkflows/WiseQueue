@@ -42,6 +42,7 @@ namespace WiseQueue.Domain.MsSql
             Bind<ISqlServerInstaller>().To<SqlServerInstaller>();
             Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope();
 
+            Bind<IServerDataContext>().To<ServerDataContext>();
             Bind<IQueueDataContext>().To<QueueDataContext>();
             Bind<ITaskDataContext>().To<SqlTaskDataContext>();
         }

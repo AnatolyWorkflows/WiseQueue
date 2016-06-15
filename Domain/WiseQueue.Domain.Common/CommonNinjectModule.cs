@@ -32,6 +32,7 @@ namespace WiseQueue.Domain.Common
             Bind<IExpressionConverter>().To<ExpressionConverter>();
             Bind<IJsonConverter>().To<JsonConverter>();
 
+            Bind<IServerManager>().To<ServerManager>().InSingletonScope();
             Bind<IQueueManager>().To<QueueManager>().InSingletonScope();
             Bind<ITaskManager>().To<TaskManager>().InSingletonScope();
         }
