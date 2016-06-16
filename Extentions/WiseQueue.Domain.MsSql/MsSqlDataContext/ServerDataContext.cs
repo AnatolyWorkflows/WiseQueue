@@ -6,6 +6,9 @@ using WiseQueue.Core.Common.Models.Servers;
 
 namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 {
+    /// <summary>
+    /// Data context that contains all methods for working with server storage.
+    /// </summary>
     class ServerDataContext: BaseLoggerObject, IServerDataContext
     {
         /// <summary>

@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Caching\ICachedExpressionCompiler.cs" />
     <Compile Include="Converters\EntityModelConverters\IQueueConverter.cs" />
+    <Compile Include="Converters\EntityModelConverters\IServerConverter.cs" />
     <Compile Include="Converters\EntityModelConverters\ITaskConverter.cs" />
     <Compile Include="Converters\IExpressionConverter.cs" />
     <Compile Include="Converters\IJsonConverter.cs" />
