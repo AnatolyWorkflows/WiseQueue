@@ -23,6 +23,7 @@ namespace WiseQueue.Domain.Common
         {
             Bind<IResourceReader>().To<ResourceReader>();
 
+            Bind<IServerConverter>().To<ServerConverter>();
             Bind<ITaskConverter>().To<TaskConverter>();
             Bind<IQueueConverter>().To<QueueConverter>();
             

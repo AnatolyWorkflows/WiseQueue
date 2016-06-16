@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityModelConverters\QueueConverterTests.cs" />
+    <Compile Include="EntityModelConverters\ServerConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityModelConverters\TaskConverterTests.cs" />
   </ItemGroup>

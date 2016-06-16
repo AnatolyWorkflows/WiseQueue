@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="CommonNinjectModule.cs" />
     <Compile Include="Converters\EntityModelConverters\QueueConverter.cs" />
+    <Compile Include="Converters\EntityModelConverters\ServerConverter.cs" />
     <Compile Include="Converters\EntityModelConverters\TaskConverter.cs" />
     <Compile Include="Converters\ExpressionConverter.cs" />
     <Compile Include="Converters\JsonConverter.cs" />
