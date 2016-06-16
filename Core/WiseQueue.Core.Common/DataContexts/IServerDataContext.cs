@@ -26,5 +26,11 @@ namespace WiseQueue.Core.Common.DataContexts
         /// </summary>
         /// <param name="serverHeartbeatModel">The heartbeat information.</param>
         void SendHeartbeat(ServerHeartbeatModel serverHeartbeatModel);
+
+        /// <summary>
+        /// Delete servers that have been expired.
+        /// </summary>
+        /// <returns>Count of servers that have been deleted.</returns>
+        int DeleteExpiredServers();
     }
 }

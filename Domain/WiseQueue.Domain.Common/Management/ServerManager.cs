@@ -43,6 +43,14 @@ namespace WiseQueue.Domain.Common.Management
                 serverDataContext.SendHeartbeat(serverHeartbeatModel);
                 logger.WriteTrace("The heartbeat has been sent.");
 
+                //Find servers that have been expired and delete them.
+                logger.WriteTrace("Finding and deleting servers that have been expired...");
+                int serverCount = serverDataContext.DeleteExpiredServers();
+                if (serverCount > 0 )
+                    logger.WriteTrace("There were(was) {0} servers that have(has) been expired. They were(was) deleted.", serverCount);
+                else
+                    logger.WriteTrace("There was no any expired servers.");
+
                 token.WaitHandle.WaitOne(15 * 1000); //TODO: Move to settings. This time should be less than heartbeatLifetime
             }
 

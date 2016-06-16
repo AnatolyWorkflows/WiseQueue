@@ -43,6 +43,11 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         private const string heartbeatStatement =
             "UPDATE {0}.{1} SET [ExpiredAt]=CAST(GETDATE() AS DATETIME)+'{2}' WHERE [Id] = {3}";
 
+        /// <summary>
+        /// Delete servers that have been expired statement.
+        /// </summary>
+        private const string deleteExpiredServersStatement = "DELETE FROM {0}.{1} WHERE [ExpiredAt] < CAST(GETDATE() AS DATETIME);";
+
         #endregion
 
         #region Fields...
@@ -176,6 +181,33 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                     logger.WriteTrace("The command has been executed. The entity has been deleted. Affected rows = {0}.", affectedRows);
                 }
             }                 
+        }
+
+        /// <summary>
+        /// Delete servers that have been expired.
+        /// </summary>
+        /// <returns>Count of servers that have been deleted.</returns>
+        public int DeleteExpiredServers()
+        {
+            logger.WriteTrace("Deleting servers that have been expired from the database...");
+
+            string sqlCommand = string.Format(deleteExpiredServersStatement, sqlSettings.WiseQueueDefaultSchema, serverTableName);
+
+            logger.WriteTrace("The SqlCommand has been generated. Result: {0}", sqlCommand);
+
+            logger.WriteTrace("Executing sql command...");
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                {
+                    command.CommandText = sqlCommand;
+                    int affectedRows = command.ExecuteNonQuery();
+
+                    logger.WriteTrace("The command has been executed. The entity has been deleted. Affected rows = {0}.", affectedRows);
+
+                    return affectedRows;
+                }
+            }              
         }
 
         #endregion
