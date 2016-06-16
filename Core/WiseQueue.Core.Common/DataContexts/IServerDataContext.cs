@@ -11,9 +11,9 @@ namespace WiseQueue.Core.Common.DataContexts
         /// <summary>
         /// Insert a new record about a server.
         /// </summary>
-        /// <param name="serverModel">The server.</param>
+        /// <param name="model">The server.</param>
         /// <returns>The server's identifier that has been inserted.</returns>
-        Int64 InsertServer(ServerModel serverModel);
+        Int64 InsertServer(ServerModel model);
 
         /// <summary>
         /// Delete server information form the database using server's identifier.

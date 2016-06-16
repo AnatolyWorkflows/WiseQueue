@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Entities.Server;
-using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Models.Servers;
-using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Tests;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 
