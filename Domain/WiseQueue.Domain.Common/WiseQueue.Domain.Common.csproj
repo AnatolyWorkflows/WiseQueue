@@ -55,6 +55,7 @@
     <Compile Include="Converters\EntityModelConverters\TaskConverter.cs" />
     <Compile Include="Converters\ExpressionConverter.cs" />
     <Compile Include="Converters\JsonConverter.cs" />
+    <Compile Include="Management\BaseMultiThreadManager.cs" />
     <Compile Include="Management\QueueManager.cs" />
     <Compile Include="Management\ServerManager.cs" />
     <Compile Include="Management\TaskManager.cs" />
