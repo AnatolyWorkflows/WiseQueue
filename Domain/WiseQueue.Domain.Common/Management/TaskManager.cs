@@ -12,7 +12,7 @@ namespace WiseQueue.Domain.Common.Management
     /// <summary>
     /// Task manager. Its main responsibility is tasks management.
     /// </summary>
-    public class TaskManager: BaseLoggerObject, ITaskManager
+    public class TaskManager: BaseMultiThreadManager, ITaskManager
     {
         #region Fields...
         /// <summary>
@@ -83,6 +83,19 @@ namespace WiseQueue.Domain.Common.Management
             return taskId;
         }
 
+        #endregion
+
+        #region Working thread...
+
+        /// <summary>
+        /// Occurs when some work should be done in the working thread.
+        /// </summary>
+        protected override void OnWorkingThreadIteration()
+        {
+            logger.WriteDebug("Searching for new tasks...");
+
+            logger.WriteDebug("There is no new tasks in the storage.");
+        }
         #endregion
     }
 }

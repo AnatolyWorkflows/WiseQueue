@@ -7,7 +7,7 @@ using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.Common.Management
 {
-    abstract class BaseMultiThreadManager : BaseLoggerObject, IMultithreadManager
+    public abstract class BaseMultiThreadManager : BaseLoggerObject, IMultithreadManager
     {
         #region Fields...
         /// <summary>
@@ -94,7 +94,10 @@ namespace WiseQueue.Domain.Common.Management
         /// <summary>
         /// Occurs when manager is staring.
         /// </summary>
-        protected abstract void OnStart();
+        /// <remarks>Should be overrode in children classes if needed.</remarks>
+        protected virtual void OnStart()
+        {            
+        }
 
         /// <summary>
         /// Start manager.
