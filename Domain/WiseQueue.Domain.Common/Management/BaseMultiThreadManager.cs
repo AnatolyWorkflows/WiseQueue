@@ -51,6 +51,10 @@ namespace WiseQueue.Domain.Common.Management
         {            
         }
 
+        /// <summary>
+        /// Working thread.
+        /// </summary>
+        /// <param name="token">The cancellation <c>token</c>.</param>
         private void WorkingThread(CancellationToken token)
         {
             while (token.IsCancellationRequested == false)
@@ -71,17 +75,26 @@ namespace WiseQueue.Domain.Common.Management
             }
 
             logger.WriteTrace("Exiting working thread...");
-            OnWorkingThreadExit();
+
+            try
+            {
+                OnWorkingThreadExit();                
+            }
+            catch (Exception ex)
+            {
+                logger.WriteError(ex, "There was an exception during exiting from the working thread. Skip it and exit anyway.");
+            }
+
             logger.WriteTrace("The thread has been exited.");
         }
         #endregion
+
+        #region Implementation of IMultithreadManager
 
         /// <summary>
         /// Occurs when manager is staring.
         /// </summary>
         protected abstract void OnStart();
-
-        #region Implementation of IMultithreadManager
 
         /// <summary>
         /// Start manager.
@@ -117,9 +130,17 @@ namespace WiseQueue.Domain.Common.Management
             {
                 logger.WriteInfo("Stopping manager...");
 
-                tokenSource.Cancel();
-
-                worker.Wait(); //TODO: Be should that working task will be finished every time.
+                try
+                {
+                    logger.WriteTrace("Stopping working thread...");
+                    tokenSource.Cancel();
+                    worker.Wait(); //TODO: Be should that working task will be finished every time.
+                    logger.WriteTrace("The working thread has been stopped.");
+                }
+                catch (Exception ex)
+                {
+                    logger.WriteError(ex, "There was an exception during st0pping the working thread. Skip it and continue anyway.");
+                }
 
                 tokenSource.Dispose();
                 tokenSource = null;

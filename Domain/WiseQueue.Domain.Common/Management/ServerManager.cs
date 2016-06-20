@@ -39,6 +39,8 @@ namespace WiseQueue.Domain.Common.Management
             this.serverDataContext = serverDataContext;
         }
 
+        #region Working thread...
+
         /// <summary>
         /// Occurs when some work should be done in the working thread.
         /// </summary>
@@ -66,8 +68,9 @@ namespace WiseQueue.Domain.Common.Management
         {
             serverDataContext.DeleteServer(serverId);
         }
+        #endregion
 
-        #region Implementation of IServerManager        
+        #region Start method...
 
         /// <summary>
         /// Occurs when manager is staring.
