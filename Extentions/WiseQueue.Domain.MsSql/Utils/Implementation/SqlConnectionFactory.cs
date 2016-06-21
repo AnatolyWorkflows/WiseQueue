@@ -103,6 +103,21 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         /// Create command using the <c>connection</c>.
         /// </summary>
         /// <param name="connection">The <see cref="IDbConnection"/> instance.</param>
+        /// <param name="transaction">The <see cref="IDbTransaction"/> instance.</param>
+        /// <returns>The <see cref="IDbCommand"/> command.</returns>
+        public IDbCommand CreateCommand(IDbConnection connection, IDbTransaction transaction)
+        {
+            logger.WriteTrace("Creating a command for connection ({0}) with transaction...", connection);
+            IDbCommand command = connection.CreateCommand();
+            command.Transaction = transaction;
+            logger.WriteTrace("The command has been created.");
+            return command;
+        }
+
+        /// <summary>
+        /// Create command using the <c>connection</c>.
+        /// </summary>
+        /// <param name="connection">The <see cref="IDbConnection"/> instance.</param>
         /// <returns>The <see cref="IDbCommand"/> command.</returns>
         public IDbCommand CreateCommand(IDbConnection connection)
         {

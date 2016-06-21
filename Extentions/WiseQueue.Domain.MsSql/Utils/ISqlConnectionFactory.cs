@@ -24,6 +24,14 @@ namespace WiseQueue.Domain.MsSql.Utils
         /// Create command using the <c>connection</c>.
         /// </summary>
         /// <param name="connection">The <see cref="IDbConnection"/> instance.</param>
+        /// <param name="transaction">The <see cref="IDbTransaction"/> instance.</param>
+        /// <returns>The <see cref="IDbCommand"/> command.</returns>
+        IDbCommand CreateCommand(IDbConnection connection, IDbTransaction transaction);
+
+        /// <summary>
+        /// Create command using the <c>connection</c>.
+        /// </summary>
+        /// <param name="connection">The <see cref="IDbConnection"/> instance.</param>
         /// <returns>The <see cref="IDbCommand"/> command.</returns>
         IDbCommand CreateCommand(IDbConnection connection);
     }
