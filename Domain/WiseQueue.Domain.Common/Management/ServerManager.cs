@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Management;
@@ -17,10 +15,15 @@ namespace WiseQueue.Domain.Common.Management
         /// </summary>
         private readonly IServerDataContext serverDataContext;
 
+        #endregion
+
+
+        #region Properties...
+
         /// <summary>
         /// The server identifier.
         /// </summary>
-        private Int64 serverId;
+        public Int64 ServerId { get; private set; }
 
         #endregion
 
@@ -46,8 +49,8 @@ namespace WiseQueue.Domain.Common.Management
         /// </summary>
         protected override void OnWorkingThreadIteration()
         {
-            logger.WriteTrace("Sending heartbeat for server id = {0}...", serverId);
-            ServerHeartbeatModel serverHeartbeatModel = new ServerHeartbeatModel(serverId, heartbeatLifetime);
+            logger.WriteTrace("Sending heartbeat for server id = {0}...", ServerId);
+            ServerHeartbeatModel serverHeartbeatModel = new ServerHeartbeatModel(ServerId, heartbeatLifetime);
             serverDataContext.SendHeartbeat(serverHeartbeatModel);
             logger.WriteTrace("The heartbeat has been sent.");
 
@@ -66,7 +69,7 @@ namespace WiseQueue.Domain.Common.Management
         /// </summary>
         protected override void OnWorkingThreadExit()
         {
-            serverDataContext.DeleteServer(serverId);
+            serverDataContext.DeleteServer(ServerId);
         }
         #endregion
 
@@ -82,7 +85,7 @@ namespace WiseQueue.Domain.Common.Management
                 //TODO: Server's description should be more informative than current one.
 
             ServerModel serverModel = new ServerModel(serverName, description, heartbeatLifetime);
-            serverId = serverDataContext.InsertServer(serverModel);
+            ServerId = serverDataContext.InsertServer(serverModel);
         }
 
         #endregion
