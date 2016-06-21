@@ -6,6 +6,7 @@ using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
+using WiseQueue.Core.Common.Specifications;
 
 namespace WiseQueue.Domain.Common.Management
 {
@@ -25,6 +26,8 @@ namespace WiseQueue.Domain.Common.Management
         /// </summary>
         private readonly ITaskDataContext taskDataContext;
 
+        private readonly IServerManager serverManager;
+
         /// <summary>
         /// The <see cref="IQueueManager"/> instance.
         /// </summary>
@@ -36,23 +39,28 @@ namespace WiseQueue.Domain.Common.Management
         /// </summary>
         /// <param name="expressionConverter">The <see cref="IExpressionConverter"/> instance.</param>
         /// <param name="taskDataContext">The <see cref="ITaskDataContext"/> instance.</param>
-        /// <param name="queueManager">The <see cref="IQueueManager"/> instance.</param>
+        /// <param name="serverManager">The <see cref="IQueueManager"/> instance.</param>
+        /// <param name="queueManager">The <see cref="IServerManager"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="expressionConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskDataContext"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="serverManager"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="queueManager"/> is <see langword="null" />.</exception>
-        public TaskManager(IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IQueueManager queueManager, IWiseQueueLoggerFactory loggerFactory)
+        public TaskManager(IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, IWiseQueueLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (expressionConverter == null) 
                 throw new ArgumentNullException("expressionConverter");
             if (taskDataContext == null)
                 throw new ArgumentNullException("taskDataContext");
+            if (serverManager == null) 
+                throw new ArgumentNullException("serverManager");
             if (queueManager == null)
                 throw new ArgumentNullException("queueManager");
 
             this.expressionConverter = expressionConverter;
             this.taskDataContext = taskDataContext;
+            this.serverManager = serverManager;
             this.queueManager = queueManager;
         }
 
@@ -92,9 +100,29 @@ namespace WiseQueue.Domain.Common.Management
         /// </summary>
         protected override void OnWorkingThreadIteration()
         {
-            logger.WriteDebug("Searching for new tasks...");
+            logger.WriteDebug("Searching for new tasks in available queue...");
 
-            logger.WriteDebug("There is no new tasks in the storage.");
+            var queues = queueManager.GetAvailableQueues();
+            foreach (QueueModel queueModel in queues)
+            {
+                Int64 queueId = queueModel.Id;
+                Int64 serverId = serverManager.ServerId;
+                TaskRequestSpecification specification = new TaskRequestSpecification(queueId, serverId);
+                TaskModel taskModel;
+
+                bool isReceived = taskDataContext.TryGetAvailableTask(specification, out taskModel);
+
+                if (isReceived)
+                {
+                    logger.WriteDebug("The task {0} has been received.", taskModel);
+                }
+                else
+                {
+                    logger.WriteDebug("There is no new task in the storage.");
+                }                            
+            }
+
+            logger.WriteDebug("All tasks have been found if existed.");
         }
         #endregion
     }

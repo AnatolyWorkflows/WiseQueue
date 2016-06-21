@@ -16,10 +16,6 @@ namespace WiseQueue.Core.Common.Specifications
         /// Current server identifier.
         /// </summary>
         private readonly Int64 serverId;
-        /// <summary>
-        /// <c>Timeout</c> when task that was <c>fixed</c> for the <see cref="serverId"/> will be expired.
-        /// </summary>
-        private readonly TimeSpan timeout;
         #endregion
 
         #region Properties...
@@ -40,14 +36,6 @@ namespace WiseQueue.Core.Common.Specifications
             get { return serverId; }
         }
 
-        /// <summary>
-        /// <c>Timeout</c> when task that was <c>fixed</c> for the <see cref="serverId"/> will be expired.
-        /// </summary>
-        public TimeSpan Timeout
-        {
-            get { return timeout; }
-        }
-
         #endregion
 
         /// <summary>
@@ -55,13 +43,10 @@ namespace WiseQueue.Core.Common.Specifications
         /// </summary>
         /// <param name="queueId">The queue's identifier in which we are going to search for a new task.</param>
         /// <param name="serverId">Current server identifier.</param>
-        /// <param name="timeout"><c>Timeout</c> when jobs fixing for the <see cref="serverId"/> will be expired.</param>
-        public TaskRequestSpecification(int queueId, Int64 serverId, TimeSpan timeout)
+        public TaskRequestSpecification(Int64 queueId, Int64 serverId)
         {
             this.queueId = queueId;
             this.serverId = serverId;
-            this.timeout = timeout;
         }
-
     }
 }

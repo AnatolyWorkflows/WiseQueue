@@ -86,7 +86,9 @@ namespace WiseQueue.Domain.Common.Management
         /// <returns><c>List</c> of <see cref="QueueModel"/>.</returns>
         public IReadOnlyCollection<QueueModel> GetAvailableQueues()
         {
-            throw new NotImplementedException();
+            QueueModel queueModel = queueDataContext.GetQueueByName(defaultQueueName);
+            IReadOnlyCollection<QueueModel> result = new List<QueueModel>{queueModel};
+            return result;
         }
 
         #endregion

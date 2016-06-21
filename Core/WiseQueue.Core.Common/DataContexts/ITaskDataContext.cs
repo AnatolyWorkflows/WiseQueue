@@ -21,8 +21,9 @@ namespace WiseQueue.Core.Common.DataContexts
         /// Get available task from the storage.
         /// </summary>
         /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
-        /// <returns>The <see cref="TaskModel"/> instance if it has been found. Otherwise, null.</returns>
-        TaskModel GetAvailableTask(TaskRequestSpecification specification);
+        /// <param name="taskModel">The <see cref="TaskModel"/> instance if it has been found. Otherwise, null.</param>
+        /// <returns>True if the TaskModel instance has been populated. Otherwise, false.</returns>
+        bool TryGetAvailableTask(TaskRequestSpecification specification, out TaskModel taskModel);
 
         /// <summary>
         /// Set task's state.

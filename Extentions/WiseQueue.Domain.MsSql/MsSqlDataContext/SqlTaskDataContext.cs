@@ -125,38 +125,34 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             }            
         }
 
-
         /// <summary>
         /// Get available task from the storage.
         /// </summary>
         /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
-        /// <returns>The <see cref="TaskEntity"/> instance if it has been found. Otherwise, null.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="specification"/> is <see langword="null" />.</exception>
-        public TaskModel GetAvailableTask(TaskRequestSpecification specification)
+        /// <param name="taskModel">The <see cref="TaskModel"/> instance if it has been found. Otherwise, null.</param>
+        /// <returns>True if the TaskModel instance has been populated. Otherwise, false.</returns>
+        public bool TryGetAvailableTask(TaskRequestSpecification specification, out TaskModel taskModel)
         {
             if (specification == null)
                 throw new ArgumentNullException("specification");
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.Append("Declare @TempTable table ([Id] [bigint], ");
+            stringBuilder.Append("[QueueId] [bigint], ");
+            stringBuilder.Append("[ServerId] [bigint] NULL, ");
             stringBuilder.Append("[State] [smallint], ");
+            stringBuilder.Append("[CompletedAt] [datetime] NULL, ");
             stringBuilder.Append("[InstanceType] [nvarchar](200), ");
             stringBuilder.Append("[Method] [nvarchar](200), ");
             stringBuilder.Append("[ParametersTypes] [nvarchar](500), ");
-            stringBuilder.Append("[Arguments] [nvarchar](1000), ");
-            stringBuilder.Append("[QueueId] [bigint], ");
-            stringBuilder.Append("[ServerId] [bigint] NULL, ");
-            stringBuilder.Append("[ExpiredAt] [datetime] NULL, ");
-            stringBuilder.AppendLine("[CompletedAt] [datetime] NULL);");
+            stringBuilder.AppendLine("[Arguments] [nvarchar](1000)); ");
 
-            DateTime expiredAt = DateTime.UtcNow.Add(specification.Timeout);
             stringBuilder.AppendFormat("UPDATE TOP (1) {0}.{1} ", sqlSettings.WiseQueueDefaultSchema, taskTableName);
             stringBuilder.AppendFormat("SET State = {0}, ", (short)TaskStates.Pending);
-            stringBuilder.AppendFormat("ServerId = {0}, ", specification.ServerId);
-            stringBuilder.AppendFormat("ExpiredAt = '{0}' ", expiredAt.ToString("s"));
+            stringBuilder.AppendFormat("ServerId = {0} ", specification.ServerId);
             stringBuilder.Append("OUTPUT inserted.* INTO @TempTable ");
             stringBuilder.AppendFormat("Where (State = {0} ", (short)TaskStates.New);
-            stringBuilder.AppendFormat("OR ( (State = {0} OR State = {1}) AND ExpiredAt < '{2}')) ", (short)TaskStates.Pending, (short)TaskStates.Running, DateTime.UtcNow.ToString("s"));
+            stringBuilder.AppendFormat("OR ( (State = {0} OR State = {1}) AND [ServerId] IS NULL)) ", (short)TaskStates.Pending, (short)TaskStates.Running);
             stringBuilder.AppendFormat("AND (QueueId = {0});", specification.QueueId);
 
             stringBuilder.AppendLine();
@@ -164,9 +160,9 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {                
-                using (connection.BeginTransaction(IsolationLevel.ReadCommitted))
+                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted))
                 {
-                    using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                    using (IDbCommand command = connectionFactory.CreateCommand(connection, transaction))
                     {
                         command.CommandText = stringBuilder.ToString();
                         using (IDataReader rdr = command.ExecuteReader())
@@ -192,14 +188,15 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                     Arguments = argumentDetails
                                 };
 
-                                TaskModel result = taskConverter.Convert(taskEntity);
-
-                                return result;
+                                taskModel = taskConverter.Convert(taskEntity);
+                                return true;
                             }
                         }
                     }
                 }
-                return null; //TODO: It is not a good idea. We should return something like NullTaskEntity.
+
+                taskModel = null;
+                return false;
             }
         }
 
