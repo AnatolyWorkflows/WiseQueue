@@ -30,7 +30,8 @@ namespace WiseQueue.Core.Common.DataContexts
         /// <summary>
         /// Delete servers that have been expired.
         /// </summary>
+        /// <param name="currentServerId">Current server identifier. It needs because server should delete itself.</param>
         /// <returns>Count of servers that have been deleted.</returns>
-        int DeleteExpiredServers();
+        int DeleteExpiredServers(Int64 currentServerId);
     }
 }

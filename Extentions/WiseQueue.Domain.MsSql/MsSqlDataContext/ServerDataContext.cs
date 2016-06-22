@@ -23,6 +23,11 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// Table's name where all servers are stored.
         /// </summary>
         private const string serverTableName = "Servers"; //TODO: move to settings.
+        
+        /// <summary>
+        /// Table's name where all tasks are stored.
+        /// </summary>
+        private const string taskTableName = "Tasks"; //TODO: move to settings.
 
         /// <summary>
         /// Insert statement.
@@ -46,7 +51,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Delete servers that have been expired statement.
         /// </summary>
-        private const string deleteExpiredServersStatement = "DELETE FROM {0}.{1} WHERE [ExpiredAt] < CAST(GETDATE() AS DATETIME);";
+        private const string deleteExpiredServersStatement = "UPDATE t SET t.ServerId = NULL FROM {0}.{1} t INNER JOIN {0}.{2} s on t.ServerId = s.Id WHERE [ExpiredAt] < CAST(GETDATE() AS DATETIME); " +
+                                                             "DELETE FROM {0}.{2} WHERE [ExpiredAt] < CAST(GETDATE() AS DATETIME) and Id <> {3};";
 
         #endregion
 
@@ -183,15 +189,17 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             }                 
         }
 
+
         /// <summary>
         /// Delete servers that have been expired.
         /// </summary>
+        /// <param name="currentServerId">Current server identifier. It needs because server should delete itself.</param>
         /// <returns>Count of servers that have been deleted.</returns>
-        public int DeleteExpiredServers()
+        public int DeleteExpiredServers(Int64 currentServerId)
         {
             logger.WriteTrace("Deleting servers that have been expired from the database...");
 
-            string sqlCommand = string.Format(deleteExpiredServersStatement, sqlSettings.WiseQueueDefaultSchema, serverTableName);
+            string sqlCommand = string.Format(deleteExpiredServersStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, serverTableName, currentServerId);
 
             logger.WriteTrace("The SqlCommand has been generated. Result: {0}", sqlCommand);
 
