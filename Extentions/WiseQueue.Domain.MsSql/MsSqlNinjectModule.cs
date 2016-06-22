@@ -44,7 +44,7 @@ namespace WiseQueue.Domain.MsSql
 
             Bind<IServerDataContext>().To<ServerDataContext>();
             Bind<IQueueDataContext>().To<QueueDataContext>();
-            Bind<ITaskDataContext>().To<SqlTaskDataContext>();
+            Bind<ITaskDataContext>().To<TaskDataContext>();
         }
 
         #endregion

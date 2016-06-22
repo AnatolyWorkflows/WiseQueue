@@ -16,7 +16,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
     /// <summary>
     /// SQL data context that will be used for working with tasks.
     /// </summary>
-    public class SqlTaskDataContext : BaseLoggerObject, ITaskDataContext
+    public class TaskDataContext : BaseLoggerObject, ITaskDataContext
     {
         #region Consts...
 
@@ -66,7 +66,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <exception cref="ArgumentNullException"><paramref name="sqlSettings"/> is <see langword="null" />.</exception>   
         /// <exception cref="ArgumentNullException"><paramref name="taskConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="connectionFactory"/> is <see langword="null" />.</exception>
-        public SqlTaskDataContext(MsSqlSettings sqlSettings, ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
+        public TaskDataContext(MsSqlSettings sqlSettings, ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (sqlSettings == null)
