@@ -54,7 +54,7 @@
     <Compile Include="MsSqlWiseQueueConfiguration.cs" />
     <Compile Include="Utils\ISqlConnectionFactory.cs" />
     <Compile Include="Utils\Implementation\SqlConnectionFactory.cs" />
-    <Compile Include="MsSqlDataContext\SqlTaskDataContext.cs" />
+    <Compile Include="MsSqlDataContext\TaskDataContext.cs" />
     <Compile Include="MsSqlNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
