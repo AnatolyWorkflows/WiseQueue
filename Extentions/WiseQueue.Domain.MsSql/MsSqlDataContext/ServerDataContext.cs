@@ -51,8 +51,10 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Delete servers that have been expired statement.
         /// </summary>
-        private const string deleteExpiredServersStatement = "UPDATE t SET t.ServerId = NULL FROM {0}.{1} t INNER JOIN {0}.{2} s on t.ServerId = s.Id WHERE [ExpiredAt] < CAST(GETDATE() AS DATETIME); " +
-                                                             "DELETE FROM {0}.{2} WHERE [ExpiredAt] < CAST(GETDATE() AS DATETIME) and Id <> {3};";
+        private const string deleteExpiredServersStatement = "DECLARE @CURRENT_DATE_TIME datetime; " +
+                                                             "SET @CURRENT_DATE_TIME = CAST(GETDATE() AS DATETIME); " +
+                                                             "UPDATE t SET t.ServerId = NULL FROM {0}.{1} t INNER JOIN {0}.{2} s on t.ServerId = s.Id WHERE [ExpiredAt] < @CURRENT_DATE_TIME; " +
+                                                             "DELETE FROM {0}.{2} WHERE [ExpiredAt] < @CURRENT_DATE_TIME;";
 
         #endregion
 
@@ -199,7 +201,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         {
             logger.WriteTrace("Deleting servers that have been expired from the database...");
 
-            string sqlCommand = string.Format(deleteExpiredServersStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, serverTableName, currentServerId);
+            string sqlCommand = string.Format(deleteExpiredServersStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, serverTableName);
 
             logger.WriteTrace("The SqlCommand has been generated. Result: {0}", sqlCommand);
 
