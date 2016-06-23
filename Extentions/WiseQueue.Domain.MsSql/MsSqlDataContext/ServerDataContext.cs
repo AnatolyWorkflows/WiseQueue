@@ -3,7 +3,6 @@ using System.Data;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Server;
-using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Servers;
@@ -195,9 +194,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Delete servers that have been expired.
         /// </summary>
-        /// <param name="currentServerId">Current server identifier. It needs because server should delete itself.</param>
         /// <returns>Count of servers that have been deleted.</returns>
-        public int DeleteExpiredServers(Int64 currentServerId)
+        public int DeleteExpiredServers()
         {
             logger.WriteTrace("Deleting servers that have been expired from the database...");
 

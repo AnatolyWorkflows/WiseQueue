@@ -81,7 +81,7 @@ namespace WiseQueue.Domain.Common.Management
 
             //Find servers that have been expired and delete them.
             logger.WriteTrace("Finding and deleting servers that have been expired...");
-            int serverCount = serverDataContext.DeleteExpiredServers(ServerId);
+            int serverCount = serverDataContext.DeleteExpiredServers();
             if (serverCount > 0)
                 logger.WriteTrace("There were(was) {0} servers that have(has) been expired. They were(was) deleted.",
                     serverCount);
