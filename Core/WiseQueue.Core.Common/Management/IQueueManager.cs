@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using WiseQueue.Core.Common.Entities;
 using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Core.Common.Management

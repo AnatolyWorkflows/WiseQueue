@@ -2,11 +2,12 @@
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Servers;
 
 namespace WiseQueue.Domain.Common.Management
 {
-    class ServerManager : BaseMultiThreadManager, IServerManager
+    class ServerManager : BaseLoggerObject, IServerManager
     {
         #region Fields...
 
@@ -14,6 +15,8 @@ namespace WiseQueue.Domain.Common.Management
         /// The <see cref="IServerDataContext"/> instance.
         /// </summary>
         private readonly IServerDataContext serverDataContext;
+
+        private readonly TimeSpan heartbeatLifetime;
 
         #endregion
 
@@ -40,14 +43,36 @@ namespace WiseQueue.Domain.Common.Management
                 throw new ArgumentNullException("serverDataContext");
 
             this.serverDataContext = serverDataContext;
+            heartbeatLifetime = TimeSpan.FromSeconds(15); //Move to settings.
         }
 
-        #region Working thread...
+        #region Implementation of IManager
 
         /// <summary>
-        /// Occurs when some work should be done in the working thread.
+        /// Start manager.
         /// </summary>
-        protected override void OnWorkingThreadIteration()
+        public void Start()
+        {
+            string serverName = Guid.NewGuid().ToString(); //TODO: Server's name should be more informative than Guid :)
+            string description = "This is a description";
+            //TODO: Server's description should be more informative than current one.
+
+            ServerModel serverModel = new ServerModel(serverName, description, heartbeatLifetime);
+            ServerId = serverDataContext.InsertServer(serverModel);
+        }
+
+        /// <summary>
+        /// Stop.
+        /// </summary>
+        public void Stop()
+        {
+            serverDataContext.DeleteServer(ServerId);
+        }
+
+        /// <summary>
+        /// Calling this function if manager should do its job.
+        /// </summary>
+        public void Execute()
         {
             logger.WriteTrace("Sending heartbeat for server id = {0}...", ServerId);
             ServerHeartbeatModel serverHeartbeatModel = new ServerHeartbeatModel(ServerId, heartbeatLifetime);
@@ -62,30 +87,6 @@ namespace WiseQueue.Domain.Common.Management
                     serverCount);
             else
                 logger.WriteTrace("There was no any expired servers.");
-        }
-
-        /// <summary>
-        /// Occurs before exit from the working thread.
-        /// </summary>
-        protected override void OnWorkingThreadExit()
-        {
-            serverDataContext.DeleteServer(ServerId);
-        }
-        #endregion
-
-        #region Start method...
-
-        /// <summary>
-        /// Occurs when manager is staring.
-        /// </summary>
-        protected override void OnStart()
-        {
-            string serverName = Guid.NewGuid().ToString(); //TODO: Server's name should be more informative than Guid :)
-            string description = "This is a description";
-                //TODO: Server's description should be more informative than current one.
-
-            ServerModel serverModel = new ServerModel(serverName, description, heartbeatLifetime);
-            ServerId = serverDataContext.InsertServer(serverModel);
         }
 
         #endregion

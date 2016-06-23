@@ -58,8 +58,9 @@
     <Compile Include="Entities\Server\ServerEntity.cs" />
     <Compile Include="Entities\Server\ServerHeartbeatEntity.cs" />
     <Compile Include="Management\IClientManager.cs" />
+    <Compile Include="Management\IManager.cs" />
     <Compile Include="Management\IServerManager.cs" />
-    <Compile Include="Management\IMultithreadManager.cs" />
+    <Compile Include="Management\IMainManagerManager.cs" />
     <Compile Include="Management\ITaskManager.cs" />
     <Compile Include="Models\Servers\ServerHeartbeatModel.cs" />
     <Compile Include="Models\Servers\ServerModel.cs" />

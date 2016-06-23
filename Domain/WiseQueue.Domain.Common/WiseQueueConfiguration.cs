@@ -31,11 +31,10 @@ namespace WiseQueue.Domain.Common
 
         public void Activate()
         {
-            IServerManager serverManager = kernel.Get<IServerManager>();
-            ITaskManager taskManager = kernel.Get<ITaskManager>();
-            
-            serverManager.Start();
-            taskManager.Start();
+            IMainManagerManager mainManager = kernel.Get<IMainManagerManager>();
+            mainManager.Register(kernel.Get<IServerManager>());
+            mainManager.Register(kernel.Get<ITaskManager>());
+            mainManager.Start();
         }
 
         #endregion
@@ -47,11 +46,8 @@ namespace WiseQueue.Domain.Common
         {
             if (!kernel.IsDisposed)
             {
-                IServerManager serverManager = kernel.Get<IServerManager>();
-                serverManager.Stop();
-
-                ITaskManager taskManager = kernel.Get<ITaskManager>();
-                taskManager.Stop();
+                IMainManagerManager mainManager = kernel.Get<IMainManagerManager>();
+                mainManager.Stop();
 
                 kernel.Dispose();
             }

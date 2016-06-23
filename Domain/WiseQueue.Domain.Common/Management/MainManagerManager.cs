@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using WiseQueue.Core.Common.Logging;
@@ -7,9 +8,14 @@ using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.Common.Management
 {
-    public abstract class BaseMultiThreadManager : BaseLoggerObject, IMultithreadManager
+    public sealed class MainManagerManager : BaseLoggerObject, IMainManagerManager
     {
         #region Fields...
+        /// <summary>
+        /// List of managers that will be controlling by this object.
+        /// </summary>
+        private readonly List<IManager> managers;
+
         /// <summary>
         /// Cancellation token source.
         /// </summary>
@@ -23,16 +29,18 @@ namespace WiseQueue.Domain.Common.Management
         /// <summary>
         /// Sending heartbeat interval.
         /// </summary>
-        protected readonly TimeSpan heartbeatLifetime; //TODO: Should be different for each manager.
+        private readonly TimeSpan heartbeatLifetime; //TODO: Should be different for each manager.
         #endregion
 
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="managers">List of managers that will be controlling by this object.</param>
         /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        protected BaseMultiThreadManager(IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
-        {            
+        public MainManagerManager(IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
+        {
+            managers = new List<IManager>();
             heartbeatLifetime = TimeSpan.FromSeconds(20); //TODO: Move to settings.
         }
 
@@ -41,14 +49,37 @@ namespace WiseQueue.Domain.Common.Management
         /// <summary>
         /// Occurs when some work should be done in the working thread.
         /// </summary>
-        protected abstract void OnWorkingThreadIteration();
+        private void OnWorkingThreadIteration()
+        {
+            foreach (IManager manager in managers)
+            {
+                logger.WriteTrace("Executing {0}...", manager);
+                try
+                {
+                    manager.Execute();
+                    logger.WriteTrace("The {0} has been executed.", manager);
+                }
+                catch (Exception ex)
+                {
+                    logger.WriteError(ex, "There was an exception during {0} executing.", manager);
+                }
+            }
+        }
 
         /// <summary>
         /// Occurs before exit from the working thread.
         /// </summary>
         /// <remarks>Should be overrode in children classes if needed.</remarks>
-        protected virtual void OnWorkingThreadExit()
-        {            
+        private void OnWorkingThreadExit()
+        {
+            try
+            {
+                //TODO: Do some stuff before exit.
+            }
+            catch (Exception ex)
+            {
+                logger.WriteError(ex, "There was an exception during exiting from the working thread. Skip it and exit anyway.");
+            }
         }
 
         /// <summary>
@@ -76,14 +107,7 @@ namespace WiseQueue.Domain.Common.Management
 
             logger.WriteTrace("Exiting working thread...");
 
-            try
-            {
-                OnWorkingThreadExit();                
-            }
-            catch (Exception ex)
-            {
-                logger.WriteError(ex, "There was an exception during exiting from the working thread. Skip it and exit anyway.");
-            }
+            OnWorkingThreadExit();                
 
             logger.WriteTrace("The thread has been exited.");
         }
@@ -92,33 +116,30 @@ namespace WiseQueue.Domain.Common.Management
         #region Implementation of IMultithreadManager
 
         /// <summary>
-        /// Occurs when manager is staring.
-        /// </summary>
-        /// <remarks>Should be overrode in children classes if needed.</remarks>
-        protected virtual void OnStart()
-        {            
-        }
-
-        /// <summary>
         /// Start manager.
         /// </summary>
         public void Start()
         {
             try
             {
-                logger.WriteInfo("Starting manager...");
+                logger.WriteInfo("Starting main manager...");
 
-                OnStart();
+                foreach (IManager manager in managers)
+                {
+                    logger.WriteTrace("Starting {0}...", manager);
+                    manager.Start();
+                    logger.WriteTrace("The {0} has been started.", manager);
+                }
 
                 tokenSource = new CancellationTokenSource();
                 CancellationToken token = tokenSource.Token;
                 worker = Task.Run(() => WorkingThread(token), token);                
 
-                logger.WriteInfo("The manager has been started.");
+                logger.WriteInfo("The main manager has been started.");
             }
             catch (Exception ex)
             {
-                logger.WriteError(ex, "There was an exception during starting manager.");
+                logger.WriteError(ex, "There was an exception during starting main manager.");
                 Stop();
                 throw;
             }
@@ -131,13 +152,21 @@ namespace WiseQueue.Domain.Common.Management
         {            
             if (tokenSource != null)
             {
-                logger.WriteInfo("Stopping manager...");
+                logger.WriteInfo("Stopping main manager...");
 
                 try
                 {
                     logger.WriteTrace("Stopping working thread...");
                     tokenSource.Cancel();
                     worker.Wait(); //TODO: Be should that working task will be finished every time.
+
+                    foreach (IManager manager in managers)
+                    {
+                        logger.WriteTrace("Stopping {0}...", manager);
+                        manager.Stop();
+                        logger.WriteTrace("The {0} has been stopped.", manager);
+                    }
+
                     logger.WriteTrace("The working thread has been stopped.");
                 }
                 catch (Exception ex)
@@ -150,6 +179,16 @@ namespace WiseQueue.Domain.Common.Management
 
                 logger.WriteInfo("The manager has been stopped.");
             }           
+        }
+
+        /// <summary>
+        /// Register a new manager.
+        /// </summary>
+        /// <param name="manager">The IManager instance.</param>
+        [Obsolete("This method will be removed because it should be automatic registration.")]
+        public void Register(IManager manager)
+        {
+            managers.Add(manager);
         }
 
         #endregion

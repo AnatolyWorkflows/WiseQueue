@@ -1,4 +1,5 @@
-﻿using Ninject.Modules;
+﻿using System.Collections.Generic;
+using Ninject.Modules;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
@@ -33,9 +34,11 @@ namespace WiseQueue.Domain.Common
             Bind<IExpressionConverter>().To<ExpressionConverter>();
             Bind<IJsonConverter>().To<JsonConverter>();
 
+            Bind<IMainManagerManager>().To<MainManagerManager>().InSingletonScope();
             Bind<IServerManager>().To<ServerManager>().InSingletonScope();
-            Bind<IQueueManager>().To<QueueManager>().InSingletonScope();
-            Bind<ITaskManager>().To<TaskManager>().InSingletonScope();
+            Bind<ITaskManager>().To<TaskManager>().InSingletonScope();            
+
+            Bind<IQueueManager>().To<QueueManager>().InSingletonScope();            
         }
 
         #endregion
