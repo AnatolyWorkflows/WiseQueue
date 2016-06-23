@@ -133,6 +133,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <returns>True if the TaskModel instance has been populated. Otherwise, false.</returns>
         public bool TryGetAvailableTask(TaskRequestSpecification specification, out TaskModel taskModel)
         {
+            taskModel = null;
+
             if (specification == null)
                 throw new ArgumentNullException("specification");
 
@@ -188,14 +190,17 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                     Arguments = argumentDetails
                                 };
 
-                                taskModel = taskConverter.Convert(taskEntity);
-                                return true;
+                                taskModel = taskConverter.Convert(taskEntity);                                
                             }
                         }
                     }
+                    if (taskModel != null)
+                    {
+                        transaction.Commit();
+                        return true;
+                    }
                 }
-
-                taskModel = null;
+                
                 return false;
             }
         }
