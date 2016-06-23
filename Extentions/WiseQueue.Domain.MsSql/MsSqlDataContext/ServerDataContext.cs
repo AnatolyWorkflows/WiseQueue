@@ -3,6 +3,7 @@ using System.Data;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Server;
+using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Servers;
@@ -39,7 +40,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Delete statement.
         /// </summary>
-        private const string deleteStatement = "UPDATE t SET t.ServerId = NULL FROM {0}.{2} t WHERE [ServerId] = {3}; " +
+        private const string deleteStatement = "UPDATE t SET t.ServerId = NULL, t.State = {4} FROM {0}.{2} t WHERE [ServerId] = {3} AND  State <= {5}; " +
                                                "DELETE FROM {0}.{1} WHERE [Id] = {3};";
 
         /// <summary>
@@ -146,7 +147,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             if (serverId <= 0)
                 throw new ArgumentException("Server's identifier should be greate than 0. Now it is " + serverId, "serverId");
 
-            string sqlCommand = string.Format(deleteStatement, sqlSettings.WiseQueueDefaultSchema, serverTableName, taskTableName, serverId);
+            string sqlCommand = string.Format(deleteStatement, sqlSettings.WiseQueueDefaultSchema, serverTableName, taskTableName, serverId, (short)TaskStates.New, (short)TaskStates.Running);
 
             logger.WriteTrace("The SqlCommand has been generated. Result: {0}", sqlCommand);
 
