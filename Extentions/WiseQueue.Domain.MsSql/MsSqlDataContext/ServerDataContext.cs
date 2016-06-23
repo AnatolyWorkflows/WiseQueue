@@ -39,7 +39,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <summary>
         /// Delete statement.
         /// </summary>
-        private const string deleteStatement = "DELETE FROM {0}.{1} WHERE [Id] = {2};";
+        private const string deleteStatement = "UPDATE t SET t.ServerId = NULL FROM {0}.{2} t WHERE [ServerId] = {3}; " +
+                                               "DELETE FROM {0}.{1} WHERE [Id] = {3};";
 
         /// <summary>
         /// Heartbeat statement.
@@ -145,7 +146,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             if (serverId <= 0)
                 throw new ArgumentException("Server's identifier should be greate than 0. Now it is " + serverId, "serverId");
 
-            string sqlCommand = string.Format(deleteStatement, sqlSettings.WiseQueueDefaultSchema, serverTableName, serverId);
+            string sqlCommand = string.Format(deleteStatement, sqlSettings.WiseQueueDefaultSchema, serverTableName, taskTableName, serverId);
 
             logger.WriteTrace("The SqlCommand has been generated. Result: {0}", sqlCommand);
 
