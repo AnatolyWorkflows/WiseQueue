@@ -5,21 +5,21 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue", "WiseQueue\WiseQueue.csproj", "{85B7D30F-0285-4B79-AC94-330ED0B15DEA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{83DBE939-AFA0-4030-A6AB-99A50A22C75C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiseQueue.Core", "WiseQueue.Core", "{83DBE939-AFA0-4030-A6AB-99A50A22C75C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{108CCF45-052C-4B0C-A1B9-13F96E9E8F69}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiseQueue.Domain", "WiseQueue.Domain", "{108CCF45-052C-4B0C-A1B9-13F96E9E8F69}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{0DA0E49B-7931-4630-8AA6-D5ABDB8FB762}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiseQueue.Extensions", "WiseQueue.Extensions", "{0DA0E49B-7931-4630-8AA6-D5ABDB8FB762}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D2B3DDEA-5D60-4805-9193-39D048645CD7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WiseQueue.Tests", "WiseQueue.Tests", "{D2B3DDEA-5D60-4805-9193-39D048645CD7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7EC417DD-86DA-4F78-99F4-CA23BBCDC3C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Common.Tests", "Tests\WiseQueue.Core.Common.Tests\WiseQueue.Core.Common.Tests.csproj", "{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Common.Tests", "WiseQueue.Tests\WiseQueue.Core.Common.Tests\WiseQueue.Core.Common.Tests.csproj", "{0C1B054A-84B8-4FC9-936B-B3BA6D9231A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Tests", "Tests\WiseQueue.Core.Tests\WiseQueue.Core.Tests.csproj", "{34E81231-58F9-4270-A82F-FEA1DCB9DC01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Tests", "WiseQueue.Tests\WiseQueue.Core.Tests\WiseQueue.Core.Tests.csproj", "{34E81231-58F9-4270-A82F-FEA1DCB9DC01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Extensions.Tests", "Tests\WiseQueue.Domain.Extensions.Tests\WiseQueue.Domain.Extensions.Tests.csproj", "{3196E7BB-FA7D-4F98-BC66-269E3E923D97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Extensions.Tests", "WiseQueue.Tests\WiseQueue.Domain.Extensions.Tests\WiseQueue.Domain.Extensions.Tests.csproj", "{3196E7BB-FA7D-4F98-BC66-269E3E923D97}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C0A94409-0190-448F-82C5-2CAE2E00B45F}"
 	ProjectSection(SolutionItems) = preProject
@@ -28,29 +28,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C0A944
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Client", "Core\WiseQueue.Core.Client\WiseQueue.Core.Client.csproj", "{F17B2910-0E65-4011-836C-F86E7EAC48F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Client", "WiseQueue.Core\WiseQueue.Core.Client\WiseQueue.Core.Client.csproj", "{F17B2910-0E65-4011-836C-F86E7EAC48F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Common", "Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj", "{AC44C918-E44B-4942-AE25-D7290B89093E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Common", "WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj", "{AC44C918-E44B-4942-AE25-D7290B89093E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Server", "Core\WiseQueue.Core.Server\WiseQueue.Core.Server.csproj", "{A71F3FD7-8095-4A9C-98A7-D777E4CCF45E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Core.Server", "WiseQueue.Core\WiseQueue.Core.Server\WiseQueue.Core.Server.csproj", "{A71F3FD7-8095-4A9C-98A7-D777E4CCF45E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Client", "Domain\WiseQueue.Domain.Client\WiseQueue.Domain.Client.csproj", "{AE232F81-5F80-4993-A166-B49380BA0C84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Client", "WiseQueue.Domain\WiseQueue.Domain.Client\WiseQueue.Domain.Client.csproj", "{AE232F81-5F80-4993-A166-B49380BA0C84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Common", "Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj", "{87F1056B-411A-4F53-8435-344103B74E43}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Common", "WiseQueue.Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj", "{87F1056B-411A-4F53-8435-344103B74E43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Server", "Domain\WiseQueue.Domain.Server\WiseQueue.Domain.Server.csproj", "{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Server", "WiseQueue.Domain\WiseQueue.Domain.Server\WiseQueue.Domain.Server.csproj", "{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.MicrosoftExpressionCache", "Extentions\WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj", "{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.MicrosoftExpressionCache", "WiseQueue.Extentions\WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj", "{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.MsSql", "Extentions\WiseQueue.Domain.MsSql\WiseQueue.Domain.MsSql.csproj", "{1475F837-95C8-46A8-89D2-CEFE6B45C28C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.MsSql", "WiseQueue.Extentions\WiseQueue.Domain.MsSql\WiseQueue.Domain.MsSql.csproj", "{1475F837-95C8-46A8-89D2-CEFE6B45C28C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.NLogger", "Extentions\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj", "{1B294978-0598-46FC-83F9-6F4FBF0EF73F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.NLogger", "WiseQueue.Extentions\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj", "{1B294978-0598-46FC-83F9-6F4FBF0EF73F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{803EE8F9-41A0-4ED6-9B28-A79437B34B04}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{A6150D13-E2E1-4EDC-9E5A-3939CB4B47D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Common.Tests", "Tests\WiseQueue.Domain.Common.Tests\WiseQueue.Domain.Common.Tests.csproj", "{D0BB6F52-4C31-49CF-A133-9ABC31D32282}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Common.Tests", "WiseQueue.Tests\WiseQueue.Domain.Common.Tests\WiseQueue.Domain.Common.Tests.csproj", "{D0BB6F52-4C31-49CF-A133-9ABC31D32282}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6BF77CC4-F8D4-43A5-BCCE-DC0CE9803CE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Core", "Core\Common.Core\Common.Core.csproj", "{0166437D-9F9C-4101-9B50-84A01FBE346D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +118,10 @@ Global
 		{D0BB6F52-4C31-49CF-A133-9ABC31D32282}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0BB6F52-4C31-49CF-A133-9ABC31D32282}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0BB6F52-4C31-49CF-A133-9ABC31D32282}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0166437D-9F9C-4101-9B50-84A01FBE346D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0166437D-9F9C-4101-9B50-84A01FBE346D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0166437D-9F9C-4101-9B50-84A01FBE346D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0166437D-9F9C-4101-9B50-84A01FBE346D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,5 +143,6 @@ Global
 		{803EE8F9-41A0-4ED6-9B28-A79437B34B04} = {D2B3DDEA-5D60-4805-9193-39D048645CD7}
 		{A6150D13-E2E1-4EDC-9E5A-3939CB4B47D9} = {D2B3DDEA-5D60-4805-9193-39D048645CD7}
 		{D0BB6F52-4C31-49CF-A133-9ABC31D32282} = {A6150D13-E2E1-4EDC-9E5A-3939CB4B47D9}
+		{0166437D-9F9C-4101-9B50-84A01FBE346D} = {6BF77CC4-F8D4-43A5-BCCE-DC0CE9803CE2}
 	EndGlobalSection
 EndGlobal

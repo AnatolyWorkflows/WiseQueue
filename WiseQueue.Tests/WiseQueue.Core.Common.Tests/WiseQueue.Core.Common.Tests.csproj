@@ -66,11 +66,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
+    <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{ac44c918-e44b-4942-ae25-d7290b89093e}</Project>
       <Name>WiseQueue.Core.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
+    <ProjectReference Include="..\..\WiseQueue.Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
       <Project>{87f1056b-411a-4f53-8435-344103b74e43}</Project>
       <Name>WiseQueue.Domain.Common</Name>
     </ProjectReference>
