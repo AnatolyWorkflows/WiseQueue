@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;

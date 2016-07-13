@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Models;
 

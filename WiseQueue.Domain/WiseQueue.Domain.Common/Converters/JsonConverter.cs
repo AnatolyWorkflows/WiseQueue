@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using Newtonsoft.Json;
 using WiseQueue.Core.Common.Converters;

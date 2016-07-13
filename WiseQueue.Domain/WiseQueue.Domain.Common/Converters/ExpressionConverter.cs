@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;

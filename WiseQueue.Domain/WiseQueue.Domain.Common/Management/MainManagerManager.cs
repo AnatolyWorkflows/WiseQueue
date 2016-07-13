@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;

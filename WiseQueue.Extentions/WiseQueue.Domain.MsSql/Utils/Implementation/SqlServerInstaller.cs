@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Data;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
+using Common.Core.ResourceHelper;
 using WiseQueue.Core.Common.Models;
-using WiseQueue.Core.Common.Utils;
 
 namespace WiseQueue.Domain.MsSql.Utils.Implementation
 {
@@ -14,26 +15,26 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         private readonly MsSqlSettings sqlSettings;
 
         /// <summary>
-        /// The <see cref="IResourceReader"/> instance.
+        /// The <see cref="IResourceReaderHelper"/> instance.
         /// </summary>
-        private readonly IResourceReader resourceReader;
+        private readonly IResourceReaderHelper resourceReaderHelper;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="sqlSettings">MsSql settings.</param>
-        /// <param name="resourceReader">The <see cref="IResourceReader"/> instance.</param>
+        /// <param name="resourceReaderHelper">The <see cref="IResourceReaderHelper"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="sqlSettings"/> is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="resourceReader"/> is <see langword="null" />.</exception>
-        public SqlServerInstaller(MsSqlSettings sqlSettings, IResourceReader resourceReader, ICommonLoggerFactory loggerFactory) : base(loggerFactory)
+        /// <exception cref="ArgumentNullException"><paramref name="resourceReaderHelper"/> is <see langword="null" />.</exception>
+        public SqlServerInstaller(MsSqlSettings sqlSettings, IResourceReaderHelper resourceReaderHelper, ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
             if (sqlSettings == null)
                 throw new ArgumentNullException("sqlSettings");
-            if (resourceReader == null)
-                throw new ArgumentNullException("resourceReader");
+            if (resourceReaderHelper == null)
+                throw new ArgumentNullException("resourceReaderHelper");
             this.sqlSettings = sqlSettings;
-            this.resourceReader = resourceReader;
+            this.resourceReaderHelper = resourceReaderHelper;
         }
 
         #region Implementation of ISqlServerInstaller
@@ -55,7 +56,7 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         public void Install(IDbConnection connection, string schema)
         {
             Type currentType = GetType();
-            string script = resourceReader.ReadStringResource(currentType.Assembly, "Scripts.DatabaseScripts.sql");
+            string script = resourceReaderHelper.ReadStringResource(currentType.Assembly, "Scripts.DatabaseScripts.sql");
 
             script = script.Replace("#{WiseQueueSchema}", !string.IsNullOrWhiteSpace(schema) ? schema : sqlSettings.WiseQueueDefaultSchema);
             using (var command = connection.CreateCommand())

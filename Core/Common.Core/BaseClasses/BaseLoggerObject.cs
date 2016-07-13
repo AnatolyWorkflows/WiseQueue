@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Core.Logging;
 
-namespace WiseQueue.Core.Common.Models
+namespace Common.Core.BaseClasses
 {
     /// <summary>
     /// Base class for objects that should have logger.

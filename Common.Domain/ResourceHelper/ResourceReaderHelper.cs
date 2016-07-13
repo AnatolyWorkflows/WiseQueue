@@ -1,24 +1,25 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Resources;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
-using WiseQueue.Core.Common.Models;
-using WiseQueue.Core.Common.Utils;
+using Common.Core.ResourceHelper;
 
-namespace WiseQueue.Domain.Common.Utils
+namespace Common.Domain.ResourceHelper
 {
-    public class ResourceReader: BaseLoggerObject, IResourceReader
+    public class ResourceReaderHelper: BaseLoggerObject, IResourceReaderHelper
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ResourceReader(ICommonLoggerFactory loggerFactory) : base(loggerFactory)
+        public ResourceReaderHelper(ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
         }
 
-        #region Implementation of IResourceReader
+        #region Implementation of IResourceReaderHelper
 
         public string ReadStringResource(Assembly assembly, string resourceName)
         {

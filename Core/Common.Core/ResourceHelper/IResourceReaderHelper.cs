@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace WiseQueue.Core.Common.Utils
+namespace Common.Core.ResourceHelper
 {
-    public interface IResourceReader
+    public interface IResourceReaderHelper
     {
         string ReadStringResource(Assembly assembly, string resourceName);        
     }

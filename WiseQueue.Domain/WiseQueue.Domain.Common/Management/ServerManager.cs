@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Management;

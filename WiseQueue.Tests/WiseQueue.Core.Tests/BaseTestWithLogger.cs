@@ -1,6 +1,5 @@
 ﻿using Common.Core.Logging;
 using Common.NLogger;
-using WiseQueue.Domain.NLogger;
 
 namespace WiseQueue.Core.Tests
 {
