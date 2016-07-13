@@ -32,8 +32,15 @@ namespace WiseQueue.Domain.Common
         public void Activate()
         {
             IMainManagerManager mainManager = kernel.Get<IMainManagerManager>();
-            mainManager.Register(kernel.Get<IServerManager>());
-            mainManager.Register(kernel.Get<ITaskManager>());
+            
+            IManager manager = kernel.TryGet<IServerManager>();
+            if (manager != null)
+                mainManager.Register(manager);
+
+            manager = kernel.TryGet<ITaskManager>();
+            if (manager != null)
+                mainManager.Register(manager);
+
             mainManager.Start();
         }
 

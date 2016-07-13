@@ -5,6 +5,7 @@ using WiseQueue.Domain.Client.Management;
 using WiseQueue.Domain.Common;
 using WiseQueue.Domain.NLogger;
 using WiseQueue.Domain.MsSql;
+using WiseQueue.Domain.Server;
 
 namespace WiseQueue
 {
@@ -31,6 +32,7 @@ namespace WiseQueue
             using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
                 .UseNLog()
                 .UseClient()
+                .UseServer()
                 .UseSqlServer(connectionString))
             {
                 configuration.Activate();

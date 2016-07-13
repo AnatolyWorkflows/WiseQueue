@@ -34,9 +34,7 @@ namespace WiseQueue.Domain.Common
             Bind<IJsonConverter>().To<JsonConverter>();
 
             Bind<IMainManagerManager>().To<MainManagerManager>().InSingletonScope();
-            Bind<IServerManager>().To<ServerManager>().InSingletonScope();
             Bind<ITaskManager>().To<TaskManager>().InSingletonScope();            
-
             Bind<IQueueManager>().To<QueueManager>().InSingletonScope();            
         }
 

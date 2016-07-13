@@ -3,10 +3,9 @@ using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Management;
-using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Servers;
 
-namespace WiseQueue.Domain.Common.Management
+namespace WiseQueue.Domain.Server.Management
 {
     class ServerManager : BaseLoggerObject, IServerManager
     {
