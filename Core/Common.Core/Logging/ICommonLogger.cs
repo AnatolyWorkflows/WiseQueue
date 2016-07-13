@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace WiseQueue.Core.Common.Logging
+namespace Common.Core.Logging
 {
     /// <summary>
     /// Interface shows that <c>object</c> is a logger.
     /// </summary>
-    public interface IWiseQueueLogger
+    public interface ICommonLogger
     {
         #region Trace...
         /// <summary>

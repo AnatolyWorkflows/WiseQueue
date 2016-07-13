@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Caching;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.MicrosoftExpressionCache
@@ -17,8 +17,8 @@ namespace WiseQueue.Domain.MicrosoftExpressionCache
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
-        public CachedExpressionCompiler(IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
+        public CachedExpressionCompiler(ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
         }        
 

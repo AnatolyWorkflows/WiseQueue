@@ -1,7 +1,7 @@
 ﻿using System;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Entities.Server;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Servers;
 
@@ -15,9 +15,9 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ServerConverter(IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
+        public ServerConverter(ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
         }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using WiseQueue.Core.Common.Logging;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
 
@@ -36,9 +36,9 @@ namespace WiseQueue.Domain.Common.Management
         /// Constructor.
         /// </summary>
         /// <param name="managers">List of managers that will be controlling by this object.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public MainManagerManager(IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
+        public MainManagerManager(ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
             managers = new List<IManager>();
             heartbeatLifetime = TimeSpan.FromSeconds(20); //TODO: Move to settings.

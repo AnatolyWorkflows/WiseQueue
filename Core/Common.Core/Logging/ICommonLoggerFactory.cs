@@ -1,40 +1,40 @@
 ﻿using System;
 
-namespace WiseQueue.Core.Common.Logging
+namespace Common.Core.Logging
 {
     /// <summary>
     /// Interface shows that <c>object</c> is a loggers' factory.
     /// </summary>
-    public interface IWiseQueueLoggerFactory
+    public interface ICommonLoggerFactory
     {
         /// <summary>
         /// Creates a logger for current <c>type</c>.
         /// </summary>
         /// <param name="type">The <c>type</c>.</param>
-        /// <returns>The <see cref="IWiseQueueLogger"/> instance.</returns>
+        /// <returns>The <see cref="ICommonLogger"/> instance.</returns>
         /// <example>
-        /// IWiseQueueLogger logger = factory.Create(GetType());
+        /// ICommonLogger logger = factory.Create(GetType());
         /// </example>
-        IWiseQueueLogger Create(Type type);
+        ICommonLogger Create(Type type);
 
         /// <summary>
         /// Creates a logger for current <c>type</c>.
         /// </summary>
         /// <typeparam name="TType"><c>Type</c> of <c>object</c> for which logger will be created.</typeparam>
         /// <example>
-        /// <c>IWiseQueueLogger</c> logger = factory.Create<SomeClass>();
+        /// <c>ICommonLogger</c> logger = factory.Create<SomeClass>();
         /// </example>
-        /// <returns>The <see cref="IWiseQueueLogger"/> instance.</returns>
-        IWiseQueueLogger Create<TType>();
+        /// <returns>The <see cref="ICommonLogger"/> instance.</returns>
+        ICommonLogger Create<TType>();
 
         /// <summary>
         /// Creates a logger with name.
         /// </summary>
         /// <example>
-        /// <c>IWiseQueueLogger</c> logger = factory.Create(GetType());
+        /// <c>ICommonLogger</c> logger = factory.Create(GetType());
         /// </example>
         /// <param name="loggerName">The logger's name.</param>
-        /// <returns>The <see cref="IWiseQueueLogger"/> instance.</returns>
-        IWiseQueueLogger Create(string loggerName);
+        /// <returns>The <see cref="ICommonLogger"/> instance.</returns>
+        ICommonLogger Create(string loggerName);
     }
 }

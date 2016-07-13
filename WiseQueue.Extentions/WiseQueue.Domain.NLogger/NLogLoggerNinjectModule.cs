@@ -1,5 +1,5 @@
-﻿using Ninject.Modules;
-using WiseQueue.Core.Common.Logging;
+﻿using Common.Core.Logging;
+using Ninject.Modules;
 
 namespace WiseQueue.Domain.NLogger
 {
@@ -15,8 +15,8 @@ namespace WiseQueue.Domain.NLogger
         /// </summary>
         public override void Load()
         {
-            Bind<IWiseQueueLoggerFactory>().To<WiseQueueNLogLoggerFactory>().InSingletonScope();
-            Bind<IWiseQueueLogger>().To<WiseQueueNLogLogger>().InSingletonScope();
+            Bind<ICommonLoggerFactory>().To<CommonNLogLoggerFactory>().InSingletonScope();
+            Bind<ICommonLogger>().To<CommonNLogLogger>().InSingletonScope();
         }
 
         #endregion

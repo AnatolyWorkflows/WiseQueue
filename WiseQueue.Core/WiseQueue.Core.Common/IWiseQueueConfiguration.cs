@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using Ninject;
 using Ninject.Modules;
 
 namespace WiseQueue.Core.Common

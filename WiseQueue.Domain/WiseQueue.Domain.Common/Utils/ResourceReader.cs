@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using WiseQueue.Core.Common.Logging;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Utils;
 
@@ -12,9 +12,9 @@ namespace WiseQueue.Domain.Common.Utils
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ResourceReader(IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
+        public ResourceReader(ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
         }
 

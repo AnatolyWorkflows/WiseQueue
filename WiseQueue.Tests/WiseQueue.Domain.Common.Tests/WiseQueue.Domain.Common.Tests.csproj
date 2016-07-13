@@ -51,6 +51,10 @@
     <Compile Include="EntityModelConverters\TaskConverterTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">
+      <Project>{0166437d-9f9c-4101-9b50-84a01fbe346d}</Project>
+      <Name>Common.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>

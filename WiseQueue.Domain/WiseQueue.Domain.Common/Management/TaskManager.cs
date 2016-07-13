@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq.Expressions;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.DataContexts;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
@@ -41,12 +41,12 @@ namespace WiseQueue.Domain.Common.Management
         /// <param name="taskDataContext">The <see cref="ITaskDataContext"/> instance.</param>
         /// <param name="serverManager">The <see cref="IQueueManager"/> instance.</param>
         /// <param name="queueManager">The <see cref="IServerManager"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="expressionConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskDataContext"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="serverManager"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="queueManager"/> is <see langword="null" />.</exception>
-        public TaskManager(IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, IWiseQueueLoggerFactory loggerFactory)
+        public TaskManager(IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (expressionConverter == null) 

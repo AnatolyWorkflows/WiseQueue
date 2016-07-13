@@ -1,7 +1,7 @@
 ﻿using System;
+using Common.Core.Logging;
 using Newtonsoft.Json;
 using WiseQueue.Core.Common.Converters;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.Common.Converters
@@ -23,9 +23,9 @@ namespace WiseQueue.Domain.Common.Converters
         /// Constructor.
         /// </summary>
         /// <param name="jsonSerializerSettings">The <see cref="JsonSerializerSettings"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="jsonSerializerSettings"/> is <see langword="null" />.</exception>
-        public JsonConverter(JsonSerializerSettings jsonSerializerSettings, IWiseQueueLoggerFactory loggerFactory)
+        public JsonConverter(JsonSerializerSettings jsonSerializerSettings, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (jsonSerializerSettings == null)

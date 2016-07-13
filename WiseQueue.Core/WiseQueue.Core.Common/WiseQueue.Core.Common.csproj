@@ -68,8 +68,6 @@
     <Compile Include="Entities\Tasks\TaskEntity.cs" />
     <Compile Include="Entities\Tasks\TaskStates.cs" />
     <Compile Include="IWiseQueueConfiguration.cs" />
-    <Compile Include="Logging\IWiseQueueLogger.cs" />
-    <Compile Include="Logging\IWiseQueueLoggerFactory.cs" />
     <Compile Include="Management\IQueueManager.cs" />
     <Compile Include="Models\BaseLoggerObject.cs" />
     <Compile Include="Models\QueueModel.cs" />
@@ -80,6 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">
+      <Project>{0166437D-9F9C-4101-9B50-84A01FBE346D}</Project>
+      <Name>Common.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

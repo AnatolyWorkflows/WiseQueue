@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
-using WiseQueue.Core.Common.Logging;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.MsSql.Utils.Implementation
@@ -25,10 +25,10 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         /// </summary>
         /// <param name="sqlSettings">MsSql settings including connection string and different timeouts.</param>
         /// <param name="sqlServerInstaller">The <see cref="ISqlServerInstaller"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="sqlSettings"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="sqlServerInstaller"/> is <see langword="null" />.</exception>
-        public SqlConnectionFactory(MsSqlSettings sqlSettings, ISqlServerInstaller sqlServerInstaller, IWiseQueueLoggerFactory loggerFactory)
+        public SqlConnectionFactory(MsSqlSettings sqlSettings, ISqlServerInstaller sqlServerInstaller, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (sqlSettings == null)

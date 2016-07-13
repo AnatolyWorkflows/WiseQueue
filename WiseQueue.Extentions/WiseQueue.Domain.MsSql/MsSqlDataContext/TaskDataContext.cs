@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Text;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
@@ -62,11 +62,11 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <param name="sqlSettings">Sql settings.</param>
         /// <param name="taskConverter">The <see cref="ITaskConverter"/> instance.</param>
         /// <param name="connectionFactory">The <see cref="ISqlConnectionFactory"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>     
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>     
         /// <exception cref="ArgumentNullException"><paramref name="sqlSettings"/> is <see langword="null" />.</exception>   
         /// <exception cref="ArgumentNullException"><paramref name="taskConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="connectionFactory"/> is <see langword="null" />.</exception>
-        public TaskDataContext(MsSqlSettings sqlSettings, ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, IWiseQueueLoggerFactory loggerFactory)
+        public TaskDataContext(MsSqlSettings sqlSettings, ITaskConverter taskConverter, ISqlConnectionFactory connectionFactory, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (sqlSettings == null)

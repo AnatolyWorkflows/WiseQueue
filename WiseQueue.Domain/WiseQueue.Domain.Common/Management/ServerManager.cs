@@ -1,6 +1,6 @@
 ﻿using System;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.DataContexts;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Servers;
@@ -34,9 +34,9 @@ namespace WiseQueue.Domain.Common.Management
         /// Constructor.
         /// </summary>
         /// <param name="serverDataContext">The <see cref="IServerDataContext"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ServerManager(IServerDataContext serverDataContext, IWiseQueueLoggerFactory loggerFactory)
+        public ServerManager(IServerDataContext serverDataContext, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (serverDataContext == null)

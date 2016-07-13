@@ -1,5 +1,5 @@
 ﻿using System;
-using WiseQueue.Core.Common.Logging;
+using Common.Core.Logging;
 
 namespace WiseQueue.Core.Common.Models
 {
@@ -9,16 +9,16 @@ namespace WiseQueue.Core.Common.Models
     public abstract class BaseLoggerObject
     {
         /// <summary>
-        /// The <see cref="IWiseQueueLogger"/> instance.
+        /// The <see cref="ICommonLogger"/> instance.
         /// </summary>
-        protected readonly IWiseQueueLogger logger;
+        protected readonly ICommonLogger logger;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        protected BaseLoggerObject(IWiseQueueLoggerFactory loggerFactory)
+        protected BaseLoggerObject(ICommonLoggerFactory loggerFactory)
         {
             if (loggerFactory == null)
                 throw new ArgumentNullException("loggerFactory");

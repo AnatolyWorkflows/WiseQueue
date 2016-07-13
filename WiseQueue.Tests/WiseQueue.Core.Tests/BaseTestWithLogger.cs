@@ -1,4 +1,4 @@
-﻿using WiseQueue.Core.Common.Logging;
+﻿using Common.Core.Logging;
 using WiseQueue.Domain.NLogger;
 
 namespace WiseQueue.Core.Tests
@@ -9,19 +9,19 @@ namespace WiseQueue.Core.Tests
     public abstract class BaseTestWithLogger
     {
         /// <summary>
-        /// The <see cref="IWiseQueueLoggerFactory"/> instance.
+        /// The <see cref="ICommonLoggerFactory"/> instance.
         /// </summary>
-        private static IWiseQueueLoggerFactory loggerFactory;
+        private static ICommonLoggerFactory loggerFactory;
 
         /// <summary>
-        /// The <see cref="IWiseQueueLoggerFactory"/> instance.
+        /// The <see cref="ICommonLoggerFactory"/> instance.
         /// </summary>
-        protected static IWiseQueueLoggerFactory LoggerFactory
+        protected static ICommonLoggerFactory LoggerFactory
         {
             get
             {
                 if (loggerFactory == null)
-                    loggerFactory = new WiseQueueNLogLoggerFactory();
+                    loggerFactory = new CommonNLogLoggerFactory();
                 return loggerFactory;
             }
         }

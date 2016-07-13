@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;

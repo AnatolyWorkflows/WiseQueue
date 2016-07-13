@@ -66,6 +66,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">
+      <Project>{0166437d-9f9c-4101-9b50-84a01fbe346d}</Project>
+      <Name>Common.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{ac44c918-e44b-4942-ae25-d7290b89093e}</Project>
       <Name>WiseQueue.Core.Common</Name>

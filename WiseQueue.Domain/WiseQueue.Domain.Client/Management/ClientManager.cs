@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using WiseQueue.Core.Common.Logging;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Domain.Common;
@@ -18,9 +18,9 @@ namespace WiseQueue.Domain.Client.Management
         /// Constructor.
         /// </summary>
         /// <param name="taskManager">The <see cref="ITaskManager"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ClientManager(ITaskManager taskManager, IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
+        public ClientManager(ITaskManager taskManager, ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
             if (taskManager == null)
                 throw new ArgumentNullException("taskManager");

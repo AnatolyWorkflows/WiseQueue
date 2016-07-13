@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 
@@ -33,9 +33,9 @@ namespace WiseQueue.Domain.Common.Converters
         /// </summary>
         /// <param name="jsonConverter">The <see cref="IJsonConverter"/> instance.</param>
         /// <param name="cachedExpressionCompiler">The <see cref="ICachedExpressionCompiler"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ExpressionConverter(IJsonConverter jsonConverter, ICachedExpressionCompiler cachedExpressionCompiler, IWiseQueueLoggerFactory loggerFactory)
+        public ExpressionConverter(IJsonConverter jsonConverter, ICachedExpressionCompiler cachedExpressionCompiler, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (jsonConverter == null) throw new ArgumentNullException("jsonConverter");

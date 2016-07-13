@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using WiseQueue.Core.Common.Logging;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Utils;
 
@@ -23,10 +23,10 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
         /// </summary>
         /// <param name="sqlSettings">MsSql settings.</param>
         /// <param name="resourceReader">The <see cref="IResourceReader"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="sqlSettings"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="resourceReader"/> is <see langword="null" />.</exception>
-        public SqlServerInstaller(MsSqlSettings sqlSettings, IResourceReader resourceReader, IWiseQueueLoggerFactory loggerFactory) : base(loggerFactory)
+        public SqlServerInstaller(MsSqlSettings sqlSettings, IResourceReader resourceReader, ICommonLoggerFactory loggerFactory) : base(loggerFactory)
         {
             if (sqlSettings == null)
                 throw new ArgumentNullException("sqlSettings");

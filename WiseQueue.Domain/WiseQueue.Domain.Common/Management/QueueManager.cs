@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
-using WiseQueue.Core.Common.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
 
@@ -39,9 +39,9 @@ namespace WiseQueue.Domain.Common.Management
         /// </summary>
         /// <param name="queueConverter">The <see cref="IQueueConverter"/> instance.</param>
         /// <param name="queueDataContext">The <see cref="IQueueDataContext"/> instance.</param>
-        /// <param name="loggerFactory">The <see cref="IWiseQueueLoggerFactory"/> instance.</param>        
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>        
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public QueueManager(IQueueConverter queueConverter, IQueueDataContext queueDataContext, IWiseQueueLoggerFactory loggerFactory)
+        public QueueManager(IQueueConverter queueConverter, IQueueDataContext queueDataContext, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             if (queueConverter == null) 

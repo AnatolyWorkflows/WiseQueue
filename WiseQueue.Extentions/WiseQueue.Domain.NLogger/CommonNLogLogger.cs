@@ -1,13 +1,13 @@
 ﻿using System;
+using Common.Core.Logging;
 using NLog;
-using WiseQueue.Core.Common.Logging;
 
 namespace WiseQueue.Domain.NLogger
 {
     /// <summary>
     /// <c>Logger</c> that use <see cref="NLog"/> libraries.
     /// </summary>
-    public sealed class WiseQueueNLogLogger : IWiseQueueLogger
+    public sealed class CommonNLogLogger : ICommonLogger
     {
         #region Fields...
         /// <summary>
@@ -20,7 +20,7 @@ namespace WiseQueue.Domain.NLogger
         /// <summary>
         /// Constructor.
         /// </summary>
-        public WiseQueueNLogLogger()
+        public CommonNLogLogger()
         {
             logger = LogManager.GetCurrentClassLogger();
         }
@@ -30,7 +30,7 @@ namespace WiseQueue.Domain.NLogger
         /// </summary>
         /// <param name="name">The logger's <c>name</c>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
-        public WiseQueueNLogLogger(string name)
+        public CommonNLogLogger(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
@@ -39,7 +39,7 @@ namespace WiseQueue.Domain.NLogger
         }
         #endregion
 
-        #region Implementation of IWiseQueueLogger
+        #region Implementation of ICommonLogger
 
         /// <summary>
         /// Write trace information into the log.
