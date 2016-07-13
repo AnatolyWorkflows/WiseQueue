@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Core.Logging;
 
-namespace WiseQueue.Domain.NLogger
+namespace Common.NLogger
 {
     /// <summary>
     /// Factory that can create loggers.

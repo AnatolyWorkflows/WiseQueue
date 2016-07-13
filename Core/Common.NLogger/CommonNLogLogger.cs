@@ -2,7 +2,7 @@
 using Common.Core.Logging;
 using NLog;
 
-namespace WiseQueue.Domain.NLogger
+namespace Common.NLogger
 {
     /// <summary>
     /// <c>Logger</c> that use <see cref="NLog"/> libraries.

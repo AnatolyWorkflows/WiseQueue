@@ -1,4 +1,5 @@
 ﻿using Common.Core.Logging;
+using Common.NLogger;
 using Ninject.Modules;
 
 namespace WiseQueue.Domain.NLogger
