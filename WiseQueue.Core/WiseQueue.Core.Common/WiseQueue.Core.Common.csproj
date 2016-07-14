@@ -57,6 +57,8 @@
     <Compile Include="Entities\QueueEntity.cs" />
     <Compile Include="Entities\Server\ServerEntity.cs" />
     <Compile Include="Entities\Server\ServerHeartbeatEntity.cs" />
+    <Compile Include="Management\IExecutableManager.cs" />
+    <Compile Include="Management\IHistoricalManager.cs" />
     <Compile Include="Management\IManager.cs" />
     <Compile Include="Management\IServerManager.cs" />
     <Compile Include="Management\IMainManagerManager.cs" />
@@ -81,6 +83,9 @@
       <Project>{0166437D-9F9C-4101-9B50-84A01FBE346D}</Project>
       <Name>Common.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Management\Implementation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
