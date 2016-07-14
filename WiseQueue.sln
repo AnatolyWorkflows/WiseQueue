@@ -58,7 +58,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Core", "Core\Common.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.NLogger", "Core\Common.NLogger\Common.NLogger.csproj", "{C27D2F4C-5606-44F6-A40D-4E80E664F3CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "Common.Domain\Common.Domain.csproj", "{5CFD652A-8D19-4F71-B8AB-61E2EF2B4175}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "Core\Common.Domain\Common.Domain.csproj", "{5CFD652A-8D19-4F71-B8AB-61E2EF2B4175}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

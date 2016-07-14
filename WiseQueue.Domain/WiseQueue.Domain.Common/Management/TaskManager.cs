@@ -130,6 +130,8 @@ namespace WiseQueue.Domain.Common.Management
 
                 if (isReceived)
                 {
+                    //TODO: Activate and run task.
+
                     logger.WriteDebug("The task {0} has been received.", taskModel);
                 }
                 else

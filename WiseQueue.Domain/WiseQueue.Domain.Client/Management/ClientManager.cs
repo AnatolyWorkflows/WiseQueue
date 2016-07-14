@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Management;
-using WiseQueue.Core.Common.Models;
 using WiseQueue.Domain.Common;
 
 namespace WiseQueue.Domain.Client.Management
