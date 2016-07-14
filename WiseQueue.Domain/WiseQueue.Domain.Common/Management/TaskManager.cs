@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Management.Implementation;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
@@ -14,7 +14,7 @@ namespace WiseQueue.Domain.Common.Management
     /// <summary>
     /// Task manager. Its main responsibility is tasks management.
     /// </summary>
-    public class TaskManager: BaseLoggerObject, ITaskManager
+    public class TaskManager : BaseManager, ITaskManager
     {
         #region Fields...
         /// <summary>
@@ -48,7 +48,7 @@ namespace WiseQueue.Domain.Common.Management
         /// <exception cref="ArgumentNullException"><paramref name="serverManager"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="queueManager"/> is <see langword="null" />.</exception>
         public TaskManager(IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, ICommonLoggerFactory loggerFactory)
-            : base(loggerFactory)
+            : base("Task Manager", loggerFactory)
         {
             if (expressionConverter == null) 
                 throw new ArgumentNullException("expressionConverter");

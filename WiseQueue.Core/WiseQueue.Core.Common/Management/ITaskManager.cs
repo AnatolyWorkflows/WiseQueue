@@ -6,7 +6,7 @@ namespace WiseQueue.Core.Common.Management
     /// <summary>
     /// Interface shows that <c>object</c> is a task manager.
     /// </summary>
-    public interface ITaskManager: IManager
+    public interface ITaskManager: IStartStoppableManager
     {
         /// <summary>
         /// StartTask a new <c>task</c>.

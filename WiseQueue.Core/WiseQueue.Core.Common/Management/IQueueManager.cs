@@ -6,7 +6,7 @@ namespace WiseQueue.Core.Common.Management
     /// <summary>
     /// Interface shows that <c>object</c> is a queues' manager.
     /// </summary>
-    public interface IQueueManager
+    public interface IQueueManager: IManager
     {
         /// <summary>
         /// Get default queue.

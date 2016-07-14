@@ -57,7 +57,8 @@ namespace WiseQueue.Domain.Common.Management
                 logger.WriteTrace("Executing {0}...", manager);
                 try
                 {
-                    manager.Execute();
+                    if (manager is IExecutableManager)
+                        (manager as IExecutableManager).Execute();
                     logger.WriteTrace("The {0} has been executed.", manager);
                 }
                 catch (Exception ex)
@@ -127,9 +128,12 @@ namespace WiseQueue.Domain.Common.Management
 
                 foreach (IManager manager in managers)
                 {
-                    logger.WriteTrace("Starting {0}...", manager);
-                    manager.Start();
-                    logger.WriteTrace("The {0} has been started.", manager);
+                    if (manager is IStartStoppableManager)
+                    {
+                        logger.WriteTrace("Starting {0}...", manager);
+                        (manager as IStartStoppableManager).Start();
+                        logger.WriteTrace("The {0} has been started.", manager);
+                    }
                 }
 
                 tokenSource = new CancellationTokenSource();
@@ -163,9 +167,12 @@ namespace WiseQueue.Domain.Common.Management
 
                     foreach (IManager manager in managers)
                     {
-                        logger.WriteTrace("Stopping {0}...", manager);
-                        manager.Stop();
-                        logger.WriteTrace("The {0} has been stopped.", manager);
+                        if (manager is IStartStoppableManager)
+                        {
+                            logger.WriteTrace("Stopping {0}...", manager);
+                            (manager as IStartStoppableManager).Stop();
+                            logger.WriteTrace("The {0} has been stopped.", manager);
+                        }
                     }
 
                     logger.WriteTrace("The working thread has been stopped.");

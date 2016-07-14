@@ -1,48 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Management.Implementation;
 
 namespace WiseQueue.Domain.Common.Management
 {
-    public class HistoricalManager : BaseLoggerObject, IHistoricalManager
+    public class HistoricalManager : BaseManager, IHistoricalManager
     {
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public HistoricalManager(ICommonLoggerFactory loggerFactory) : base(loggerFactory)
+        /// <exception cref="ArgumentException">Value cannot be null or empty.</exception>
+        public HistoricalManager(ICommonLoggerFactory loggerFactory) : base("HistoricalManager", loggerFactory)
         {
         }
 
-        #region Implementation of IManager
-
-        /// <summary>
-        /// Start manager.
-        /// </summary>
-        public void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Stop.
-        /// </summary>
-        public void Stop()
-        {
-            throw new NotImplementedException();
-        }
+        #region Implementation of IExecutableManager
 
         /// <summary>
         /// Calling this function if manager should do its job.
         /// </summary>
         public void Execute()
         {
+            //TODO: Do some historical activities.
             throw new NotImplementedException();
         }
 

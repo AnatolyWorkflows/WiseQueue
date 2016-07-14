@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Management.Implementation;
 using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.Common.Management
@@ -12,7 +12,7 @@ namespace WiseQueue.Domain.Common.Management
     /// <summary>
     /// <c>Queue</c> manager. Its main responsibility is queues management.
     /// </summary>
-    public class QueueManager : BaseLoggerObject, IQueueManager
+    public class QueueManager : BaseManager, IQueueManager
     {
         #region Consts...
         /// <summary>
@@ -43,7 +43,7 @@ namespace WiseQueue.Domain.Common.Management
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>        
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
         public QueueManager(IQueueConverter queueConverter, IQueueDataContext queueDataContext, ICommonLoggerFactory loggerFactory)
-            : base(loggerFactory)
+            : base("QueueManager", loggerFactory)
         {
             if (queueConverter == null) 
                 throw new ArgumentNullException("queueConverter");

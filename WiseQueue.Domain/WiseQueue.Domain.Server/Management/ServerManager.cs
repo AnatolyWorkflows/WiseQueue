@@ -1,13 +1,13 @@
 ﻿using System;
-using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Management.Implementation;
 using WiseQueue.Core.Common.Models.Servers;
 
 namespace WiseQueue.Domain.Server.Management
 {
-    class ServerManager : BaseLoggerObject, IServerManager
+    class ServerManager : BaseManager, IServerManager
     {
         #region Fields...
 
@@ -37,7 +37,7 @@ namespace WiseQueue.Domain.Server.Management
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
         public ServerManager(IServerDataContext serverDataContext, ICommonLoggerFactory loggerFactory)
-            : base(loggerFactory)
+            : base("Server Manager", loggerFactory)
         {
             if (serverDataContext == null)
                 throw new ArgumentNullException("serverDataContext");
