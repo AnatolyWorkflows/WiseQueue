@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using Common.Core.BaseClasses;
 using Common.Core.Logging;
+using WiseQueue.Core.Client.Managment;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Domain.Common;
 
@@ -57,5 +58,33 @@ namespace WiseQueue.Domain.Client.Management
             Int64 taskId = clientManager.StartTask(action);
             return taskId;
         }
+
+        #region Implementation of IManager
+
+        /// <summary>
+        /// Start manager.
+        /// </summary>
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Stop.
+        /// </summary>
+        public void Stop()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Calling this function if manager should do its job.
+        /// </summary>
+        public void Execute()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

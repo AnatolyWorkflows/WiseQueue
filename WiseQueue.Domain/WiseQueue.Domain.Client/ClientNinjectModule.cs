@@ -1,4 +1,5 @@
 ﻿using Ninject.Modules;
+using WiseQueue.Core.Client.Managment;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Domain.Client.Management;
 

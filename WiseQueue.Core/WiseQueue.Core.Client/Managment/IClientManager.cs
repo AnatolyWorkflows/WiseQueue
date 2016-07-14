@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq.Expressions;
+using WiseQueue.Core.Common.Management;
 
-namespace WiseQueue.Core.Common.Management
+namespace WiseQueue.Core.Client.Managment
 {
     /// <summary>
     /// Interface shows that <c>object</c> is a client manager.
     /// </summary>
-    public interface IClientManager
+    public interface IClientManager : IManager
     {
         /// <summary>
         /// Start new <c>task</c>.
