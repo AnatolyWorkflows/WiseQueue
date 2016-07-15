@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Core.BaseClasses;
+using Common.Core.Interfaces;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Models;
@@ -57,8 +58,8 @@ namespace WiseQueue.Domain.Common.Management
                 logger.WriteTrace("Executing {0}...", manager);
                 try
                 {
-                    if (manager is IExecutableManager)
-                        (manager as IExecutableManager).Execute();
+                    if (manager is IExecutable)
+                        (manager as IExecutable).Execute();
                     logger.WriteTrace("The {0} has been executed.", manager);
                 }
                 catch (Exception ex)
@@ -128,10 +129,10 @@ namespace WiseQueue.Domain.Common.Management
 
                 foreach (IManager manager in managers)
                 {
-                    if (manager is IStartStoppableManager)
+                    if (manager is IStartStoppable)
                     {
                         logger.WriteTrace("Starting {0}...", manager);
-                        (manager as IStartStoppableManager).Start();
+                        (manager as IStartStoppable).Start();
                         logger.WriteTrace("The {0} has been started.", manager);
                     }
                 }
@@ -167,10 +168,10 @@ namespace WiseQueue.Domain.Common.Management
 
                     foreach (IManager manager in managers)
                     {
-                        if (manager is IStartStoppableManager)
+                        if (manager is IStartStoppable)
                         {
                             logger.WriteTrace("Stopping {0}...", manager);
-                            (manager as IStartStoppableManager).Stop();
+                            (manager as IStartStoppable).Stop();
                             logger.WriteTrace("The {0} has been stopped.", manager);
                         }
                     }

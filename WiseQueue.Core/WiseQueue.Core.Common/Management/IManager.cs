@@ -10,25 +10,4 @@
         /// </summary>
         string Name { get; }       
     }
-
-    public interface IExecutableManager : IManager
-    {
-        /// <summary>
-        /// Calling this function if manager should do its job.
-        /// </summary>
-        void Execute();
-    }
-
-    public interface IStartStoppableManager : IExecutableManager
-    {
-        /// <summary>
-        /// Start manager.
-        /// </summary>
-        void Start();
-
-        /// <summary>
-        /// Stop.
-        /// </summary>
-        void Stop(); 
-    }
 }

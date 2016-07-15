@@ -46,7 +46,7 @@ namespace WiseQueue.Domain.Server.Management
             heartbeatLifetime = TimeSpan.FromSeconds(15); //Move to settings.
         }
 
-        #region Implementation of IManager
+        #region Implementation of IStartStoppable
 
         /// <summary>
         /// Start manager.
@@ -68,6 +68,10 @@ namespace WiseQueue.Domain.Server.Management
         {
             serverDataContext.DeleteServer(ServerId);
         }
+
+        #endregion
+
+        #region Implementation of IExecutable
 
         /// <summary>
         /// Calling this function if manager should do its job.

@@ -17,10 +17,10 @@ namespace WiseQueue.Domain.Common.Management
         {
         }
 
-        #region Implementation of IExecutableManager
+        #region Implementation of IExecutable
 
         /// <summary>
-        /// Calling this function if manager should do its job.
+        /// Occurs when object should do its action.
         /// </summary>
         public void Execute()
         {

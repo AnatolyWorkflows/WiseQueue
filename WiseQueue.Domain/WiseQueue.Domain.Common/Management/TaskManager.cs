@@ -95,24 +95,10 @@ namespace WiseQueue.Domain.Common.Management
         #endregion
 
 
-        #region Implementation of IManager
+        #region Implementation of IExecutable
 
         /// <summary>
-        /// Start manager.
-        /// </summary>
-        public void Start()
-        {            
-        }
-
-        /// <summary>
-        /// Stop.
-        /// </summary>
-        public void Stop()
-        {
-        }
-
-        /// <summary>
-        /// Calling this function if manager should do its job.
+        /// Occurs when object should do its action.
         /// </summary>
         public void Execute()
         {
