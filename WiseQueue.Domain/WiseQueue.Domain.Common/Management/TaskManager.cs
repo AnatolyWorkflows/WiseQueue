@@ -81,8 +81,8 @@ namespace WiseQueue.Domain.Common.Management
 
             logger.WriteTrace("The default queue ({0}) has been got. Converting expression into the task model...");
 
-            TaskActivationDetailsModel taskActivationDetails = expressionConverter.Convert(task);
-            TaskModel taskModel = new TaskModel(defaultQueue.Id, taskActivationDetails);
+            ActivationData activationData = expressionConverter.Convert(task);
+            TaskModel taskModel = new TaskModel(defaultQueue.Id, activationData);
 
             logger.WriteTrace("The expression has been converted. Inserting the task into the database...");
 

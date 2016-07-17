@@ -4,6 +4,7 @@ using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Server.Factories;
+using WiseQueue.Core.Server.Models;
 
 namespace WiseQueue.Domain.Server.Factories
 {
@@ -13,6 +14,8 @@ namespace WiseQueue.Domain.Server.Factories
         /// The <see cref="IExpressionConverter"/> instance.
         /// </summary>
         private readonly IExpressionConverter expressionConverter;
+
+        private readonly ICommonLoggerFactory loggerFactory;
 
         /// <summary>
         /// Constructor.
@@ -27,6 +30,7 @@ namespace WiseQueue.Domain.Server.Factories
                 throw new ArgumentNullException("expressionConverter");
 
             this.expressionConverter = expressionConverter;
+            this.loggerFactory = loggerFactory;
         }
 
         #region Implementation of IWorkerFactory
@@ -38,7 +42,16 @@ namespace WiseQueue.Domain.Server.Factories
         /// <returns>The worker.</returns>
         public IWorker CreateWorker(TaskModel taskModel)
         {
-            throw new NotImplementedException();
+            //if (cancellationToken.IsCancellationRequested)
+            //{
+            //    logger.WriteDebug("The job {0} has been canceled.", jobActivationData);
+            //    return;
+            //}
+
+            
+            Worker worker = new Worker(taskModel, expressionConverter, loggerFactory);
+
+            return worker;
         }
 
         #endregion
