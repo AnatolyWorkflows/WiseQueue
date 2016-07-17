@@ -72,6 +72,10 @@
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Server\WiseQueue.Core.Server.csproj">
+      <Project>{A71F3FD7-8095-4A9C-98A7-D777E4CCF45E}</Project>
+      <Name>WiseQueue.Core.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\WiseQueue.Extentions\WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj">
       <Project>{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}</Project>
       <Name>WiseQueue.Domain.MicrosoftExpressionCache</Name>

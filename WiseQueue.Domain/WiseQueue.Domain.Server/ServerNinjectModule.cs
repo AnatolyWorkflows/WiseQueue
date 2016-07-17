@@ -1,6 +1,5 @@
 ﻿using Ninject.Modules;
-using WiseQueue.Core.Common.Management;
-using WiseQueue.Domain.Common.Management;
+using WiseQueue.Core.Server.Management;
 using WiseQueue.Domain.Server.Management;
 
 namespace WiseQueue.Domain.Server

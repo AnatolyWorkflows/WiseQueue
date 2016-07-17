@@ -1,7 +1,7 @@
 ﻿using System;
 using Common.Core.Logging;
-using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Management.Implementation;
+using WiseQueue.Core.Server.Management;
 
 namespace WiseQueue.Domain.Common.Management
 {

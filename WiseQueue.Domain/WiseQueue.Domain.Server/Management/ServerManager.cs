@@ -1,9 +1,9 @@
 ﻿using System;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.DataContexts;
-using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Management.Implementation;
 using WiseQueue.Core.Common.Models.Servers;
+using WiseQueue.Core.Server.Management;
 
 namespace WiseQueue.Domain.Server.Management
 {

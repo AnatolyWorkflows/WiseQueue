@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Management\WorkerManagement\WorkerManager.cs" />
     <Compile Include="ServerWiseQueueConfiguration.cs" />
     <Compile Include="ServerNinjectModule.cs" />
     <Compile Include="Management\ServerManager.cs" />
@@ -60,6 +61,10 @@
     <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Server\WiseQueue.Core.Server.csproj">
+      <Project>{A71F3FD7-8095-4A9C-98A7-D777E4CCF45E}</Project>
+      <Name>WiseQueue.Core.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
       <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>

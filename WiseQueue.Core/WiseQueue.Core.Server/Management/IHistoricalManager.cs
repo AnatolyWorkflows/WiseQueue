@@ -1,6 +1,6 @@
 ﻿using Common.Core.Interfaces;
 
-namespace WiseQueue.Core.Common.Management
+namespace WiseQueue.Core.Server.Management
 {
     /// <summary>
     /// Interface shows that manager is used for working with historical data.

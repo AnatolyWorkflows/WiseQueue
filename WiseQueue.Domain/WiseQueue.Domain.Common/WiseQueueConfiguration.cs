@@ -3,6 +3,7 @@ using Ninject.Infrastructure.Disposal;
 using Ninject.Modules;
 using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Server.Management;
 
 namespace WiseQueue.Domain.Common
 {
