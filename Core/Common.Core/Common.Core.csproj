@@ -42,6 +42,7 @@
     <Compile Include="BaseClasses\BaseLoggerObject.cs" />
     <Compile Include="Interfaces\IExecutableManager.cs" />
     <Compile Include="Interfaces\IStartStoppable.cs" />
+    <Compile Include="Interfaces\IStopwatchManager.cs" />
     <Compile Include="Logging\ICommonLogger.cs" />
     <Compile Include="Logging\ICommonLoggerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

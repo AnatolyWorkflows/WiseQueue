@@ -25,5 +25,18 @@ namespace Common.Core.BaseClasses
 
             logger = loggerFactory.Create(GetType());
         }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="logger">The <see cref="ICommonLogger"/> instance.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="logger"/> is <see langword="null" />.</exception>
+        protected BaseLoggerObject(ICommonLogger logger)
+        {
+            if (logger == null)
+                throw new ArgumentNullException("logger");
+
+            this.logger = logger;
+        }
     }
 }
