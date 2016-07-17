@@ -17,30 +17,24 @@ namespace WiseQueue.Domain.Common.Converters
     public class ExpressionConverter : BaseLoggerObject, IExpressionConverter
     {
         #region Fields...
-        /// <summary>
-        /// The <see cref="IJsonConverter"/> instance.
-        /// </summary>
-        private readonly IJsonConverter jsonConverter;
 
         /// <summary>
         /// The <see cref="ICachedExpressionCompiler"/> instance.
         /// </summary>
         private readonly ICachedExpressionCompiler cachedExpressionCompiler;
+
         #endregion
 
         /// <summary>
         /// Constructor.
-        /// </summary>
-        /// <param name="jsonConverter">The <see cref="IJsonConverter"/> instance.</param>
+        /// </summary>        
         /// <param name="cachedExpressionCompiler">The <see cref="ICachedExpressionCompiler"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ExpressionConverter(IJsonConverter jsonConverter, ICachedExpressionCompiler cachedExpressionCompiler, ICommonLoggerFactory loggerFactory)
+        public ExpressionConverter(ICachedExpressionCompiler cachedExpressionCompiler, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            if (jsonConverter == null) throw new ArgumentNullException("jsonConverter");
             if (cachedExpressionCompiler == null) throw new ArgumentNullException("cachedExpressionCompiler");
-            this.jsonConverter = jsonConverter;
             this.cachedExpressionCompiler = cachedExpressionCompiler;
         }
 
@@ -49,19 +43,18 @@ namespace WiseQueue.Domain.Common.Converters
         #region Serialize helpful methods...
 
         /// <summary>
-        /// Serialize arguments into JSON format.
+        /// Extract arguments from the expression.
         /// </summary>
         /// <param name="expressions">Arguments.</param>
-        /// <returns><c>List</c> of string that contain JSON information about arguments.</returns>
-        private string[] SerializeArguments(IReadOnlyCollection<Expression> expressions)
+        /// <returns><c>List</c> of arguments.</returns>
+        private object[] ExtractArguments(IReadOnlyCollection<Expression> expressions)
         {
-            string[] result = new string[expressions.Count];
+            object[] result = new object[expressions.Count];
             for (int i = 0; i < expressions.Count; i++)
             {
                 Expression expression = expressions.ElementAt(i);
-                var item = cachedExpressionCompiler.GetValue(expression);
-                string jsonItem = jsonConverter.ConvertToJson(item);
-                result[i] = jsonItem;
+                object item = cachedExpressionCompiler.GetValue(expression);
+                result[i] = item;
             }
 
             return result;
@@ -69,16 +62,16 @@ namespace WiseQueue.Domain.Common.Converters
         #endregion
 
         /// <summary>
-        /// Convert <see cref="Expression"/> into the <see cref="TaskActivationDetailsModel"/> instance.
+        /// Convert <see cref="Expression"/> into the <see cref="ActivationData"/> instance.
         /// </summary>
         /// <param name="action">The <see cref="Expression"/> instance.</param>
-        /// <returns>The <see cref="TaskActivationDetailsModel"/> instance.</returns>
+        /// <returns>The <see cref="ActivationData"/> instance.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="action"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentException">Expression body should be of type `MethodCallExpression`</exception>
         /// <exception cref="InvalidOperationException">Expression object should be not null.</exception>
-        public TaskActivationDetailsModel Convert(Expression<Action> action)
+        public ActivationData Convert(Expression<Action> action)
         {
-            logger.WriteTrace("Converting Expression<Action> into the TaskActivationDetailsModel...");
+            logger.WriteTrace("Converting Expression<Action> into the ActivationData...");
 
             if (action == null)
                 throw new ArgumentNullException("action");
@@ -87,7 +80,7 @@ namespace WiseQueue.Domain.Common.Converters
             if (callExpression == null)
                 throw new ArgumentException("Expression body should be of type `MethodCallExpression`", "action");
 
-            Type type;
+            Type instanceType;
 
             if (callExpression.Object != null)
             {
@@ -95,26 +88,33 @@ namespace WiseQueue.Domain.Common.Converters
                 if (objectValue == null)
                     throw new InvalidOperationException("Expression object should be not null.");
 
-                type = objectValue.GetType();
+                instanceType = objectValue.GetType();
             }
             else
             {
-                type = callExpression.Method.DeclaringType;
+                instanceType = callExpression.Method.DeclaringType;
             }
-
-            string[] arguments = SerializeArguments(callExpression.Arguments);
 
             MethodInfo method = callExpression.Method;
 
-            string typeDetails = type.AssemblyQualifiedName;
-            string methodDetails = method.Name;
-            string parameterDetails = jsonConverter.ConvertToJson(method.GetParameters().Select(x => x.ParameterType).ToArray());
-            string argumentDetails = jsonConverter.ConvertToJson(arguments);
-            TaskActivationDetailsModel result = new TaskActivationDetailsModel(typeDetails, methodDetails, parameterDetails, argumentDetails);
+            object[] arguments = ExtractArguments(callExpression.Arguments);
+            Type[] argumentTypes = method.GetParameters().Select(x => x.ParameterType).ToArray();
+
+            ActivationData result = new ActivationData(instanceType, method, arguments, argumentTypes);
 
             logger.WriteTrace("Converting Expression<Action> into the TaskActivationDetailsModel has been successfully completed.");
 
             return result;
+        }
+
+        public MethodInfo GetNonOpenMatchingMethod(Type instanceType, string method, Type[] argumentTypes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object[] DeserializeArguments(MethodInfo method, string[] serializedArguments)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

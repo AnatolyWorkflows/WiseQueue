@@ -44,6 +44,7 @@
     <Compile Include="Management\IHistoricalManager.cs" />
     <Compile Include="Management\IServerManager.cs" />
     <Compile Include="Management\IWorkerManager.cs" />
+    <Compile Include="Models\Worker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
