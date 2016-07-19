@@ -23,7 +23,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
         /// <param name="expressionConverter">The <see cref="IExpressionConverter"/> instance.</param>
         /// <param name="jsonConverter">JSON converter.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="IExpressionConverter"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="expressionConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="jsonConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
         public TaskConverter(IExpressionConverter expressionConverter, IJsonConverter jsonConverter, ICommonLoggerFactory loggerFactory) : base(loggerFactory)

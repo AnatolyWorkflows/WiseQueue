@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -19,6 +20,11 @@ namespace WiseQueue.Domain.Common.Converters
         #region Fields...
 
         /// <summary>
+        /// The <see cref="IJsonConverter"/> instance.
+        /// </summary>
+        private readonly IJsonConverter jsonConverter;
+
+        /// <summary>
         /// The <see cref="ICachedExpressionCompiler"/> instance.
         /// </summary>
         private readonly ICachedExpressionCompiler cachedExpressionCompiler;
@@ -27,14 +33,20 @@ namespace WiseQueue.Domain.Common.Converters
 
         /// <summary>
         /// Constructor.
-        /// </summary>        
+        /// </summary>
+        /// <param name="jsonConverter">The <see cref="IJsonConverter"/> instance.</param>
         /// <param name="cachedExpressionCompiler">The <see cref="ICachedExpressionCompiler"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ExpressionConverter(ICachedExpressionCompiler cachedExpressionCompiler, ICommonLoggerFactory loggerFactory)
+        public ExpressionConverter(IJsonConverter jsonConverter, ICachedExpressionCompiler cachedExpressionCompiler, ICommonLoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            if (cachedExpressionCompiler == null) throw new ArgumentNullException("cachedExpressionCompiler");
+            if (jsonConverter == null)
+                throw new ArgumentNullException("jsonConverter");
+            if (cachedExpressionCompiler == null)
+                throw new ArgumentNullException("cachedExpressionCompiler");
+
+            this.jsonConverter = jsonConverter;
             this.cachedExpressionCompiler = cachedExpressionCompiler;
         }
 
@@ -107,14 +119,107 @@ namespace WiseQueue.Domain.Common.Converters
             return result;
         }
 
-        public MethodInfo GetNonOpenMatchingMethod(Type instanceType, string method, Type[] argumentTypes)
+        public MethodInfo GetNonOpenMatchingMethod(Type instanceType, string methodName, Type[] argumentTypes)
         {
-            throw new NotImplementedException();
+            var methodCandidates = new List<MethodInfo>(instanceType.GetMethods());
+
+            if (instanceType.IsInterface)
+            {
+                methodCandidates.AddRange(instanceType.GetInterfaces().SelectMany(x => x.GetMethods()));
+            }
+
+            foreach (var methodCandidate in methodCandidates)
+            {
+                if (!methodCandidate.Name.Equals(methodName, StringComparison.Ordinal))
+                    continue;
+
+                ParameterInfo[] parameters = methodCandidate.GetParameters();
+                if (parameters.Length != argumentTypes.Length)
+                    continue;
+
+                bool parameterTypesMatched = true;
+                List<Type> genericArguments = new List<Type>();
+
+                // Determining whether we can use this method candidate with
+                // current parameter types.
+                for (int i = 0; i < parameters.Length; i++)
+                {
+                    ParameterInfo parameter = parameters[i];
+                    Type parameterType = parameter.ParameterType;
+                    Type actualType = argumentTypes[i];
+
+                    // Skipping generic parameters as we can use actual type.
+                    if (parameterType.IsGenericParameter)
+                    {
+                        genericArguments.Add(actualType);
+                        continue;
+                    }
+
+                    // Skipping non-generic parameters of assignable types.
+                    if (parameterType.IsAssignableFrom(actualType)) continue;
+
+                    parameterTypesMatched = false;
+                    break;
+                }
+
+                if (!parameterTypesMatched) continue;
+
+                // Return first found method candidate with matching parameters.
+                return methodCandidate.ContainsGenericParameters
+                    ? methodCandidate.MakeGenericMethod(genericArguments.ToArray())
+                    : methodCandidate;
+            }
+
+            return null; //TODO: NullReferenceExcretion can be raised because of this.
         }
 
-        public object[] DeserializeArguments(MethodInfo method, string[] serializedArguments)
+        private object DeserializeArgument(string argument, Type type)
         {
-            throw new NotImplementedException();
+            object value;
+            try
+            {
+                value = argument != null
+                    ? jsonConverter.ConvertFromJson(argument, type)
+                    : null;
+            }
+            catch (Exception jsonException)
+            {
+                if (type == typeof(object))
+                {
+                    value = argument;
+                }
+                else
+                {
+                    try
+                    {
+                        TypeConverter converter = TypeDescriptor.GetConverter(type);
+                        value = converter.ConvertFromInvariantString(argument);
+                    }
+                    catch (Exception)
+                    {
+                        throw jsonException;
+                    }
+                }
+            }
+            return value;
+        }
+
+        public object[] DeserializeArguments(MethodInfo methodInfo, string[] serializedArguments)
+        {
+            ParameterInfo[] parameters = methodInfo.GetParameters();
+            List<object> result = new List<object>(serializedArguments.Length);
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                ParameterInfo parameter = parameters[i];
+                string argument = serializedArguments[i];
+
+                var value = DeserializeArgument(argument, parameter.ParameterType);
+
+                result.Add(value);
+            }
+
+            return result.ToArray();
         }
 
         #endregion

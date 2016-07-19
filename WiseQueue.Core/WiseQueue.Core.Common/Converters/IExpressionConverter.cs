@@ -17,7 +17,7 @@ namespace WiseQueue.Core.Common.Converters
         /// <returns>The <see cref="ActivationData"/> instance.</returns>
         ActivationData Convert(Expression<Action> action);
 
-        MethodInfo GetNonOpenMatchingMethod(Type instanceType, string method, Type[] argumentTypes);
-        object[] DeserializeArguments(MethodInfo method, string[] serializedArguments);
+        MethodInfo GetNonOpenMatchingMethod(Type instanceType, string methodName, Type[] argumentTypes);
+        object[] DeserializeArguments(MethodInfo methodInfo, string[] serializedArguments);
     }
 }
