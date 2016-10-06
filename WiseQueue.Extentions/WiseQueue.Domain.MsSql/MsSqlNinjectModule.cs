@@ -4,6 +4,7 @@ using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Domain.MsSql.MsSqlDataContext;
 using WiseQueue.Domain.MsSql.Utils;
 using WiseQueue.Domain.MsSql.Utils.Implementation;
+using Common.Core.ResourceHelper;
 
 namespace WiseQueue.Domain.MsSql
 {
@@ -40,7 +41,7 @@ namespace WiseQueue.Domain.MsSql
             Bind<MsSqlSettings>().ToSelf().InSingletonScope().WithConstructorArgument("nameOrConnectionString", nameOrConnectionString);
 
             Bind<ISqlServerInstaller>().To<SqlServerInstaller>();
-            Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope();
+            Bind<ISqlConnectionFactory>().To<SqlConnectionFactory>().InSingletonScope();            
 
             Bind<IServerDataContext>().To<ServerDataContext>();
             Bind<IQueueDataContext>().To<QueueDataContext>();

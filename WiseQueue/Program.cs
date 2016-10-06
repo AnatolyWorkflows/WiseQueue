@@ -24,7 +24,7 @@ namespace WiseQueue
         {
             string connectionString = "connection string";
 
-            connectionString = "Data Source=(local);" +
+            connectionString = "Data Source=DESKTOP-M3DHIK5;" +
                                "Initial Catalog=WiseQueues;" +
                                "Integrated Security=SSPI;";
 

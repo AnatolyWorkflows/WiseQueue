@@ -8,6 +8,8 @@ using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 using WiseQueue.Domain.Common.Management;
 using WiseQueue.Domain.MicrosoftExpressionCache;
+using Common.Core.ResourceHelper;
+using Common.Domain.ResourceHelper;
 //using IResourceReaderHelper = Common.Core.ResourceHelper.IResourceReaderHelper;
 
 namespace WiseQueue.Domain.Common
@@ -22,6 +24,8 @@ namespace WiseQueue.Domain.Common
         public override void Load()
         {
             Bind<IResourceReader>().To<ResourceReader>();
+
+            Bind<IResourceReaderHelper>().To<ResourceReaderHelper>();
 
             Bind<IServerConverter>().To<ServerConverter>();
             Bind<ITaskConverter>().To<TaskConverter>();
