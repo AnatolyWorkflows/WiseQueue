@@ -23,11 +23,20 @@ namespace WiseQueue.Domain.Common.Converters
         /// <summary>
         /// Constructor.
         /// </summary>
+        /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
+        public JsonConverter(ICommonLoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+            jsonSerializerSettings = new JsonSerializerSettings();
+        }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         /// <param name="jsonSerializerSettings">The <see cref="JsonSerializerSettings"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="jsonSerializerSettings"/> is <see langword="null" />.</exception>
-        public JsonConverter(JsonSerializerSettings jsonSerializerSettings, ICommonLoggerFactory loggerFactory)
-            : base(loggerFactory)
+        public JsonConverter(JsonSerializerSettings jsonSerializerSettings, ICommonLoggerFactory loggerFactory): this(loggerFactory)
         {
             if (jsonSerializerSettings == null)
                 throw new ArgumentNullException("jsonSerializerSettings");

@@ -145,10 +145,10 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             stringBuilder.Append("[ServerId] [bigint] NULL, ");
             stringBuilder.Append("[State] [smallint], ");
             stringBuilder.Append("[CompletedAt] [datetime] NULL, ");
-            stringBuilder.Append("[InstanceType] [nvarchar](200), ");
-            stringBuilder.Append("[Method] [nvarchar](200), ");
-            stringBuilder.Append("[ParametersTypes] [nvarchar](500), ");
-            stringBuilder.AppendLine("[Arguments] [nvarchar](1000)); ");
+            stringBuilder.Append("[InstanceType] [nvarchar](4000), ");
+            stringBuilder.Append("[Method] [nvarchar](4000), ");
+            stringBuilder.Append("[ParametersTypes] [nvarchar](4000), ");
+            stringBuilder.AppendLine("[Arguments] [nvarchar](4000)); ");
 
             stringBuilder.AppendFormat("UPDATE TOP (1) {0}.{1} ", sqlSettings.WiseQueueDefaultSchema, taskTableName);
             stringBuilder.AppendFormat("SET State = {0}, ", (short)TaskStates.Pending);

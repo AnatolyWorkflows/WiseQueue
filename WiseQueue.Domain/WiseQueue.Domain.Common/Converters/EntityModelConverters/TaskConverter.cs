@@ -46,7 +46,8 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
         /// <returns>The <see cref="TaskModel"/> instance.</returns>
         public TaskModel Convert(TaskEntity taskEntity)
         {
-            Type instanceType = Type.GetType(taskEntity.InstanceType, throwOnError: true, ignoreCase: true);
+            string instanceTypeJson = jsonConverter.ConvertFromJson<string>(taskEntity.InstanceType);
+            Type instanceType = Type.GetType(instanceTypeJson, throwOnError: true, ignoreCase: true);
             Type[] argumentTypes = jsonConverter.ConvertFromJson<Type[]>(taskEntity.ParametersTypes);
             MethodInfo method = expressionConverter.GetNonOpenMatchingMethod(instanceType, taskEntity.Method, argumentTypes);
 
@@ -75,7 +76,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
                 Id = taskModel.Id,
                 QueueId = taskModel.QueueId,
                 InstanceType = jsonConverter.ConvertToJson(taskModel.ActivationData.InstanceType),
-                Method = jsonConverter.ConvertToJson(taskModel.ActivationData.Method),
+                Method = taskModel.ActivationData.Method.Name,
                 ParametersTypes = jsonConverter.ConvertToJson(taskModel.ActivationData.ArgumentTypes),
                 Arguments = jsonConverter.ConvertToJson(taskModel.ActivationData.Arguments),
                 TaskState = taskModel.TaskState
