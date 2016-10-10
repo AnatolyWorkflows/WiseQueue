@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Common.Core.BaseClasses;
 using Common.Core.Logging;
+using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
@@ -213,9 +215,9 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// <param name="taskState">New task's state that we are going to set.</param>
         public void SetTaskState(Int64 id, TaskStates taskState)
         {
+            //TODO: if [id] == null then task should be mark as cancelled.
             const string updateStatement = "UPDATE {0}.{1} SET [State]={2}, [CompletedAt]='{3}' WHERE [Id] = {4}";
 
-            string data = "TODO";// taskSerialization.Serialize(task.Action);
             string sqlCommand = string.Format(updateStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, (short)taskState, DateTime.UtcNow.ToString("s"), id);
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
@@ -228,6 +230,16 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             }
         }
 
+        /// <summary>
+        /// Get tasks that have been marked for cancellation.
+        /// </summary>
+        /// <param name="queueId">The queue identifier.</param>
+        /// <param name="serverId">The server identifier.</param>
+        /// <returns>List of tasks identifiers.</returns>
+        public MethodResult<IReadOnlyCollection<Int64>> GetCancellingTasks(Int64 queueId, Int64 serverId)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

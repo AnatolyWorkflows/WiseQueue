@@ -24,6 +24,14 @@
         /// <summary>
         /// Shows that task has been failed.
         /// </summary>
-        Failed = 5
+        Failed = 5,
+        /// <summary>
+        /// Mark task for cancellation.
+        /// </summary>
+        Cancelling,
+        /// <summary>
+        /// Mark task as cancelled.
+        /// </summary>
+        Cancelled
     }
 }

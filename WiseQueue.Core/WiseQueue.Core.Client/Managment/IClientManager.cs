@@ -15,5 +15,11 @@ namespace WiseQueue.Core.Client.Managment
         /// <param name="task">The <see cref="Expression"/> instance.</param>
         /// <returns>The task's identifier.</returns>
         Int64 StartTask(Expression<Action> task);
+
+        /// <summary>
+        /// Cancel a task that has been started.
+        /// </summary>
+        /// <param name="taskId">The task's identifier.</param>
+        void StopTask(Int64 taskId);
     }
 }

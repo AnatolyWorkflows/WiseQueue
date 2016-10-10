@@ -61,6 +61,7 @@
     <Compile Include="Management\Implementation\BaseManager.cs" />
     <Compile Include="Management\IMainManagerManager.cs" />
     <Compile Include="Management\ITaskManager.cs" />
+    <Compile Include="MethodResult.cs" />
     <Compile Include="Models\Servers\ServerHeartbeatModel.cs" />
     <Compile Include="Models\Servers\ServerModel.cs" />
     <Compile Include="Models\Tasks\ActivationData.cs" />

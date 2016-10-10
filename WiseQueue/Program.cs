@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using WiseQueue.Core.Common;
 using WiseQueue.Domain.Client;
 using WiseQueue.Domain.Client.Management;
@@ -16,6 +17,12 @@ namespace WiseQueue
             public void Test(string msg)
             {
                 Console.WriteLine("MSG: {0}", msg);
+            }
+
+            public void VerySlowTask(string msg)
+            {
+                Console.WriteLine("MSG: {0}", msg);
+                Thread.Sleep(int.MaxValue);
             }
         }
 
@@ -37,8 +44,15 @@ namespace WiseQueue
             {
                 configuration.Activate();
 
-                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
-                
+                //Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
+
+                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().VerySlowTask("Very slow task..."));
+
+                Console.WriteLine("PRESS ENTER TO CANCEL");
+                Console.ReadLine();
+
+                ClientManager.CancelTask(taskId);
+
                 Console.ReadLine();
             }
         }

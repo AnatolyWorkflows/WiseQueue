@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
@@ -31,5 +32,13 @@ namespace WiseQueue.Core.Common.DataContexts
         /// <param name="id">The task's identifier.</param>
         /// <param name="taskState">New task's state that we are going to set.</param>
         void SetTaskState(Int64 id, TaskStates taskState);
+
+        /// <summary>
+        /// Get tasks that have been marked for cancellation.
+        /// </summary>
+        /// <param name="queueId">The queue identifier.</param>
+        /// <param name="serverId">The server identifier.</param>
+        /// <returns>List of tasks identifiers.</returns>
+        MethodResult<IReadOnlyCollection<Int64>> GetCancellingTasks(Int64 queueId, Int64 serverId);
     }
 }

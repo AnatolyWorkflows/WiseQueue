@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using Common.Core.Logging;
+using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.DataContexts;
+using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Management.Implementation;
 using WiseQueue.Core.Common.Models;
@@ -93,6 +96,24 @@ namespace WiseQueue.Domain.Common.Management
             return taskId;
         }
 
+        public void StopTask(Int64 taskId, bool waitResponse = false)
+        {
+            logger.WriteDebug("Preparing for stopping task... Getting a default queue...");
+
+            QueueModel defaultQueue = queueManager.GetDefaultQueue();
+
+            logger.WriteTrace("The default queue ({0}) has been got. Updating the task in the database...");
+
+            taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
+
+            logger.WriteDebug("The task has been marked as cancelled. Task identifier = {0}", taskId);
+
+            if (waitResponse)
+            {
+                //TODO: Wait response from the task if needed.
+            }
+        }
+
         #endregion
 
 
@@ -124,6 +145,26 @@ namespace WiseQueue.Domain.Common.Management
                 else
                 {
                     logger.WriteDebug("There is no new task in the storage.");
+                }
+
+                MethodResult<IReadOnlyCollection<Int64>> methodResult = taskDataContext.GetCancellingTasks(queueId, serverId);
+                if (methodResult.HasError)
+                {
+                    logger.WriteError(
+                        "There was an error during geting tasks that have been marked for cancellation: ",
+                        methodResult.ErrorMsg);
+                }
+                else
+                {
+                    IReadOnlyCollection<Int64> taskIds = methodResult.Result;
+                    logger.WriteTrace("There is(are) {0} task(s) that has(ve) been marked for cancelation. Cancelling...", taskIds.Count);
+
+                    foreach (Int64 taskId in taskIds)
+                    {
+                        //TODO: Cancel task.
+
+                        taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
+                    }
                 }
             }
 

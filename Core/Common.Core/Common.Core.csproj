@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseClasses\BaseLoggerObject.cs" />
+    <Compile Include="BaseClasses\BaseResult.cs" />
     <Compile Include="Interfaces\IExecutableManager.cs" />
     <Compile Include="Interfaces\IStartStoppable.cs" />
     <Compile Include="Interfaces\IStopwatchManager.cs" />

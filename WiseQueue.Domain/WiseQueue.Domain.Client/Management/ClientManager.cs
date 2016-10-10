@@ -45,6 +45,19 @@ namespace WiseQueue.Domain.Client.Management
             return taskId;
         }
 
+        /// <summary>
+        /// Cancel a task that has been started.
+        /// </summary>
+        /// <param name="taskId">The task's identifier.</param>
+        public void StopTask(Int64 taskId)
+        {
+            logger.WriteDebug("Stopping the task (id = {0})...", taskId);
+
+            taskManager.StopTask(taskId);
+
+            logger.WriteDebug("The task has been stopped (id = {0})", taskId);
+        }
+
         #endregion
 
         /// <summary>
@@ -57,6 +70,16 @@ namespace WiseQueue.Domain.Client.Management
             IClientManager clientManager = WiseQueueGlobalConfiguration.WiseQueueConfiguration.Get<IClientManager>();
             Int64 taskId = clientManager.StartTask(action);
             return taskId;
+        }
+
+        /// <summary>
+        /// Cancel a task that has been started.
+        /// </summary>
+        /// <param name="taskId">The task's identifier.</param>
+        public static void CancelTask(Int64 taskId)
+        {
+            IClientManager clientManager = WiseQueueGlobalConfiguration.WiseQueueConfiguration.Get<IClientManager>();
+            clientManager.StopTask(taskId);
         }
 
         #region Implementation of IManager
