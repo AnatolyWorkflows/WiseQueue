@@ -34,11 +34,11 @@ namespace WiseQueue.Core.Common.DataContexts
         void SetTaskState(Int64 id, TaskStates taskState);
 
         /// <summary>
-        /// Get tasks that have been marked for cancellation.
+        /// Get task that has been marked for cancellation.
         /// </summary>
         /// <param name="queueId">The queue identifier.</param>
         /// <param name="serverId">The server identifier.</param>
-        /// <returns>List of tasks identifiers.</returns>
-        MethodResult<IReadOnlyCollection<Int64>> GetCancellingTasks(Int64 queueId, Int64 serverId);
+        /// <returns>The task identifier.</returns>
+        MethodResult<Int64> GetCancelTask(Int64 queueId, Int64 serverId);
     }
 }

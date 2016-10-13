@@ -26,12 +26,16 @@
         /// </summary>
         Failed = 5,
         /// <summary>
+        /// Mark task for cancelling.
+        /// </summary>
+        Cancel = 6,
+        /// <summary>
         /// Mark task for cancellation.
         /// </summary>
-        Cancelling,
+        Cancelling = 7,
         /// <summary>
         /// Mark task as cancelled.
         /// </summary>
-        Cancelled
+        Cancelled = 8
     }
 }

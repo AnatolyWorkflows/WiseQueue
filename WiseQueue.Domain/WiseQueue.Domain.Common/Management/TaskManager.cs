@@ -104,7 +104,7 @@ namespace WiseQueue.Domain.Common.Management
 
             logger.WriteTrace("The default queue ({0}) has been got. Updating the task in the database...");
 
-            taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
+            taskDataContext.SetTaskState(taskId, TaskStates.Cancel);
 
             logger.WriteDebug("The task has been marked as cancelled. Task identifier = {0}", taskId);
 
@@ -147,7 +147,7 @@ namespace WiseQueue.Domain.Common.Management
                     logger.WriteDebug("There is no new task in the storage.");
                 }
 
-                MethodResult<IReadOnlyCollection<Int64>> methodResult = taskDataContext.GetCancellingTasks(queueId, serverId);
+                MethodResult<Int64> methodResult = taskDataContext.GetCancelTask(queueId, serverId);
                 if (methodResult.HasError)
                 {
                     logger.WriteError(
@@ -156,15 +156,18 @@ namespace WiseQueue.Domain.Common.Management
                 }
                 else
                 {
-                    IReadOnlyCollection<Int64> taskIds = methodResult.Result;
-                    logger.WriteTrace("There is(are) {0} task(s) that has(ve) been marked for cancelation. Cancelling...", taskIds.Count);
-
-                    foreach (Int64 taskId in taskIds)
+                    Int64 taskId = methodResult.Result;
+                    if (taskId <= 0)
                     {
-                        //TODO: Cancel task.
-
-                        taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
+                        logger.WriteTrace("There is no task for cncelling.");
+                        continue;
                     }
+                    logger.WriteTrace("The task (id = {0}) has been marked for cancelation. Cancelling...", taskId);
+                    taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
+
+                    //TODO: Cancel task.
+
+                    taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
                 }
             }
 

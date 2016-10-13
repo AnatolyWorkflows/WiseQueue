@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Common.Core.BaseClasses;
@@ -8,7 +7,6 @@ using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
-using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
 using WiseQueue.Domain.MsSql.Utils;
@@ -193,7 +191,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                     Arguments = argumentDetails
                                 };
 
-                                taskModel = taskConverter.Convert(taskEntity);                                
+                                taskModel = taskConverter.Convert(taskEntity);    
+                                break; //We need to read only first task                            
                             }
                         }
                     }
@@ -231,14 +230,34 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         }
 
         /// <summary>
-        /// Get tasks that have been marked for cancellation.
+        /// Get task that has been marked for cancellation.
         /// </summary>
         /// <param name="queueId">The queue identifier.</param>
         /// <param name="serverId">The server identifier.</param>
-        /// <returns>List of tasks identifiers.</returns>
-        public MethodResult<IReadOnlyCollection<Int64>> GetCancellingTasks(Int64 queueId, Int64 serverId)
+        /// <returns>The task identifier.</returns>
+        public MethodResult<Int64> GetCancelTask(Int64 queueId, Int64 serverId)
         {
-            throw new NotImplementedException();
+            const string selectStatement = "select [Id] from {0}.{1} where [QueueId] = {2} and [ServerId] = {3} and [State] = {4}";
+
+            string sqlCommand = string.Format(selectStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, queueId, serverId, (int)TaskStates.Cancel);
+
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                {
+                    command.CommandText = sqlCommand;
+                    using (IDataReader rdr = command.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            Int64 id = (Int64)rdr["Id"];
+                            return new MethodResult<Int64>(id); //We need to read only first record.
+                        }
+                    }
+                }
+            }
+
+            return new MethodResult<Int64>(-1);
         }
 
         #endregion
