@@ -1,6 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Common.Core.Logging;
 using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Converters;
@@ -37,6 +42,8 @@ namespace WiseQueue.Domain.Common.Management
         /// The <see cref="IQueueManager"/> instance.
         /// </summary>
         private readonly IQueueManager queueManager;
+
+        private Dictionary<Int64, TaskWrapper> activeTasks;
         #endregion
 
         /// <summary>
@@ -67,6 +74,8 @@ namespace WiseQueue.Domain.Common.Management
             this.taskDataContext = taskDataContext;
             this.serverManager = serverManager;
             this.queueManager = queueManager;
+
+            activeTasks = new Dictionary<long, TaskWrapper>();
         }
 
         #region Implementation of ITaskManager
@@ -98,11 +107,7 @@ namespace WiseQueue.Domain.Common.Management
 
         public void StopTask(Int64 taskId, bool waitResponse = false)
         {
-            logger.WriteDebug("Preparing for stopping task... Getting a default queue...");
-
-            QueueModel defaultQueue = queueManager.GetDefaultQueue();
-
-            logger.WriteTrace("The default queue ({0}) has been got. Updating the task in the database...");
+            logger.WriteDebug("Preparing for stopping task... Updating the task in the database...");
 
             taskDataContext.SetTaskState(taskId, TaskStates.Cancel);
 
@@ -115,7 +120,6 @@ namespace WiseQueue.Domain.Common.Management
         }
 
         #endregion
-
 
         #region Implementation of IExecutable
 
@@ -138,7 +142,43 @@ namespace WiseQueue.Domain.Common.Management
 
                 if (isReceived)
                 {
-                    //TODO: Activate and run task.
+                    //TODO: Activate and run task (Smart logic)
+
+                    ActivationData activationData = taskModel.ActivationData;
+
+                    var instance = Activator.CreateInstance(activationData.InstanceType);
+                    MethodInfo method = activationData.Method;
+
+                    CancellationTokenSource taskCancelTokenSource = new CancellationTokenSource();
+                    CancellationToken taskCancellationToken = taskCancelTokenSource.Token;
+                    Task task = Task.Run(() =>
+                    {
+                        var argumentTypes = activationData.ArgumentTypes;
+                        var arguments = activationData.Arguments;
+
+                        for (int i = 0; i < argumentTypes.Length; i++)
+                        {
+                            if (argumentTypes[i] == typeof(CancellationToken))
+                            {
+                                arguments[i] = taskCancellationToken;
+                                break;
+                            }
+                        }
+                        method.Invoke(instance, activationData.Arguments);
+                    }, taskCancellationToken);
+
+                    //Task task = Task.Run(x => method.Invoke(instance, activationData.Arguments);
+                    //{
+                    //    //Thread t = Thread.CurrentThread;
+                    //    //using (token.Register(t.Abort))
+                    //    //{
+                    //    //    method.Invoke(instance, activationData.Arguments);
+                    //    //}                        
+                    //}, taskCancellationToken);
+
+
+                    TaskWrapper taskWrapper = new TaskWrapper(task, taskCancelTokenSource);
+                    activeTasks.Add(taskModel.Id, taskWrapper);
 
                     logger.WriteDebug("The task {0} has been received.", taskModel);
                 }
@@ -163,9 +203,22 @@ namespace WiseQueue.Domain.Common.Management
                         continue;
                     }
                     logger.WriteTrace("The task (id = {0}) has been marked for cancelation. Cancelling...", taskId);
-                    taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
 
-                    //TODO: Cancel task.
+                    if (activeTasks.ContainsKey(taskId))
+                    {
+                        logger.WriteTrace("The task is running. Cancelling...");
+                        taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
+
+                        try
+                        {
+                            TaskWrapper taskWrapper = activeTasks[taskId];
+                            taskWrapper.TaskCancellationTokenSource.Cancel();
+                        }
+                        catch (Exception ex)
+                        {
+                            
+                        }
+                    }
 
                     taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
                 }

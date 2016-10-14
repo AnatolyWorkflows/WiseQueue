@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using WiseQueue.Core.Common.Models.Tasks;
@@ -18,6 +19,20 @@ namespace WiseQueue.Core.Common.Converters
         ActivationData Convert(Expression<Action> action);
 
         MethodInfo GetNonOpenMatchingMethod(Type instanceType, string methodName, Type[] argumentTypes);
+
+        /// <summary>
+        /// Serialize arguments into the array of string.
+        /// </summary>
+        /// <param name="arguments">List of arguments.</param>
+        /// <returns>Array of string</returns>
+        string[] SerializeArguments(IReadOnlyCollection<object> arguments);
+
+        /// <summary>
+        /// Deserialize arguments using method info and serialized arguments.
+        /// </summary>
+        /// <param name="methodInfo">The MethodInfo instance.</param>
+        /// <param name="serializedArguments">Array of string that contains serialized arguments.</param>
+        /// <returns>List of arguments.</returns>
         object[] DeserializeArguments(MethodInfo methodInfo, string[] serializedArguments);
     }
 }

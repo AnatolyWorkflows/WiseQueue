@@ -57,6 +57,7 @@
     <Compile Include="Entities\QueueEntity.cs" />
     <Compile Include="Entities\Server\ServerEntity.cs" />
     <Compile Include="Entities\Server\ServerHeartbeatEntity.cs" />
+    <Compile Include="ITaskCancellationToken.cs" />
     <Compile Include="Management\IManager.cs" />
     <Compile Include="Management\Implementation\BaseManager.cs" />
     <Compile Include="Management\IMainManagerManager.cs" />

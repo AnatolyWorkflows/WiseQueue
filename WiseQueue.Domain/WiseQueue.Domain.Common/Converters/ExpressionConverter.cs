@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Caching;
@@ -117,6 +119,46 @@ namespace WiseQueue.Domain.Common.Converters
             logger.WriteTrace("Converting Expression<Action> into the TaskActivationDetailsModel has been successfully completed.");
 
             return result;
+        }
+
+        public string[] SerializeArguments(IReadOnlyCollection<object> arguments)
+        {
+            var serializedArguments = new List<string>(arguments.Count);
+            foreach (var argument in arguments)
+            {
+                string value;
+
+                if (argument != null)
+                {
+                    if (argument is DateTime)
+                    {
+                        value = ((DateTime)argument).ToString("o", CultureInfo.InvariantCulture);
+                    }
+                    else if (argument is CancellationToken)
+                    {
+                        // CancellationToken type instances are substituted with ShutdownToken 
+                        // during the background job performance, so we don't need to store 
+                        // their values.
+                        value = null;
+                    }
+                    else
+                    {
+                        value = jsonConverter.ConvertToJson(argument);
+                    }
+                }
+                else
+                {
+                    value = null;
+                }
+
+                // Logic, related to optional parameters and their default values, 
+                // can be skipped, because it is impossible to omit them in 
+                // lambda-expressions (leads to a compile-time error).
+
+                serializedArguments.Add(value);
+            }
+
+            return serializedArguments.ToArray();
         }
 
         public MethodInfo GetNonOpenMatchingMethod(Type instanceType, string methodName, Type[] argumentTypes)

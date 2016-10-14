@@ -9,6 +9,9 @@ using WiseQueue.Core.Tests;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 using WiseQueue.Domain.MicrosoftExpressionCache;
+using System.Threading;
+using WiseQueue.Core.Common;
+using WiseQueue.Domain.Common.Management.Tasks;
 
 namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
 {
@@ -16,6 +19,16 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
     {
         public void SimpleMethod(int k)
         {
+        }
+
+        public void MethodWithStruct(int k, TaskCancellationToken token)
+        {
+            
+        }
+
+        public void MethodJustClass(TaskCancellationToken token)
+        {
+
         }
     }
 
@@ -45,6 +58,31 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
             Assert.AreEqual(taskEntity.Id, actual.Id);
             Assert.AreEqual(taskEntity.QueueId, actual.QueueId);
             Assert.AreEqual(taskEntity.TaskState, actual.TaskState);            
+        }
+
+        [Test]
+        public void TaskConverterEntityToModelWithStructureTest()
+        {
+            IJsonConverter jsonConverter = new JsonConverter(LoggerFactory);
+            ICachedExpressionCompiler cachedExpressionCompiler = new CachedExpressionCompiler(LoggerFactory);
+            IExpressionConverter expressionConverter = new ExpressionConverter(jsonConverter, cachedExpressionCompiler, LoggerFactory);
+            ITaskConverter taskConverter = new TaskConverter(expressionConverter, jsonConverter, LoggerFactory);
+
+            TestTaskConverterClass instance = new TestTaskConverterClass();
+
+            ActivationData activationData = expressionConverter.Convert(() => instance.MethodJustClass(TaskCancellationToken.Null));
+
+            TaskModel taskModel = new TaskModel(1, 1, activationData, TaskStates.New);
+
+            TaskEntity taskEntity = taskConverter.Convert(taskModel);
+            Assert.IsNotNull(taskEntity);
+
+            TaskModel actual = taskConverter.Convert(taskEntity);
+            Assert.IsNotNull(actual);
+
+            Assert.AreEqual(taskEntity.Id, actual.Id);
+            Assert.AreEqual(taskEntity.QueueId, actual.QueueId);
+            Assert.AreEqual(taskEntity.TaskState, actual.TaskState);
         }
     }
 }

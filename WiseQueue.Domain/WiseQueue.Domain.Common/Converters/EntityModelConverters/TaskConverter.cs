@@ -52,6 +52,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
             MethodInfo method = expressionConverter.GetNonOpenMatchingMethod(instanceType, taskEntity.Method, argumentTypes);
 
             string[] serializedArguments = jsonConverter.ConvertFromJson<string[]>(taskEntity.Arguments);
+            
             object[] arguments = expressionConverter.DeserializeArguments(method, serializedArguments);
 
             ActivationData activationData = new ActivationData(instanceType, method, arguments, argumentTypes);
@@ -71,6 +72,9 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
         public TaskEntity Convert(TaskModel taskModel)
         {
             logger.WriteTrace("Converting {0} into the TaskEntity...", taskModel);
+
+            var args = expressionConverter.SerializeArguments(taskModel.ActivationData.Arguments);
+
             TaskEntity entity = new TaskEntity
             {
                 Id = taskModel.Id,
@@ -78,7 +82,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
                 InstanceType = jsonConverter.ConvertToJson(taskModel.ActivationData.InstanceType),
                 Method = taskModel.ActivationData.Method.Name,
                 ParametersTypes = jsonConverter.ConvertToJson(taskModel.ActivationData.ArgumentTypes),
-                Arguments = jsonConverter.ConvertToJson(taskModel.ActivationData.Arguments),
+                Arguments = jsonConverter.ConvertToJson(args),
                 TaskState = taskModel.TaskState
             };
 
