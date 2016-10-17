@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using Common.Core.BaseClasses;
@@ -130,12 +131,10 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// Get available task from the storage.
         /// </summary>
         /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
-        /// <param name="taskModel">The <see cref="TaskModel"/> instance if it has been found. Otherwise, null.</param>
-        /// <returns>True if the TaskModel instance has been populated. Otherwise, false.</returns>
-        public bool TryGetAvailableTask(TaskRequestSpecification specification, out TaskModel taskModel)
+        /// <param name="taskModels">List of <see cref="TaskModel"/> instances if it has been found</param>
+        /// <returns>True if the list of TaskModel instances has been populated. Otherwise, false.</returns>
+        public bool TryGetAvailableTask(TaskRequestSpecification specification, out List<TaskModel> taskModels)
         {
-            taskModel = null;
-
             if (specification == null)
                 throw new ArgumentNullException("specification");
 
@@ -150,7 +149,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             stringBuilder.Append("[ParametersTypes] [nvarchar](4000), ");
             stringBuilder.AppendLine("[Arguments] [nvarchar](4000)); ");
 
-            stringBuilder.AppendFormat("UPDATE TOP (1) {0}.{1} ", sqlSettings.WiseQueueDefaultSchema, taskTableName);
+            stringBuilder.AppendFormat("UPDATE TOP ({0}) {1}.{2} ", specification.MaxTasks, sqlSettings.WiseQueueDefaultSchema, taskTableName);
             stringBuilder.AppendFormat("SET State = {0}, ", (short)TaskStates.Pending);
             stringBuilder.AppendFormat("ServerId = {0} ", specification.ServerId);
             stringBuilder.Append("OUTPUT inserted.* INTO @TempTable ");
@@ -170,6 +169,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                         command.CommandText = stringBuilder.ToString();
                         using (IDataReader rdr = command.ExecuteReader())
                         {
+                            taskModels = new List<TaskModel>();
                             while (rdr.Read())
                             {
                                 Int64 id = (Int64) rdr["Id"];
@@ -191,12 +191,12 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                     Arguments = argumentDetails
                                 };
 
-                                taskModel = taskConverter.Convert(taskEntity);    
-                                break; //We need to read only first task                            
+                                TaskModel taskModel = taskConverter.Convert(taskEntity);
+                                taskModels.Add(taskModel);
                             }
                         }
                     }
-                    if (taskModel != null)
+                    if (taskModels.Count > 0)
                     {
                         transaction.Commit();
                         return true;
@@ -234,8 +234,9 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// </summary>
         /// <param name="queueId">The queue identifier.</param>
         /// <param name="serverId">The server identifier.</param>
-        /// <returns>The task identifier.</returns>
-        public MethodResult<Int64> GetCancelTask(Int64 queueId, Int64 serverId)
+        /// <param name="taskIds">List of tasks' identifiers that have been canceled.</param>
+        /// <returns>True if there is at minimum one task that has been marked for cancel.</returns>
+        public bool TryGetCancelTasks(Int64 queueId, Int64 serverId, out List<Int64> taskIds)
         {
             const string selectStatement = "select [Id] from {0}.{1} where [QueueId] = {2} and [ServerId] = {3} and [State] = {4}";
 
@@ -248,16 +249,17 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                     command.CommandText = sqlCommand;
                     using (IDataReader rdr = command.ExecuteReader())
                     {
+                        taskIds = new List<Int64>();
                         while (rdr.Read())
                         {
                             Int64 id = (Int64)rdr["Id"];
-                            return new MethodResult<Int64>(id); //We need to read only first record.
+                            taskIds.Add(id);
                         }
                     }
                 }
             }
 
-            return new MethodResult<Int64>(-1);
+            return taskIds.Count > 0;
         }
 
         #endregion

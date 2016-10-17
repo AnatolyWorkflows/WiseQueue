@@ -22,9 +22,9 @@ namespace WiseQueue.Core.Common.DataContexts
         /// Get available task from the storage.
         /// </summary>
         /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
-        /// <param name="taskModel">The <see cref="TaskModel"/> instance if it has been found. Otherwise, null.</param>
-        /// <returns>True if the TaskModel instance has been populated. Otherwise, false.</returns>
-        bool TryGetAvailableTask(TaskRequestSpecification specification, out TaskModel taskModel);
+        /// <param name="taskModels">List of <see cref="TaskModel"/> instances if it has been found</param>
+        /// <returns>True if the list of TaskModel instances has been populated. Otherwise, false.</returns>
+        bool TryGetAvailableTask(TaskRequestSpecification specification, out List<TaskModel> taskModels);
 
         /// <summary>
         /// Set task's state.
@@ -38,7 +38,8 @@ namespace WiseQueue.Core.Common.DataContexts
         /// </summary>
         /// <param name="queueId">The queue identifier.</param>
         /// <param name="serverId">The server identifier.</param>
-        /// <returns>The task identifier.</returns>
-        MethodResult<Int64> GetCancelTask(Int64 queueId, Int64 serverId);
+        /// <param name="taskIds">List of tasks' identifiers that have been canceled.</param>
+        /// <returns>True if there is at minimum one task that has been marked for cancel.</returns>
+        bool TryGetCancelTasks(Int64 queueId, Int64 serverId, out List<Int64> taskIds);
     }
 }

@@ -136,91 +136,80 @@ namespace WiseQueue.Domain.Common.Management
                 Int64 queueId = queueModel.Id;
                 Int64 serverId = serverManager.ServerId;
                 TaskRequestSpecification specification = new TaskRequestSpecification(queueId, serverId);
-                TaskModel taskModel;
+                List<TaskModel> taskModels;
 
-                bool isReceived = taskDataContext.TryGetAvailableTask(specification, out taskModel);
+                bool isReceived = taskDataContext.TryGetAvailableTask(specification, out taskModels);
 
                 if (isReceived)
                 {
-                    //TODO: Activate and run task (Smart logic)
-
-                    ActivationData activationData = taskModel.ActivationData;
-
-                    var instance = Activator.CreateInstance(activationData.InstanceType);
-                    MethodInfo method = activationData.Method;
-
-                    CancellationTokenSource taskCancelTokenSource = new CancellationTokenSource();
-                    CancellationToken taskCancellationToken = taskCancelTokenSource.Token;
-                    Task task = Task.Run(() =>
+                    foreach (TaskModel taskModel in taskModels)
                     {
-                        var argumentTypes = activationData.ArgumentTypes;
-                        var arguments = activationData.Arguments;
+                        //TODO: Activate and run task (Smart logic)
+                        ActivationData activationData = taskModel.ActivationData;
 
-                        for (int i = 0; i < argumentTypes.Length; i++)
+                        var instance = Activator.CreateInstance(activationData.InstanceType);
+                        MethodInfo method = activationData.Method;
+
+                        CancellationTokenSource taskCancelTokenSource = new CancellationTokenSource();
+                        CancellationToken taskCancellationToken = taskCancelTokenSource.Token;
+                        Task task = Task.Run(() =>
                         {
-                            if (argumentTypes[i] == typeof(CancellationToken))
+                            var argumentTypes = activationData.ArgumentTypes;
+                            var arguments = activationData.Arguments;
+
+                            for (int i = 0; i < argumentTypes.Length; i++)
                             {
-                                arguments[i] = taskCancellationToken;
-                                break;
+                                if (argumentTypes[i] == typeof(CancellationToken))
+                                {
+                                    arguments[i] = taskCancellationToken;
+                                    break;
+                                }
                             }
-                        }
-                        method.Invoke(instance, activationData.Arguments);
-                    }, taskCancellationToken);
+                            method.Invoke(instance, activationData.Arguments);
+                        }, taskCancellationToken);
 
-                    //Task task = Task.Run(x => method.Invoke(instance, activationData.Arguments);
-                    //{
-                    //    //Thread t = Thread.CurrentThread;
-                    //    //using (token.Register(t.Abort))
-                    //    //{
-                    //    //    method.Invoke(instance, activationData.Arguments);
-                    //    //}                        
-                    //}, taskCancellationToken);
+                        TaskWrapper taskWrapper = new TaskWrapper(task, taskCancelTokenSource);
+                        activeTasks.Add(taskModel.Id, taskWrapper);
 
-
-                    TaskWrapper taskWrapper = new TaskWrapper(task, taskCancelTokenSource);
-                    activeTasks.Add(taskModel.Id, taskWrapper);
-
-                    logger.WriteDebug("The task {0} has been received.", taskModel);
+                        logger.WriteDebug("The task {0} has been received.", taskModel);
+                    }
                 }
                 else
                 {
                     logger.WriteDebug("There is no new task in the storage.");
                 }
 
-                MethodResult<Int64> methodResult = taskDataContext.GetCancelTask(queueId, serverId);
-                if (methodResult.HasError)
+                List<Int64> taskIds;
+                isReceived = taskDataContext.TryGetCancelTasks(queueId, serverId, out taskIds);
+                if (isReceived)
                 {
-                    logger.WriteError(
-                        "There was an error during geting tasks that have been marked for cancellation: ",
-                        methodResult.ErrorMsg);
+                    logger.WriteDebug("There is no task for cancelation.");
                 }
                 else
                 {
-                    Int64 taskId = methodResult.Result;
-                    if (taskId <= 0)
+                    foreach (Int64 taskId in taskIds)
                     {
-                        logger.WriteTrace("There is no task for cncelling.");
-                        continue;
-                    }
-                    logger.WriteTrace("The task (id = {0}) has been marked for cancelation. Cancelling...", taskId);
+                        logger.WriteTrace("The task (id = {0}) has been marked for cancelation. Cancelling...", taskId);
 
-                    if (activeTasks.ContainsKey(taskId))
-                    {
-                        logger.WriteTrace("The task is running. Cancelling...");
-                        taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
-
-                        try
+                        if (activeTasks.ContainsKey(taskId))
                         {
-                            TaskWrapper taskWrapper = activeTasks[taskId];
-                            taskWrapper.TaskCancellationTokenSource.Cancel();
-                        }
-                        catch (Exception ex)
-                        {
-                            
-                        }
-                    }
+                            logger.WriteTrace("The task is running. Cancelling...");
+                            taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
 
-                    taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
+                            try
+                            {
+                                TaskWrapper taskWrapper = activeTasks[taskId];
+                                taskWrapper.TaskCancellationTokenSource.Cancel();
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+
+                        //TODO: Bulk update.
+                        taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
+                    }
                 }
             }
 
