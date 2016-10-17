@@ -54,10 +54,10 @@ namespace WiseQueue
             {
                 configuration.Activate();
 
-                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
-                taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello2"));
+                //Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
+                //taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello2"));
 
-                //Int64 taskId = ClientManager.StartNewTask(() => new MyClass().VerySlowTask("Very slow task...", new CancellationToken()));
+                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().VerySlowTask("Very slow task...", new CancellationToken()));
 
                 Console.WriteLine("PRESS ENTER TO CANCEL");
                 Console.ReadLine();

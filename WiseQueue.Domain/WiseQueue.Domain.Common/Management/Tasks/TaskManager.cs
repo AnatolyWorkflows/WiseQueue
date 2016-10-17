@@ -183,10 +183,6 @@ namespace WiseQueue.Domain.Common.Management
                 isReceived = taskDataContext.TryGetCancelTasks(queueId, serverId, out taskIds);
                 if (isReceived)
                 {
-                    logger.WriteDebug("There is no task for cancelation.");
-                }
-                else
-                {
                     foreach (Int64 taskId in taskIds)
                     {
                         logger.WriteTrace("The task (id = {0}) has been marked for cancelation. Cancelling...", taskId);
@@ -210,6 +206,10 @@ namespace WiseQueue.Domain.Common.Management
                         //TODO: Bulk update.
                         taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
                     }
+                }
+                else
+                {
+                    logger.WriteDebug("There is no task for cancelation.");
                 }
             }
 
