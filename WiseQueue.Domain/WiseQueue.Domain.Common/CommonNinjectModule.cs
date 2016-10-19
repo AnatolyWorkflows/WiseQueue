@@ -10,6 +10,8 @@ using WiseQueue.Domain.Common.Management;
 using WiseQueue.Domain.MicrosoftExpressionCache;
 using Common.Core.ResourceHelper;
 using Common.Domain.ResourceHelper;
+using WiseQueue.Domain.Common.Management.Tasks;
+
 //using IResourceReaderHelper = Common.Core.ResourceHelper.IResourceReaderHelper;
 
 namespace WiseQueue.Domain.Common

@@ -144,6 +144,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             stringBuilder.Append("[ServerId] [bigint] NULL, ");
             stringBuilder.Append("[State] [smallint], ");
             stringBuilder.Append("[CompletedAt] [datetime] NULL, ");
+            stringBuilder.Append("[ExecuteAt] [datetime] NOT NULL, ");
+            stringBuilder.Append("[RepeatCrashCount] [int] NOT NULL, ");
             stringBuilder.Append("[InstanceType] [nvarchar](4000), ");
             stringBuilder.Append("[Method] [nvarchar](4000), ");
             stringBuilder.Append("[ParametersTypes] [nvarchar](4000), ");
@@ -152,10 +154,11 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             stringBuilder.AppendFormat("UPDATE TOP ({0}) {1}.{2} ", specification.MaxTasks, sqlSettings.WiseQueueDefaultSchema, taskTableName);
             stringBuilder.AppendFormat("SET State = {0}, ", (short)TaskStates.Pending);
             stringBuilder.AppendFormat("ServerId = {0} ", specification.ServerId);
+            //stringBuilder.Append("RepeatCount = RepeatCount - 1 ");
             stringBuilder.Append("OUTPUT inserted.* INTO @TempTable ");
             stringBuilder.AppendFormat("Where (State = {0} ", (short)TaskStates.New);
             stringBuilder.AppendFormat("OR ( (State = {0} OR State = {1}) AND [ServerId] IS NULL)) ", (short)TaskStates.Pending, (short)TaskStates.Running);
-            stringBuilder.AppendFormat("AND (QueueId = {0});", specification.QueueId);
+            stringBuilder.AppendFormat("AND (QueueId = {0}) AND ([ExecuteAt] <= GETUTCDATE()) AND [RepeatCrashCount] > 0;", specification.QueueId);
 
             stringBuilder.AppendLine();
             stringBuilder.AppendLine("SELECT * FROM @TempTable");
@@ -176,6 +179,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                 Int64 queueId = (Int64) rdr["QueueId"];
                                 TaskStates taskState = (TaskStates) (short) rdr["State"];
 
+                                int repeatCrashCount = (int)rdr["RepeatCrashCount"];
+
                                 string typeDetails = (string) rdr["InstanceType"];
                                 string methodDetails = (string) rdr["Method"];
                                 string parameterDetails = (string) rdr["ParametersTypes"];
@@ -188,7 +193,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
                                     InstanceType = typeDetails,
                                     Method = methodDetails,
                                     ParametersTypes = parameterDetails,
-                                    Arguments = argumentDetails
+                                    Arguments = argumentDetails,
+                                    RepeatCrashCount = repeatCrashCount
                                 };
 
                                 TaskModel taskModel = taskConverter.Convert(taskEntity);
@@ -260,6 +266,30 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             }
 
             return taskIds.Count > 0;
+        }
+
+        /// <summary>
+        /// Try to restart the task.
+        /// </summary>
+        /// <param name="taskId">The task' identifier.</param>
+        /// <param name="timeShift">Time shift.</param>
+        /// <param name="repeatCrashCount">Count of attempts that will be used for reruning this task after its crashed.</param>
+        /// <param name="msg">Message that explains the restart.</param>
+        /// <param name="exception">Exception that explains the restart.</param>
+        public void RestartTask(Int64 taskId, TimeSpan timeShift, int repeatCrashCount, string msg, Exception exception)
+        {
+            const string updateStatement = "UPDATE {0}.{1} SET [ExecuteAt]=GETUTCDATE() +'{2}', [RepeatCrashCount]='{3}', [ServerId] = NULL, [State] = {4}  WHERE [Id] = {5}";
+
+            string sqlCommand = string.Format(updateStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, timeShift, repeatCrashCount, (short)TaskStates.New, taskId);
+
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                {
+                    command.CommandText = sqlCommand;
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         #endregion

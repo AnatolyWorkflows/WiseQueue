@@ -44,6 +44,11 @@ namespace WiseQueue.Core.Common.Entities.Tasks
         /// </summary>
         public string Arguments { get; set; }
 
+        /// <summary>
+        /// Count of attempts that will be used for reruning this task after its crashed.
+        /// </summary>
+        public int RepeatCrashCount { get; set; }
+
         #endregion
 
         #region Overrides of Object

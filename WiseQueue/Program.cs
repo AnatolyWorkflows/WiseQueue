@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
+using WiseQueue.Core.Client;
 using WiseQueue.Core.Common;
+using WiseQueue.Core.Server;
 using WiseQueue.Domain.Client;
 using WiseQueue.Domain.Client.Management;
 using WiseQueue.Domain.Common;
@@ -34,6 +36,11 @@ namespace WiseQueue
                 }             
                 Console.WriteLine("The VerySlowTask has been cancelled.");   
             }
+
+            public void ExceptionTask()
+            {
+                throw new NotImplementedException();
+            }
         }
 
 
@@ -46,10 +53,17 @@ namespace WiseQueue
                                "Integrated Security=SSPI;";
 
 
+            ClientConfiguration clientConfiguration = new ClientConfiguration();
+            ServerConfiguration serverConfiguration = new ServerConfiguration
+            {
+                MaxTaskPerQueue = 3,
+                TimeShiftAfterCrash = TimeSpan.FromSeconds(10)
+            };
+
             using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
                 .UseNLog()
-                .UseClient()
-                .UseServer()
+                .UseClient(clientConfiguration)
+                .UseServer(serverConfiguration)
                 .UseSqlServer(connectionString))
             {
                 configuration.Activate();
@@ -57,12 +71,12 @@ namespace WiseQueue
                 //Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
                 //taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello2"));
 
-                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().VerySlowTask("Very slow task...", new CancellationToken()));
+                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().ExceptionTask());
 
-                Console.WriteLine("PRESS ENTER TO CANCEL");
-                Console.ReadLine();
+                //Console.WriteLine("PRESS ENTER TO CANCEL");
+                //Console.ReadLine();
 
-                ClientManager.CancelTask(taskId);
+                //ClientManager.CancelTask(taskId);
 
                 Console.ReadLine();
             }

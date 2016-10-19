@@ -57,9 +57,11 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
 
             ActivationData activationData = new ActivationData(instanceType, method, arguments, argumentTypes);
 
+            ScheduleInformation scheduleInformation = new ScheduleInformation(taskEntity.RepeatCrashCount);
+
             TaskModel taskModel = taskEntity.Id < 0
-                ? new TaskModel(taskEntity.QueueId, activationData)
-                : new TaskModel(taskEntity.Id, taskEntity.QueueId, activationData, taskEntity.TaskState);
+                ? new TaskModel(taskEntity.QueueId, activationData, scheduleInformation)
+                : new TaskModel(taskEntity.Id, taskEntity.QueueId, activationData, taskEntity.TaskState, scheduleInformation);
 
             return taskModel;
         }
@@ -83,7 +85,8 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
                 Method = taskModel.ActivationData.Method.Name,
                 ParametersTypes = jsonConverter.ConvertToJson(taskModel.ActivationData.ArgumentTypes),
                 Arguments = jsonConverter.ConvertToJson(args),
-                TaskState = taskModel.TaskState
+                TaskState = taskModel.TaskState,
+                RepeatCrashCount = taskModel.ScheduleInformation.RepeatCrashCount
             };
 
             logger.WriteTrace("Converting {0} into the TaskEntity has been successfully completed. Result = {1}", taskModel, entity);

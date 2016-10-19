@@ -46,6 +46,8 @@ namespace WiseQueue.Core.Common.Models.Tasks
         /// </summary>
         public ActivationData ActivationData { get; private set; }
 
+        public ScheduleInformation ScheduleInformation { get; private set; }
+
         /// <summary>
         /// Task's state.
         /// </summary>
@@ -61,18 +63,22 @@ namespace WiseQueue.Core.Common.Models.Tasks
         /// </summary>
         /// <param name="queueId">The queue's identifier where the task will be put.</param>
         /// <param name="activationData">Task's activation data.</param>
+        /// <param name="scheduleInformation"></param>
         /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="activationData"/> is <see langword="null" />.</exception>        
         /// <remarks>This constructor should be used only for new tasks entities.</remarks>
-        public TaskModel(Int64 queueId, ActivationData activationData)
+        public TaskModel(long queueId, ActivationData activationData, ScheduleInformation scheduleInformation)
         {
             if (queueId <= 0)
                 throw new ArgumentOutOfRangeException("queueId", "The queue identifier should be greate than 0.");
             if (activationData == null)
                 throw new ArgumentNullException("activationData");
+            if (scheduleInformation == null)
+                throw new ArgumentNullException(nameof(scheduleInformation));
 
             this.queueId = queueId;
             ActivationData = activationData;
+            ScheduleInformation = scheduleInformation;
             taskState = TaskStates.New;
         }
 
@@ -83,11 +89,12 @@ namespace WiseQueue.Core.Common.Models.Tasks
         /// <param name="queueId">The queue's identifier where the task will be put.</param>
         /// <param name="activationData">Task's activation data.</param>
         /// <param name="taskState">Task's state.</param>
+        /// <param name="scheduleInformation"></param>
         /// <exception cref="ArgumentOutOfRangeException">The task identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="activationData"/> is <see langword="null" />.</exception>
         /// <remarks>This constructor should be used only for a tasks entities that have been panding.</remarks>
-        public TaskModel(Int64 id, Int64 queueId, ActivationData activationData, TaskStates taskState)
+        public TaskModel(long id, long queueId, ActivationData activationData, TaskStates taskState, ScheduleInformation scheduleInformation)
         {
             if (id <= 0)
                 throw new ArgumentOutOfRangeException("id", "The task identifier should be greate than 0.");
@@ -95,10 +102,13 @@ namespace WiseQueue.Core.Common.Models.Tasks
                 throw new ArgumentOutOfRangeException("queueId", "The queue identifier should be greate than 0.");
             if (activationData == null)
                 throw new ArgumentNullException("activationData");
+            if (scheduleInformation == null)
+                throw new ArgumentNullException(nameof(scheduleInformation));
 
             this.id = id;
             this.queueId = queueId;
             ActivationData = activationData;
+            ScheduleInformation = scheduleInformation;
             this.taskState = taskState;
         }
 

@@ -41,5 +41,15 @@ namespace WiseQueue.Core.Common.DataContexts
         /// <param name="taskIds">List of tasks' identifiers that have been canceled.</param>
         /// <returns>True if there is at minimum one task that has been marked for cancel.</returns>
         bool TryGetCancelTasks(Int64 queueId, Int64 serverId, out List<Int64> taskIds);
+
+        /// <summary>
+        /// Try to restart the task.
+        /// </summary>
+        /// <param name="taskId">The task' identifier.</param>
+        /// <param name="timeShift">Time shift.</param>
+        /// <param name="repeatCrashCount">Count of attempts that will be used for reruning this task after its crashed.</param>
+        /// <param name="msg">Message that explains the restart.</param>
+        /// <param name="exception">Exception that explains the restart.</param>
+        void RestartTask(Int64 taskId, TimeSpan timeShift, int repeatCrashCount, string msg, Exception exception);
     }
 }

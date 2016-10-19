@@ -3,6 +3,7 @@ using Ninject.Infrastructure.Disposal;
 using Ninject.Modules;
 using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Server;
 using WiseQueue.Core.Server.Management;
 
 namespace WiseQueue.Domain.Common
@@ -24,9 +25,14 @@ namespace WiseQueue.Domain.Common
             kernel.Load(ninjectModule);
         }
 
+        public void BindToItself<TObject>(TObject obj)
+        {
+            kernel.Bind<TObject>().ToConstant(obj);
+        }
+
         public TComponent Get<TComponent>()
         {
-            TComponent result = kernel.Get<TComponent>();
+            TComponent result = kernel.Get<TComponent>();            
             return result;
         }
 
@@ -40,7 +46,12 @@ namespace WiseQueue.Domain.Common
 
             manager = kernel.TryGet<ITaskManager>();
             if (manager != null)
+            {
                 mainManager.Register(manager);
+
+                ServerConfiguration serverConfiguration = kernel.Get<ServerConfiguration>();
+                (manager as ITaskManager).SetServerConfiguration(serverConfiguration.MaxTaskPerQueue, serverConfiguration.MaxRerunAttempts, serverConfiguration.TimeShiftAfterCrash);
+            }
 
             mainManager.Start();
         }

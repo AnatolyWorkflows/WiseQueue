@@ -57,6 +57,7 @@
     <Compile Include="Entities\QueueEntity.cs" />
     <Compile Include="Entities\Server\ServerEntity.cs" />
     <Compile Include="Entities\Server\ServerHeartbeatEntity.cs" />
+    <Compile Include="Entities\Tasks\TaskScheduleEntity.cs" />
     <Compile Include="ITaskCancellationToken.cs" />
     <Compile Include="Management\IManager.cs" />
     <Compile Include="Management\Implementation\BaseManager.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Models\Servers\ServerHeartbeatModel.cs" />
     <Compile Include="Models\Servers\ServerModel.cs" />
     <Compile Include="Models\Tasks\ActivationData.cs" />
+    <Compile Include="Models\Tasks\ScheduleInformation.cs" />
     <Compile Include="Models\Tasks\TaskActivationDetailsModel.cs" />
     <Compile Include="Entities\Tasks\TaskEntity.cs" />
     <Compile Include="Entities\Tasks\TaskStates.cs" />

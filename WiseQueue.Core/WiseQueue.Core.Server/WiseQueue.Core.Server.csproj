@@ -46,6 +46,7 @@
     <Compile Include="Management\IWorkerManager.cs" />
     <Compile Include="Models\Worker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">

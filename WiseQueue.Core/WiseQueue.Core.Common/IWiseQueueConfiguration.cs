@@ -7,6 +7,8 @@ namespace WiseQueue.Core.Common
     {
         void AddNinjectModule(NinjectModule ninjectModule);
 
+        void BindToItself<TObject>(TObject obj);
+
         TComponent Get<TComponent>();
 
         void Activate();

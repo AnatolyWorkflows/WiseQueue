@@ -47,7 +47,7 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
             TestTaskConverterClass instance = new TestTaskConverterClass();
 
             ActivationData activationData = expressionConverter.Convert(() => instance.SimpleMethod(5));
-            TaskModel taskModel = new TaskModel(1, 1, activationData, TaskStates.New);
+            TaskModel taskModel = new TaskModel(1, 1, activationData, TaskStates.New, new ScheduleInformation(1));
 
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
             Assert.IsNotNull(taskEntity);
@@ -72,7 +72,7 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
 
             ActivationData activationData = expressionConverter.Convert(() => instance.MethodJustClass(TaskCancellationToken.Null));
 
-            TaskModel taskModel = new TaskModel(1, 1, activationData, TaskStates.New);
+            TaskModel taskModel = new TaskModel(1, 1, activationData, TaskStates.New, new ScheduleInformation(1));
 
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
             Assert.IsNotNull(taskEntity);
