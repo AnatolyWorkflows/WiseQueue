@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{A830794D-C308-4493-B22F-CA5D823F5156}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WiseQueue.Domain.Server</RootNamespace>
-    <AssemblyName>WiseQueue.Domain.Server</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>PerformanceTests.Server</RootNamespace>
+    <AssemblyName>PerformanceTests.Server</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,31 +33,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Factories\WorkerFactory.cs" />
-    <Compile Include="Management\WorkerManagement\WorkerManager.cs" />
-    <Compile Include="Management\ServerManager.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">
-      <Project>{0166437D-9F9C-4101-9B50-84A01FBE346D}</Project>
-      <Name>Common.Core</Name>
+    <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Client\WiseQueue.Core.Client.csproj">
+      <Project>{F17B2910-0E65-4011-836C-F86E7EAC48F3}</Project>
+      <Name>WiseQueue.Core.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
@@ -65,19 +62,24 @@
       <Project>{A71F3FD7-8095-4A9C-98A7-D777E4CCF45E}</Project>
       <Name>WiseQueue.Core.Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
-      <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
-      <Name>WiseQueue.Domain.Common</Name>
+    <ProjectReference Include="..\..\WiseQueue.Domain\WiseQueue.Domain.Configuration\WiseQueue.Domain.Configuration.csproj">
+      <Project>{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD}</Project>
+      <Name>WiseQueue.Domain.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WiseQueue.Extentions\WiseQueue.Domain.MsSql\WiseQueue.Domain.MsSql.csproj">
+      <Project>{1475F837-95C8-46A8-89D2-CEFE6B45C28C}</Project>
+      <Name>WiseQueue.Domain.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WiseQueue.Extentions\WiseQueue.Domain.NLogger\WiseQueue.Domain.NLogger.csproj">
+      <Project>{1B294978-0598-46FC-83F9-6F4FBF0EF73F}</Project>
+      <Name>WiseQueue.Domain.NLogger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PerformanceTest.Common\PerformanceTest.Common.csproj">
+      <Project>{f78ef8fa-6027-4c66-90f6-e8e86455f9ff}</Project>
+      <Name>PerformanceTest.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

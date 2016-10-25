@@ -7,7 +7,7 @@ using WiseQueue.Core.Server.Management;
 
 namespace WiseQueue.Domain.Server.Management
 {
-    class ServerManager : BaseManager, IServerManager
+    public class ServerManager : BaseManager, IServerManager
     {
         #region Fields...
 

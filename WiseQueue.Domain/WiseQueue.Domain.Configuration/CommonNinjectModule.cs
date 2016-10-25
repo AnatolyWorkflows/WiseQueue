@@ -1,20 +1,24 @@
 ﻿using System.Resources;
+using Common.Core.ResourceHelper;
+using Common.Domain.ResourceHelper;
 using Ninject.Modules;
+using WiseQueue.Core.Client.Managment;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Server.Management;
+using WiseQueue.Domain.Client.Management;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 using WiseQueue.Domain.Common.Management;
-using WiseQueue.Domain.MicrosoftExpressionCache;
-using Common.Core.ResourceHelper;
-using Common.Domain.ResourceHelper;
 using WiseQueue.Domain.Common.Management.Tasks;
+using WiseQueue.Domain.MicrosoftExpressionCache;
+using WiseQueue.Domain.Server.Management;
 
 //using IResourceReaderHelper = Common.Core.ResourceHelper.IResourceReaderHelper;
 
-namespace WiseQueue.Domain.Common
+namespace WiseQueue.Domain.Configuration
 {
     class CommonNinjectModule : NinjectModule
     {
@@ -39,6 +43,9 @@ namespace WiseQueue.Domain.Common
             Bind<IExpressionConverter>().To<ExpressionConverter>();
             Bind<IJsonConverter>().To<JsonConverter>();
 
+            Bind<IClientManager>().To<ClientManager>().InSingletonScope();
+            Bind<IServerManager>().To<ServerManager>().InSingletonScope();
+            
             Bind<IMainManagerManager>().To<MainManagerManager>().InSingletonScope();
             Bind<ITaskManager>().To<TaskManager>().InSingletonScope();            
             Bind<IQueueManager>().To<QueueManager>().InSingletonScope();            

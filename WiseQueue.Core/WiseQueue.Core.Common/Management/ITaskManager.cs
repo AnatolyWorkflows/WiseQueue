@@ -22,13 +22,5 @@ namespace WiseQueue.Core.Common.Management
         /// <param name="taskId">The task's identifier.</param>
         /// <param name="waitResponse">Falg shows that method will be wating until task is cancelled.</param>
         void StopTask(Int64 taskId, bool waitResponse = false);
-
-        /// <summary>
-        /// Set configuration that will be used from the server side
-        /// </summary>
-        /// <param name="maxTaskPerQueue">Max tasks that will be requested from the database in one queue.</param>
-        /// <param name="maxRerunAttempts">Max re-run attempts that will be done if task has been crashed.</param>
-        /// <param name="timeShiftAfterCrash">Time that will be wait before next attempt.</param>
-        void SetServerConfiguration(int maxTaskPerQueue, int maxRerunAttempts, TimeSpan timeShiftAfterCrash);
     }
 }

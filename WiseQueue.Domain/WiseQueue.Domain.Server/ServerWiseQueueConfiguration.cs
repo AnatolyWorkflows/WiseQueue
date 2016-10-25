@@ -1,6 +1,5 @@
 ﻿using System;
 using WiseQueue.Core.Common;
-using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Server;
 
 namespace WiseQueue.Domain.Server
@@ -17,7 +16,7 @@ namespace WiseQueue.Domain.Server
             configuration.AddNinjectModule(ninjectModule);
 
             if (serverConfiguration == null)
-                serverConfiguration = new ServerConfiguration();
+                serverConfiguration = ServerConfiguration.Default;
 
             configuration.BindToItself(serverConfiguration);
             

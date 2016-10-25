@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Core.Logging;
+using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
@@ -23,6 +24,8 @@ namespace WiseQueue.Domain.Common.Management.Tasks
     public class TaskManager : BaseManager, ITaskManager
     {
         #region Fields...
+
+        private readonly TaskManagerConfiguration taskManagerConfiguration;
 
         /// <summary>
         /// The <see cref="IExpressionConverter"/> instance.
@@ -53,6 +56,7 @@ namespace WiseQueue.Domain.Common.Management.Tasks
         private TimeSpan timeShiftAfterCrash;
 
         private int maxTasksPerQueue;
+        private TaskManagerState taskManagerState;
 
         #endregion
 
@@ -64,14 +68,15 @@ namespace WiseQueue.Domain.Common.Management.Tasks
         /// <param name="serverManager">The <see cref="IQueueManager"/> instance.</param>
         /// <param name="queueManager">The <see cref="IServerManager"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="taskManagerConfiguration"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="expressionConverter"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="taskDataContext"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="serverManager"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="queueManager"/> is <see langword="null" />.</exception>
-        public TaskManager(IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, ICommonLoggerFactory loggerFactory)
+        public TaskManager(TaskManagerConfiguration taskManagerConfiguration, IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, ICommonLoggerFactory loggerFactory)
             : base("Task Manager", loggerFactory)
         {
+            if (taskManagerConfiguration == null)
+                throw new ArgumentNullException(nameof(taskManagerConfiguration));
             if (expressionConverter == null) 
                 throw new ArgumentNullException("expressionConverter");
             if (taskDataContext == null)
@@ -88,9 +93,10 @@ namespace WiseQueue.Domain.Common.Management.Tasks
 
             activeTasks = new Dictionary<long, TaskWrapper>();
 
-            maxRerunCount = 3;
-            maxTasksPerQueue = 4;
-            timeShiftAfterCrash = TimeSpan.FromSeconds(10);
+            maxRerunCount = taskManagerConfiguration.MaxRerunAttempts;
+            maxTasksPerQueue = taskManagerConfiguration.MaxTaskPerQueue;
+            timeShiftAfterCrash = taskManagerConfiguration.TimeShiftAfterCrash;
+            taskManagerState = taskManagerConfiguration.State;
         }
 
         #region Implementation of ITaskManager
@@ -102,6 +108,9 @@ namespace WiseQueue.Domain.Common.Management.Tasks
         /// <returns>The task's identifier.</returns>
         public Int64 StartTask(Expression<Action> task) //TODO: (task, queue)
         {
+            if (taskManagerState == TaskManagerState.ServerOnly)
+                throw new InvalidOperationException("taskManagerState == TaskManagerState.ServerOnly");
+
             logger.WriteDebug("Preparing a new task... Getting a default queue...");
 
             QueueModel defaultQueue = queueManager.GetDefaultQueue();
@@ -123,6 +132,9 @@ namespace WiseQueue.Domain.Common.Management.Tasks
 
         public void StopTask(Int64 taskId, bool waitResponse = false)
         {
+            if (taskManagerState == TaskManagerState.ServerOnly)
+                throw new InvalidOperationException("taskManagerState == TaskManagerState.ServerOnly");
+
             logger.WriteDebug("Preparing for stopping task... Updating the task in the database...");
 
             taskDataContext.SetTaskState(taskId, TaskStates.Cancel);
@@ -135,19 +147,6 @@ namespace WiseQueue.Domain.Common.Management.Tasks
             }
         }
 
-        /// <summary>
-        /// Set configuration that will be used from the server side
-        /// </summary>
-        /// <param name="maxTasks">Max tasks that will be requested from the database in one queue.</param>
-        /// <param name="maxRerunAttempts">Max re-run attempts that will be done if task has been crashed.</param>
-        /// <param name="timeShift">Time that will be wait before next attempt.</param>
-        public void SetServerConfiguration(int maxTasks, int maxRerunAttempts, TimeSpan timeShift)
-        {
-            maxTasksPerQueue = maxTasks;
-            maxRerunCount = maxRerunAttempts;
-            timeShiftAfterCrash = timeShift;
-        }
-
         #endregion
 
         #region Implementation of IExecutable
@@ -157,6 +156,12 @@ namespace WiseQueue.Domain.Common.Management.Tasks
         /// </summary>
         public void Execute()
         {
+            if (taskManagerState == TaskManagerState.ClientOnly)
+            {
+                logger.WriteDebug("The server has client algorithm only.");
+                return;
+            }
+
             logger.WriteDebug("Searching for new tasks in available queue...");
 
             IReadOnlyCollection<QueueModel> queues = queueManager.GetAvailableQueues();

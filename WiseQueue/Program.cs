@@ -3,12 +3,9 @@ using System.Threading;
 using WiseQueue.Core.Client;
 using WiseQueue.Core.Common;
 using WiseQueue.Core.Server;
-using WiseQueue.Domain.Client;
-using WiseQueue.Domain.Client.Management;
-using WiseQueue.Domain.Common;
+using WiseQueue.Domain.Configuration;
 using WiseQueue.Domain.NLogger;
 using WiseQueue.Domain.MsSql;
-using WiseQueue.Domain.Server;
 
 namespace WiseQueue
 {
@@ -53,12 +50,8 @@ namespace WiseQueue
                                "Integrated Security=SSPI;";
 
 
-            ClientConfiguration clientConfiguration = new ClientConfiguration();
-            ServerConfiguration serverConfiguration = new ServerConfiguration
-            {
-                MaxTaskPerQueue = 3,
-                TimeShiftAfterCrash = TimeSpan.FromSeconds(10)
-            };
+            ClientConfiguration clientConfiguration = new ClientConfiguration(3, TimeSpan.FromSeconds(10));
+            ServerConfiguration serverConfiguration = new ServerConfiguration(3);
 
             using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
                 .UseNLog()
@@ -71,7 +64,7 @@ namespace WiseQueue
                 //Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
                 //taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello2"));
 
-                Int64 taskId = ClientManager.StartNewTask(() => new MyClass().ExceptionTask());
+                Int64 taskId = BackgroundClient.StartNewTask(() => new MyClass().ExceptionTask());
 
                 //Console.WriteLine("PRESS ENTER TO CANCEL");
                 //Console.ReadLine();

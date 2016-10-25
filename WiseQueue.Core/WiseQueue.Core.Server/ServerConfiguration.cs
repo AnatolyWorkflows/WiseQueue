@@ -1,18 +1,17 @@
-﻿using System;
-
-namespace WiseQueue.Core.Server
+﻿namespace WiseQueue.Core.Server
 {
     public class ServerConfiguration
     {
-        public int MaxTaskPerQueue { get; set; }
-        public TimeSpan TimeShiftAfterCrash { get; set; }
-        public int MaxRerunAttempts { get; set; }
-
-        public ServerConfiguration()
+        public static ServerConfiguration Default
         {
-            MaxTaskPerQueue = 4;
-            MaxRerunAttempts = 2;
-            TimeShiftAfterCrash = TimeSpan.FromSeconds(20);
+            get { return new ServerConfiguration(5); }
         }
+
+        public int MaxTaskPerQueue { get; private set; }
+
+        public ServerConfiguration(int maxTaskPerQueue)
+        {
+            MaxTaskPerQueue = maxTaskPerQueue;
+        }      
     }
 }

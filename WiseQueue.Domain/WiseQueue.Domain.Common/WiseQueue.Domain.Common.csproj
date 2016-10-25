@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommonNinjectModule.cs" />
     <Compile Include="Converters\EntityModelConverters\QueueConverter.cs" />
     <Compile Include="Converters\EntityModelConverters\ServerConverter.cs" />
     <Compile Include="Converters\EntityModelConverters\TaskConverter.cs" />
@@ -62,8 +61,6 @@
     <Compile Include="Management\Tasks\TaskManager.cs" />
     <Compile Include="Management\Tasks\TaskWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WiseQueueConfiguration.cs" />
-    <Compile Include="WiseQueueGlobalConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">

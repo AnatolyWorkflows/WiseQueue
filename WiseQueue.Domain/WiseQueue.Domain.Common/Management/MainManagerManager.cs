@@ -105,7 +105,7 @@ namespace WiseQueue.Domain.Common.Management
                     logger.WriteError(ex, "There was an exception during executing. Do nothing.");
                 }
 
-                token.WaitHandle.WaitOne(15 * 1000); //TODO: Move to settings. This time should be less than heartbeatLifetime
+                token.WaitHandle.WaitOne(1 * 1000); //TODO: Move to settings. This time should be less than heartbeatLifetime
             }
 
             logger.WriteTrace("Exiting working thread...");

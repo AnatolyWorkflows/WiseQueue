@@ -126,7 +126,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             logger.WriteTrace("Executing sql command...");
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                using (IDbCommand command = connection.CreateCommand())
                 {
                     command.CommandText = sqlCommand;
                     Int64 result = (Int64)command.ExecuteScalar();

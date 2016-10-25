@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue", "WiseQueue\WiseQueue.csproj", "{85B7D30F-0285-4B79-AC94-330ED0B15DEA}"
 EndProject
@@ -59,6 +59,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.NLogger", "Core\Common.NLogger\Common.NLogger.csproj", "{C27D2F4C-5606-44F6-A40D-4E80E664F3CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "Core\Common.Domain\Common.Domain.csproj", "{5CFD652A-8D19-4F71-B8AB-61E2EF2B4175}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PerformanceTests", "PerformanceTests", "{D6D03CAA-4CC1-4025-A901-7C7812ED4BAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTest.Common", "PerformanceTests\PerformanceTest.Common\PerformanceTest.Common.csproj", "{F78EF8FA-6027-4C66-90F6-E8E86455F9FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests.Client", "PerformanceTests\PerformanceTests.Client\PerformanceTests.Client.csproj", "{3BCC0D7A-A271-4E9B-9D4A-A4E20E92A805}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceTests.Server", "PerformanceTests\PerformanceTests.Server\PerformanceTests.Server.csproj", "{A830794D-C308-4493-B22F-CA5D823F5156}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WiseQueue.Domain.Configuration", "WiseQueue.Domain\WiseQueue.Domain.Configuration\WiseQueue.Domain.Configuration.csproj", "{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -134,6 +144,22 @@ Global
 		{5CFD652A-8D19-4F71-B8AB-61E2EF2B4175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CFD652A-8D19-4F71-B8AB-61E2EF2B4175}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CFD652A-8D19-4F71-B8AB-61E2EF2B4175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F78EF8FA-6027-4C66-90F6-E8E86455F9FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F78EF8FA-6027-4C66-90F6-E8E86455F9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F78EF8FA-6027-4C66-90F6-E8E86455F9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F78EF8FA-6027-4C66-90F6-E8E86455F9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BCC0D7A-A271-4E9B-9D4A-A4E20E92A805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BCC0D7A-A271-4E9B-9D4A-A4E20E92A805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BCC0D7A-A271-4E9B-9D4A-A4E20E92A805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BCC0D7A-A271-4E9B-9D4A-A4E20E92A805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A830794D-C308-4493-B22F-CA5D823F5156}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A830794D-C308-4493-B22F-CA5D823F5156}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A830794D-C308-4493-B22F-CA5D823F5156}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A830794D-C308-4493-B22F-CA5D823F5156}.Release|Any CPU.Build.0 = Release|Any CPU
+		{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,5 +184,9 @@ Global
 		{0166437D-9F9C-4101-9B50-84A01FBE346D} = {6BF77CC4-F8D4-43A5-BCCE-DC0CE9803CE2}
 		{C27D2F4C-5606-44F6-A40D-4E80E664F3CA} = {6BF77CC4-F8D4-43A5-BCCE-DC0CE9803CE2}
 		{5CFD652A-8D19-4F71-B8AB-61E2EF2B4175} = {6BF77CC4-F8D4-43A5-BCCE-DC0CE9803CE2}
+		{F78EF8FA-6027-4C66-90F6-E8E86455F9FF} = {D6D03CAA-4CC1-4025-A901-7C7812ED4BAC}
+		{3BCC0D7A-A271-4E9B-9D4A-A4E20E92A805} = {D6D03CAA-4CC1-4025-A901-7C7812ED4BAC}
+		{A830794D-C308-4493-B22F-CA5D823F5156} = {D6D03CAA-4CC1-4025-A901-7C7812ED4BAC}
+		{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD} = {108CCF45-052C-4B0C-A1B9-13F96E9E8F69}
 	EndGlobalSection
 EndGlobal
