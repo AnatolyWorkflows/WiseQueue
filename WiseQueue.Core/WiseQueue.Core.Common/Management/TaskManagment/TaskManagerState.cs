@@ -1,4 +1,4 @@
-﻿namespace WiseQueue.Core.Common.Management
+﻿namespace WiseQueue.Core.Common.Management.TaskManagment
 {
     public enum TaskManagerState
     {

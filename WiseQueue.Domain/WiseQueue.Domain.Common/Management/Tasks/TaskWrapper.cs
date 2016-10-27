@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace WiseQueue.Domain.Common.Management
+namespace WiseQueue.Domain.Common.Management.Tasks
 {
     class TaskWrapper
     {

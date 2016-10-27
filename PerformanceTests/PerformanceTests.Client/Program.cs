@@ -26,7 +26,7 @@ namespace PerformanceTests.Client
 
             Console.WriteLine("Maximum requests = {0}", maxCount);
 
-            ClientConfiguration clientConfiguration = new ClientConfiguration(5, TimeSpan.FromSeconds(30));
+            ClientConfiguration clientConfiguration = new ClientConfiguration(10, TimeSpan.FromSeconds(30));
 
             using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
                 .UseNLog()
@@ -40,7 +40,7 @@ namespace PerformanceTests.Client
                 {
                     Guid requestId = Guid.NewGuid();
                     Console.WriteLine("Enqueueing requestId = {0}...", requestId);
-                    Int64 taskId = BackgroundClient.StartNewTask(() => new SimpleServerJob().Execute(requestId, performanceConnectionString));
+                    Int64 taskId = BackgroundClient.StartNewTask(() => new WithExceptionServerJob().Execute(requestId, performanceConnectionString));
                     Console.WriteLine("The request has been enqueued. TaskId: {0}", taskId);
                 }                
 

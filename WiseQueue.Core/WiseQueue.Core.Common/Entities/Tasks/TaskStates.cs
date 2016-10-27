@@ -30,12 +30,8 @@
         /// </summary>
         Cancel = 6,
         /// <summary>
-        /// Mark task for cancellation.
-        /// </summary>
-        Cancelling = 7,
-        /// <summary>
         /// Mark task as cancelled.
         /// </summary>
-        Cancelled = 8
+        Cancelled = 7
     }
 }

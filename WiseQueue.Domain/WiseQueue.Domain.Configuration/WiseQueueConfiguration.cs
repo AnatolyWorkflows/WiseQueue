@@ -4,6 +4,7 @@ using Ninject.Modules;
 using WiseQueue.Core.Client;
 using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Management.TaskManagment;
 using WiseQueue.Core.Server;
 using WiseQueue.Core.Server.Management;
 

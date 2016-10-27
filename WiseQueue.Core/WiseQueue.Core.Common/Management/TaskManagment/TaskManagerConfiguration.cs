@@ -1,7 +1,6 @@
 ﻿using System;
-using WiseQueue.Core.Common.Management;
 
-namespace WiseQueue.Core.Common
+namespace WiseQueue.Core.Common.Management.TaskManagment
 {
     public class TaskManagerConfiguration
     {

@@ -62,8 +62,11 @@
     <Compile Include="Management\IManager.cs" />
     <Compile Include="Management\Implementation\BaseManager.cs" />
     <Compile Include="Management\IMainManagerManager.cs" />
-    <Compile Include="Management\ITaskManager.cs" />
-    <Compile Include="Management\TaskManagerState.cs" />
+    <Compile Include="Management\TaskManagment\IRunningTask.cs" />
+    <Compile Include="Management\TaskManagment\ITaskBuilder.cs" />
+    <Compile Include="Management\TaskManagment\ITaskManager.cs" />
+    <Compile Include="Management\TaskManagment\RunningTaskEventArg.cs" />
+    <Compile Include="Management\TaskManagment\TaskManagerState.cs" />
     <Compile Include="MethodResult.cs" />
     <Compile Include="Models\Servers\ServerHeartbeatModel.cs" />
     <Compile Include="Models\Servers\ServerModel.cs" />
@@ -77,7 +80,7 @@
     <Compile Include="Models\QueueModel.cs" />
     <Compile Include="Models\Tasks\TaskModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TaskManagerConfiguration.cs" />
+    <Compile Include="Management\TaskManagment\TaskManagerConfiguration.cs" />
     <Compile Include="Specifications\TaskRequestSpecification.cs" />
   </ItemGroup>
   <ItemGroup>

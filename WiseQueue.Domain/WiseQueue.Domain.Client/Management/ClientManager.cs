@@ -4,6 +4,7 @@ using Common.Core.Logging;
 using WiseQueue.Core.Client.Managment;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Management.Implementation;
+using WiseQueue.Core.Common.Management.TaskManagment;
 
 namespace WiseQueue.Domain.Client.Management
 {

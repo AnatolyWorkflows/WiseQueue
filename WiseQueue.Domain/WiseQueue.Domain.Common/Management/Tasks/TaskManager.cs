@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Core.Logging;
-using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Management;
 using WiseQueue.Core.Common.Management.Implementation;
+using WiseQueue.Core.Common.Management.TaskManagment;
 using WiseQueue.Core.Common.Models;
 using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
@@ -26,6 +23,8 @@ namespace WiseQueue.Domain.Common.Management.Tasks
         #region Fields...
 
         private readonly TaskManagerConfiguration taskManagerConfiguration;
+
+        private readonly ITaskBuilder taskBuilder;
 
         /// <summary>
         /// The <see cref="IExpressionConverter"/> instance.
@@ -50,7 +49,7 @@ namespace WiseQueue.Domain.Common.Management.Tasks
         /// <summary>
         /// List of active tasks.
         /// </summary>
-        private readonly Dictionary<Int64, TaskWrapper> activeTasks;
+        private readonly Dictionary<Int64, IRunningTask> activeTasks;
 
         private int maxRerunCount;
         private TimeSpan timeShiftAfterCrash;
@@ -72,11 +71,13 @@ namespace WiseQueue.Domain.Common.Management.Tasks
         /// <exception cref="ArgumentNullException"><paramref name="taskDataContext"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="serverManager"/> is <see langword="null" />.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="queueManager"/> is <see langword="null" />.</exception>
-        public TaskManager(TaskManagerConfiguration taskManagerConfiguration, IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, ICommonLoggerFactory loggerFactory)
+        public TaskManager(TaskManagerConfiguration taskManagerConfiguration, ITaskBuilder taskBuilder, IExpressionConverter expressionConverter, ITaskDataContext taskDataContext, IServerManager serverManager, IQueueManager queueManager, ICommonLoggerFactory loggerFactory)
             : base("Task Manager", loggerFactory)
         {
             if (taskManagerConfiguration == null)
                 throw new ArgumentNullException(nameof(taskManagerConfiguration));
+            if (taskBuilder == null)
+                throw new ArgumentNullException(nameof(taskBuilder));
             if (expressionConverter == null) 
                 throw new ArgumentNullException("expressionConverter");
             if (taskDataContext == null)
@@ -86,12 +87,13 @@ namespace WiseQueue.Domain.Common.Management.Tasks
             if (queueManager == null)
                 throw new ArgumentNullException("queueManager");
 
+            this.taskBuilder = taskBuilder;
             this.expressionConverter = expressionConverter;
             this.taskDataContext = taskDataContext;
             this.serverManager = serverManager;
             this.queueManager = queueManager;
 
-            activeTasks = new Dictionary<long, TaskWrapper>();
+            activeTasks = new Dictionary<Int64, IRunningTask>();
 
             maxRerunCount = taskManagerConfiguration.MaxRerunAttempts;
             maxTasksPerQueue = taskManagerConfiguration.MaxTaskPerQueue;
@@ -178,67 +180,27 @@ namespace WiseQueue.Domain.Common.Management.Tasks
                 {
                     foreach (TaskModel taskModel in taskModels)
                     {
-                        ActivationData activationData = taskModel.ActivationData;
+                        IRunningTask currentTask = null;
                         try
                         {
-                            //TODO: Activate and run task (Smart logic)
-                            var instance = Activator.CreateInstance(activationData.InstanceType);
-                            MethodInfo method = activationData.Method;
-
-                            CancellationTokenSource taskCancelTokenSource = new CancellationTokenSource();
-                            CancellationToken taskCancellationToken = taskCancelTokenSource.Token;
-
-                            Task task = Task.Run(() =>
-                            {
-                                Type[] argumentTypes = activationData.ArgumentTypes;
-                                object[] arguments = activationData.Arguments;
-
-                                for (int i = 0; i < argumentTypes.Length; i++)
-                                {
-                                    if (argumentTypes[i] == typeof(CancellationToken))
-                                    {
-                                        arguments[i] = taskCancellationToken;
-                                        break;
-                                    }
-                                }
-                                try
-                                {
-                                    method.Invoke(instance, activationData.Arguments);
-                                }
-                                catch (Exception ex)
-                                {
-                                    lock (activeTasks)
-                                    {
-                                        if (activeTasks.ContainsKey(taskModel.Id))
-                                            activeTasks.Remove(taskModel.Id);
-                                    }
-                                    
-                                    string msg = string.Format("There was an error during executing task: {0}.", activationData);
-                                    logger.WriteError(msg, ex);
-
-                                    RestartTask(taskModel, msg, ex);
-                                }
-                            }, taskCancellationToken);
-
-                            TaskWrapper taskWrapper = new TaskWrapper(task, taskCancelTokenSource);
+                            currentTask = taskBuilder.Build(taskModel);
+                            
                             lock (activeTasks)
                             {
-                                activeTasks.Add(taskModel.Id, taskWrapper);
-                            }                            
+                                activeTasks.Add(taskModel.Id, currentTask);
+                            }
+
+                            currentTask.OnCompletedEventHandler += OnCompletedEventHandler;
+                            currentTask.Execute(); //TODO: Provide global Cancelation Token.                                                            
 
                             logger.WriteDebug("The task {0} has been received.", taskModel);
                         }
                         catch (Exception ex)
                         {
-                            lock (activeTasks)
-                            {
-                                if (activeTasks.ContainsKey(taskModel.Id))
-                                    activeTasks.Remove(taskModel.Id);
-                            }
-
-                            string msg = string.Format("There was an error during executing task: {0}.", activationData);
+                            string msg = string.Format("There was an error during executing task: {0}.", taskModel);
+                            logger.WriteError(ex, msg);
                             RestartTask(taskModel, msg, ex);
-                        }                        
+                        }
                     }
                 }
                 else
@@ -254,33 +216,26 @@ namespace WiseQueue.Domain.Common.Management.Tasks
                     {
                         logger.WriteTrace("The task (id = {0}) has been marked for cancelation. Cancelling...", taskId);
 
-                        TaskWrapper taskWrapper;
+                        IRunningTask runningTask;
                         lock (activeTasks)
                         {
                             if (activeTasks.ContainsKey(taskId) == false)
                                 continue;
-                            taskWrapper = activeTasks[taskId];
-                            activeTasks.Remove(taskId);
+                            runningTask = activeTasks[taskId];
                         }
 
                         logger.WriteTrace("The task ({0}) is running. Cancelling...", taskId);
-                        taskDataContext.SetTaskState(taskId, TaskStates.Cancelling);
-
                         try
                         {
-                            taskWrapper.TaskCancellationTokenSource.Cancel();
+                            runningTask.Cancel();
                         }
                         catch (Exception ex)
                         {
                             //TODO: Decide what to do.
                             logger.WriteError("there was an exception during cancelation task.", ex);
-
                         }
-
-                        //TODO: Bulk update.
-                        taskDataContext.SetTaskState(taskId, TaskStates.Cancelled);
-
-                        logger.WriteTrace("The task has been canceled.");
+                                               
+                        logger.WriteTrace("The task has been marked for canceling.");
                     }
                 }
                 else
@@ -290,6 +245,50 @@ namespace WiseQueue.Domain.Common.Management.Tasks
             }
 
             logger.WriteDebug("All tasks have been found if existed.");
+        }
+
+        private void OnCompletedEventHandler(object sender, RunningTaskEventArg eventArg)
+        {
+            IRunningTask currentTask = (IRunningTask) sender;
+            currentTask.OnCompletedEventHandler -= OnCompletedEventHandler;
+
+            TaskStates taskState;
+            Int64 taskId = currentTask.TaskModel.Id;
+
+            switch (eventArg)
+            {
+                case RunningTaskEventArg.Completed:
+                    logger.WriteTrace("The task has been completed: {0}", taskId);
+                    taskState = TaskStates.Successed;
+                    break;
+                case RunningTaskEventArg.Cancelled:
+                    logger.WriteTrace("The task has been canceled: {0}", taskId);
+                    taskState = TaskStates.Cancelled;
+                    break;
+                case RunningTaskEventArg.Failed:
+                    logger.WriteTrace("The task has been failed: {0}", taskId);
+                    taskState = TaskStates.Failed;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+            
+            if (taskState == TaskStates.Successed || taskState == TaskStates.Cancelled)
+            {
+                lock (activeTasks)
+                {
+                    if (activeTasks.ContainsKey(taskId) == false)
+                        return;
+                    activeTasks.Remove(taskId);
+                }
+
+                taskDataContext.SetTaskState(taskId, taskState);
+            }
+            else
+            {
+                //TODO: correct message and details.
+                RestartTask(currentTask.TaskModel, "Exception inside", new Exception("TODO"));
+            }
         }
 
         private void RestartTask(TaskModel taskModel, string msg, Exception ex)

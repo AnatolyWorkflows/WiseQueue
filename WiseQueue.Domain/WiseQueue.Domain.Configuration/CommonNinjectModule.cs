@@ -7,6 +7,7 @@ using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Management.TaskManagment;
 using WiseQueue.Core.Server.Management;
 using WiseQueue.Domain.Client.Management;
 using WiseQueue.Domain.Common.Converters;
@@ -48,7 +49,9 @@ namespace WiseQueue.Domain.Configuration
             
             Bind<IMainManagerManager>().To<MainManagerManager>().InSingletonScope();
             Bind<ITaskManager>().To<TaskManager>().InSingletonScope();            
-            Bind<IQueueManager>().To<QueueManager>().InSingletonScope();            
+            Bind<IQueueManager>().To<QueueManager>().InSingletonScope();
+
+            Bind<ITaskBuilder>().To<TaskBuilder>().InSingletonScope();
         }
 
         #endregion

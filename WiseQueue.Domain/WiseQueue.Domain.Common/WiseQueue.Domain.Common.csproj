@@ -57,6 +57,8 @@
     <Compile Include="Management\HistoricalManager.cs" />
     <Compile Include="Management\MainManagerManager.cs" />
     <Compile Include="Management\QueueManager.cs" />
+    <Compile Include="Management\Tasks\RunningTask.cs" />
+    <Compile Include="Management\Tasks\TaskBuilder.cs" />
     <Compile Include="Management\Tasks\TaskCancellationToken.cs" />
     <Compile Include="Management\Tasks\TaskManager.cs" />
     <Compile Include="Management\Tasks\TaskWrapper.cs" />

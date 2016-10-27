@@ -75,7 +75,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
         {
             logger.WriteTrace("Converting {0} into the TaskEntity...", taskModel);
 
-            var args = expressionConverter.SerializeArguments(taskModel.ActivationData.Arguments);
+            string[] args = expressionConverter.SerializeArguments(taskModel.ActivationData.Arguments);
 
             TaskEntity entity = new TaskEntity
             {

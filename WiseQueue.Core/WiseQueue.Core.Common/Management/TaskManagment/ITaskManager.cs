@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Common.Core.Interfaces;
 
-namespace WiseQueue.Core.Common.Management
+namespace WiseQueue.Core.Common.Management.TaskManagment
 {
     /// <summary>
     /// Interface shows that <c>object</c> is a task manager.
