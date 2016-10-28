@@ -7,7 +7,7 @@ namespace WiseQueue.Core.Server.Management
     /// <summary>
     /// Interface shows that <c>object</c> is a server manager.
     /// </summary>
-    public interface IServerManager : IManager, IStartStoppable, IExecutable
+    public interface IServerManager : IManager, IStartStoppable
     {
         /// <summary>
         /// The server identifier.

@@ -3,7 +3,6 @@ using System.Data;
 using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using Common.Core.ResourceHelper;
-using WiseQueue.Core.Common.Models;
 
 namespace WiseQueue.Domain.MsSql.Utils.Implementation
 {
@@ -59,7 +58,7 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
             string script = resourceReaderHelper.ReadStringResource(currentType.Assembly, "Scripts.DatabaseScripts.sql");
 
             script = script.Replace("#{WiseQueueSchema}", !string.IsNullOrWhiteSpace(schema) ? schema : sqlSettings.WiseQueueDefaultSchema);
-            using (IDbTransaction transaction = connection.BeginTransaction())
+            using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
             {
                 using (var command = connection.CreateCommand())
                 {

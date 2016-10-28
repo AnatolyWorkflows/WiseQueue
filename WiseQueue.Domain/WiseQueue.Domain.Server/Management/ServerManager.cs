@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Management.Implementation;
@@ -17,10 +19,13 @@ namespace WiseQueue.Domain.Server.Management
         private readonly IServerDataContext serverDataContext;
 
         private readonly TimeSpan heartbeatLifetime;
+        private readonly TimeSpan sleepTime;
+
+        private readonly CancellationTokenSource heartbetCancelationCancellationTokenSource;
+        private readonly Task serverHeartbetTask;
 
         #endregion
-
-
+        
         #region Properties...
 
         /// <summary>
@@ -44,6 +49,13 @@ namespace WiseQueue.Domain.Server.Management
 
             this.serverDataContext = serverDataContext;
             heartbeatLifetime = TimeSpan.FromSeconds(15); //Move to settings.
+
+            //5 seconds for connection to the SQL.
+            sleepTime = TimeSpan.FromSeconds(heartbeatLifetime.Seconds - 10);
+
+            heartbetCancelationCancellationTokenSource = new CancellationTokenSource();
+            CancellationToken cancellationToken = heartbetCancelationCancellationTokenSource.Token;
+            serverHeartbetTask = new Task(OnHeartbet, cancellationToken);
         }
 
         #region Implementation of IStartStoppable
@@ -59,6 +71,8 @@ namespace WiseQueue.Domain.Server.Management
 
             ServerModel serverModel = new ServerModel(serverName, description, heartbeatLifetime);
             ServerId = serverDataContext.InsertServer(serverModel);
+
+            serverHeartbetTask.Start();
         }
 
         /// <summary>
@@ -66,33 +80,35 @@ namespace WiseQueue.Domain.Server.Management
         /// </summary>
         public void Stop()
         {
+            heartbetCancelationCancellationTokenSource.Cancel(false);
+            heartbetCancelationCancellationTokenSource.Dispose();
             serverDataContext.DeleteServer(ServerId);
         }
 
         #endregion
 
-        #region Implementation of IExecutable
-
-        /// <summary>
-        /// Calling this function if manager should do its job.
-        /// </summary>
-        public void Execute()
+        private void OnHeartbet(object state)
         {
-            logger.WriteTrace("Sending heartbeat for server id = {0}...", ServerId);
-            ServerHeartbeatModel serverHeartbeatModel = new ServerHeartbeatModel(ServerId, heartbeatLifetime);
-            serverDataContext.SendHeartbeat(serverHeartbeatModel);
-            logger.WriteTrace("The heartbeat has been sent.");
+            CancellationToken cancellationToken = (CancellationToken) state;
 
-            //Find servers that have been expired and delete them.
-            logger.WriteTrace("Finding and deleting servers that have been expired...");
-            int serverCount = serverDataContext.DeleteExpiredServers();
-            if (serverCount > 0)
-                logger.WriteTrace("There were(was) {0} servers that have(has) been expired. They were(was) deleted.",
-                    serverCount);
-            else
-                logger.WriteTrace("There was no any expired servers.");
+            while (cancellationToken.IsCancellationRequested == false)
+            {
+                logger.WriteTrace("Sending heartbeat for server id = {0}...", ServerId);
+                ServerHeartbeatModel serverHeartbeatModel = new ServerHeartbeatModel(ServerId, heartbeatLifetime);
+                serverDataContext.SendHeartbeat(serverHeartbeatModel);
+                logger.WriteTrace("The heartbeat has been sent.");
+
+                //Find servers that have been expired and delete them.
+                logger.WriteTrace("Finding and deleting servers that have been expired...");
+                int serverCount = serverDataContext.DeleteExpiredServers();
+                if (serverCount > 0)
+                    logger.WriteTrace("There were(was) {0} servers that have(has) been expired. They were(was) deleted.",
+                        serverCount);
+                else
+                    logger.WriteTrace("There was no any expired servers.");
+
+                cancellationToken.WaitHandle.WaitOne(sleepTime);
+            }            
         }
-
-        #endregion
     }
 }

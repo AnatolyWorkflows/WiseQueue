@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Core.BaseClasses;
@@ -52,15 +53,28 @@ namespace WiseQueue.Domain.Common.Management
         /// Occurs when some work should be done in the working thread.
         /// </summary>
         private void OnWorkingThreadIteration()
-        {
+        {            
+            TimeSpan totalExecutionTime = TimeSpan.Zero;
             foreach (IManager manager in managers)
             {
                 logger.WriteTrace("Executing {0}...", manager);
                 try
                 {
+                    Stopwatch stopwatch = Stopwatch.StartNew();
                     if (manager is IExecutable)
                         (manager as IExecutable).Execute();
-                    logger.WriteTrace("The {0} has been executed.", manager);
+                    stopwatch.Stop();
+                    totalExecutionTime = totalExecutionTime.Add(stopwatch.Elapsed);
+                    logger.WriteTrace("The {0} has been executed. Time: {1}", manager, stopwatch.Elapsed);
+
+                    if (stopwatch.Elapsed.TotalSeconds > 5.0f)
+                    {
+                        for (int i = 0; i < 50; i++)
+                        {
+                            logger.WriteError("!!!!!!!!!!!!!!!!!!! stopwatch.Elapsed.TotalSeconds > 5.0f");
+                        }                        
+                    }
+
                 }
                 catch (Exception ex)
                 {
