@@ -20,6 +20,11 @@ namespace WiseQueue.Core.Common.Entities.Tasks
         public Int64 QueueId { get; set; }
 
         /// <summary>
+        /// The server identifier.
+        /// </summary>
+        public Int64 ServerId { get; set; }
+
+        /// <summary>
         /// Task's state.
         /// </summary>
         public TaskStates TaskState { get; set; }

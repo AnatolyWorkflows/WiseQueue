@@ -35,7 +35,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// </summary>
         private const string insertStatement =
                 "INSERT INTO {0}.{1} ([Name], [Description],               [ExpiredAt]                  ) VALUES " +
-                                     "('{2}',     '{3}',       CAST(GETDATE() AS DATETIME)+'{4}'); " +
+                                     "('{2}',     '{3}',       CAST(GETUTCDATE() AS DATETIME)+'{4}'); " +
                 "SELECT CAST(scope_identity() AS bigint)";
 
         /// <summary>
@@ -48,13 +48,13 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         /// Heartbeat statement.
         /// </summary>
         private const string heartbeatStatement =
-            "UPDATE {0}.{1} SET [ExpiredAt]=CAST(GETDATE() AS DATETIME)+'{2}' WHERE [Id] = {3}";
+            "UPDATE {0}.{1} SET [ExpiredAt]=CAST(GETUTCDATE() AS DATETIME)+'{2}' WHERE [Id] = {3}";
 
         /// <summary>
         /// Delete servers that have been expired statement.
         /// </summary>
         private const string deleteExpiredServersStatement = "DECLARE @CURRENT_DATE_TIME datetime; " +
-                                                             "SET @CURRENT_DATE_TIME = CAST(GETDATE() AS DATETIME); " +
+                                                             "SET @CURRENT_DATE_TIME = CAST(GETUTCDATE() AS DATETIME); " +
                                                              "UPDATE t SET t.ServerId = NULL, t.State = {3} FROM {0}.{1} t INNER JOIN {0}.{2} s on t.ServerId = s.Id WHERE s.ExpiredAt < @CURRENT_DATE_TIME AND t.State <= {4}; " +
                                                              "DELETE FROM {0}.{2} WHERE [ExpiredAt] < @CURRENT_DATE_TIME;";
 

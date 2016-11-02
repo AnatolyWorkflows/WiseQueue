@@ -4,7 +4,7 @@ using WiseQueue.Core.Common.Models.Tasks;
 namespace WiseQueue.Core.Common.Converters.EntityModelConverters
 {
     /// <summary>
-    /// Interface shows that <c>object</c> can convert <see cref="TaskModel"/> into the <see cref="TaskEntity"/> and back.
+    /// Interface shows that <c>object</c> can convert <see cref="WiseQueue.Core.Common.Models.Tasks.TaskStateModel"/> into the <see cref="TaskEntity"/> and back.
     /// </summary>
     public interface ITaskConverter
     {
@@ -12,14 +12,14 @@ namespace WiseQueue.Core.Common.Converters.EntityModelConverters
         /// Convert task entity into the task model.
         /// </summary>
         /// <param name="taskEntity">The <see cref="TaskEntity"/> instance.</param>
-        /// <returns>The <see cref="TaskModel"/> instance.</returns>
+        /// <returns>The <see cref="WiseQueue.Core.Common.Models.Tasks.TaskStateModel"/> instance.</returns>
         TaskModel Convert(TaskEntity taskEntity);
 
         /// <summary>
         /// Convert task model into the task entity.
         /// </summary>
-        /// <param name="taskModel">The <see cref="TaskModel"/> instance.</param>
+        /// <param name="taskStateModel <see cref="WiseQueue.Core.Common.Models.Tasks.TaskStateModel"/> instance.</param>
         /// <returns>The <see cref="TaskEntity"/> instance.</returns>
-        TaskEntity Convert(TaskModel taskModel);
+        TaskEntity Convert(TaskModel taskStateModel);
     }
 }

@@ -38,7 +38,6 @@ namespace WiseQueue.Domain.Common.Management
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="managers">List of managers that will be controlling by this object.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
         public MainManagerManager(ICommonLoggerFactory loggerFactory) : base(loggerFactory)

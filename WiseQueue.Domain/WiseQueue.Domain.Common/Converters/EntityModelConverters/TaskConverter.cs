@@ -59,9 +59,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
 
             ScheduleInformation scheduleInformation = new ScheduleInformation(taskEntity.RepeatCrashCount);
 
-            TaskModel taskModel = taskEntity.Id < 0
-                ? new TaskModel(taskEntity.QueueId, activationData, scheduleInformation)
-                : new TaskModel(taskEntity.Id, taskEntity.QueueId, activationData, taskEntity.TaskState, scheduleInformation);
+            TaskModel taskModel = new TaskModel(taskEntity.Id, taskEntity.QueueId, taskEntity.ServerId, activationData, taskEntity.TaskState, scheduleInformation);
 
             return taskModel;
         }

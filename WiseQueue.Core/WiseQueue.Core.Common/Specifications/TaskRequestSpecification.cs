@@ -7,49 +7,22 @@ namespace WiseQueue.Core.Common.Specifications
     /// </summary>
     public class TaskRequestSpecification
     {
-        #region Fields...
-        /// <summary>
-        /// The queue's identifier in which we are going to search for a new task.
-        /// </summary>
-        private readonly Int64 queueId;
-
-        /// <summary>
-        /// Current server identifier.
-        /// </summary>
-        private readonly Int64 serverId;
-
-        /// <summary>
-        /// Max amount of tasks that will be requested.
-        /// </summary>
-        private readonly int maxTasks;
-
-        #endregion
-
         #region Properties...
 
         /// <summary>
         /// The queue's identifier in which we are going to search for a new task.
         /// </summary>
-        public Int64 QueueId
-        {
-            get { return queueId; }
-        }
+        public Int64 QueueId { get; private set; }
 
         /// <summary>
         /// Current server identifier.
         /// </summary>
-        public Int64 ServerId
-        {
-            get { return serverId; }
-        }
+        public Int64 ServerId { get; private set; }
 
         /// <summary>
         /// Max amount of tasks that will be requested.
         /// </summary>
-        public int MaxTasks
-        {
-            get { return maxTasks; }
-        }
+        public int MaxTasks { get; private set; }
 
         #endregion
 
@@ -61,9 +34,9 @@ namespace WiseQueue.Core.Common.Specifications
         /// <param name="maxTasks">Max amount of tasks that will be requested.</param>
         public TaskRequestSpecification(Int64 queueId, Int64 serverId, int maxTasks = 10)
         {
-            this.queueId = queueId;
-            this.serverId = serverId;
-            this.maxTasks = maxTasks;
+            QueueId = queueId;
+            ServerId = serverId;
+            MaxTasks = maxTasks;
         }
     }
 }

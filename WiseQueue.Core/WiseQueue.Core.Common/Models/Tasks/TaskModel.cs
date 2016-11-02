@@ -6,40 +6,9 @@ namespace WiseQueue.Core.Common.Models.Tasks
     /// <summary>
     /// <c>Task</c> model.
     /// </summary>
-    public class TaskModel
+    public class TaskModel: TaskStateModel
     {
-        #region Fields...
-        /// <summary>
-        /// Task's identifier.
-        /// </summary>
-        private readonly Int64 id;
-        /// <summary>
-        /// The queue's identifier where the task will be put.
-        /// </summary>
-        private readonly Int64 queueId;
-        /// <summary>
-        /// Task's state.
-        /// </summary>
-        private readonly TaskStates taskState;
-        #endregion
-
         #region Properties...
-
-        /// <summary>
-        /// Task's identifier.
-        /// </summary>
-        public Int64 Id
-        {
-            get { return id; }
-        }
-
-        /// <summary>
-        /// The queue's identifier where the task will be put.
-        /// </summary>
-        public Int64 QueueId
-        {
-            get { return queueId; }
-        }
 
         /// <summary>
         /// Task's activation details.
@@ -48,14 +17,6 @@ namespace WiseQueue.Core.Common.Models.Tasks
 
         public ScheduleInformation ScheduleInformation { get; private set; }
 
-        /// <summary>
-        /// Task's state.
-        /// </summary>
-        public TaskStates TaskState
-        {
-            get { return taskState; }
-        }
-
         #endregion
 
         /// <summary>
@@ -64,22 +25,17 @@ namespace WiseQueue.Core.Common.Models.Tasks
         /// <param name="queueId">The queue's identifier where the task will be put.</param>
         /// <param name="activationData">Task's activation data.</param>
         /// <param name="scheduleInformation"></param>
-        /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="activationData"/> is <see langword="null" />.</exception>        
         /// <remarks>This constructor should be used only for new tasks entities.</remarks>
-        public TaskModel(long queueId, ActivationData activationData, ScheduleInformation scheduleInformation)
+        public TaskModel(Int64 queueId, ActivationData activationData, ScheduleInformation scheduleInformation): base(queueId)
         {
-            if (queueId <= 0)
-                throw new ArgumentOutOfRangeException("queueId", "The queue identifier should be greate than 0.");
             if (activationData == null)
                 throw new ArgumentNullException("activationData");
             if (scheduleInformation == null)
                 throw new ArgumentNullException(nameof(scheduleInformation));
 
-            this.queueId = queueId;
             ActivationData = activationData;
             ScheduleInformation = scheduleInformation;
-            taskState = TaskStates.New;
         }
 
         /// <summary>
@@ -87,29 +43,21 @@ namespace WiseQueue.Core.Common.Models.Tasks
         /// </summary>
         /// <param name="id">Task's identifier.</param>
         /// <param name="queueId">The queue's identifier where the task will be put.</param>
+        /// <param name="serverId">The server's identifier that is used for processing the task.</param>
         /// <param name="activationData">Task's activation data.</param>
         /// <param name="taskState">Task's state.</param>
         /// <param name="scheduleInformation"></param>
-        /// <exception cref="ArgumentOutOfRangeException">The task identifier should be greate than 0.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">The queue identifier should be greate than 0.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="activationData"/> is <see langword="null" />.</exception>
         /// <remarks>This constructor should be used only for a tasks entities that have been panding.</remarks>
-        public TaskModel(long id, long queueId, ActivationData activationData, TaskStates taskState, ScheduleInformation scheduleInformation)
+        public TaskModel(Int64 id, Int64 queueId, Int64 serverId, ActivationData activationData, TaskStates taskState, ScheduleInformation scheduleInformation): base(id, queueId, serverId, taskState)
         {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException("id", "The task identifier should be greate than 0.");
-            if (queueId <= 0)
-                throw new ArgumentOutOfRangeException("queueId", "The queue identifier should be greate than 0.");
             if (activationData == null)
                 throw new ArgumentNullException("activationData");
             if (scheduleInformation == null)
                 throw new ArgumentNullException(nameof(scheduleInformation));
 
-            this.id = id;
-            this.queueId = queueId;
             ActivationData = activationData;
             ScheduleInformation = scheduleInformation;
-            this.taskState = taskState;
         }
 
         #region Overrides of Object
@@ -120,7 +68,7 @@ namespace WiseQueue.Core.Common.Models.Tasks
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return string.Format("Id: {0}; TaskState: {1}; QueueId: {2}; taskActivationDetails: {3}", id, taskState, queueId, ActivationData);
+            return string.Format("{0}; taskActivationDetails: {1}", base.ToString(), ActivationData);
         }
 
         #endregion

@@ -40,12 +40,13 @@ namespace WiseQueue.Domain.Server.Management
         /// </summary>
         /// <param name="serverDataContext">The <see cref="IServerDataContext"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="serverDataContext"/> is <see langword="null"/></exception>
         public ServerManager(IServerDataContext serverDataContext, ICommonLoggerFactory loggerFactory)
             : base("Server Manager", loggerFactory)
         {
             if (serverDataContext == null)
-                throw new ArgumentNullException("serverDataContext");
+                throw new ArgumentNullException(nameof(serverDataContext));
+
 
             this.serverDataContext = serverDataContext;
             heartbeatLifetime = TimeSpan.FromSeconds(15); //Move to settings.

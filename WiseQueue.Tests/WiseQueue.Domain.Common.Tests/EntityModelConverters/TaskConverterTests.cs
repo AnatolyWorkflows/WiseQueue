@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
@@ -9,8 +8,6 @@ using WiseQueue.Core.Tests;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 using WiseQueue.Domain.MicrosoftExpressionCache;
-using System.Threading;
-using WiseQueue.Core.Common;
 using WiseQueue.Domain.Common.Management.Tasks;
 
 namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
@@ -47,7 +44,7 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
             TestTaskConverterClass instance = new TestTaskConverterClass();
 
             ActivationData activationData = expressionConverter.Convert(() => instance.SimpleMethod(5));
-            TaskModel taskModel = new TaskModel(1, 1, activationData, TaskStates.New, new ScheduleInformation(1));
+            TaskModel taskModel = new TaskModel(1, 2, 3, activationData, TaskStates.New, new ScheduleInformation(1));
 
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
             Assert.IsNotNull(taskEntity);
@@ -72,7 +69,7 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
 
             ActivationData activationData = expressionConverter.Convert(() => instance.MethodJustClass(TaskCancellationToken.Null));
 
-            TaskModel taskModel = new TaskModel(1, 1, activationData, TaskStates.New, new ScheduleInformation(1));
+            TaskModel taskModel = new TaskModel(1, 2, 3, activationData, TaskStates.New, new ScheduleInformation(1));
 
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
             Assert.IsNotNull(taskEntity);

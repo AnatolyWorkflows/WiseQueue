@@ -15,7 +15,7 @@
 //            Int64 queueId = 1;
 //            TaskActivationDetailsModel taskActivationDetails = new TaskActivationDetailsModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
 //            TaskStates taskState = TaskStates.Pending;
-//            TaskModel taskModel = new TaskModel(id, queueId, taskActivationDetails, taskState);
+//            TaskModel taskStateModel = new TaskStateModel(id, queueId, taskActivationDetails, taskState);
 //            Assert.IsNotNull(taskModel);
 //            Assert.AreEqual(id, taskModel.Id);
 //            Assert.AreEqual(queueId, taskModel.QueueId);
@@ -73,7 +73,7 @@
 //        {
 //            Int64 queueId = 1;
 //            TaskActivationDetailsModel taskActivationDetails = new TaskActivationDetailsModel(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
-//            TaskModel taskModel = new TaskModel(queueId, taskActivationDetails);
+//            TaskModel taskStateModel = new TaskStateModel(queueId, taskActivationDetails);
 //            Assert.IsNotNull(taskModel);
 //            Assert.AreEqual(0, taskModel.Id);
 //            Assert.AreEqual(queueId, taskModel.QueueId);

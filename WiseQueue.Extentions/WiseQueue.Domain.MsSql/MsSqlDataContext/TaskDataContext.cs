@@ -4,7 +4,6 @@ using System.Data;
 using System.Text;
 using Common.Core.BaseClasses;
 using Common.Core.Logging;
-using WiseQueue.Core.Common;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
@@ -86,6 +85,125 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         #endregion
 
         #region Implementation of ITaskDataContext
+        /// <summary>
+        /// Get available task from the storage.
+        /// </summary>
+        /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
+        /// <param name="taskModels">List of <see cref="WiseQueue.Core.Common.Models.Tasks.TaskStateModel"/> instances if it has been found</param>
+        /// <returns>True if the list of TaskModel instances has been populated. Otherwise, false.</returns>
+        public bool TryGetAvailableTask(TaskRequestSpecification specification, out List<TaskModel> taskModels)
+        {
+            if (specification == null)
+                throw new ArgumentNullException("specification");
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("Declare @TempTable table ([Id] [bigint], ");
+            stringBuilder.Append("[QueueId] [bigint], ");
+            stringBuilder.Append("[ServerId] [bigint] NULL, ");
+            stringBuilder.Append("[State] [smallint], ");
+            stringBuilder.Append("[CompletedAt] [datetime] NULL, ");
+            stringBuilder.Append("[ExecuteAt] [datetime] NOT NULL, ");
+            stringBuilder.Append("[RepeatCrashCount] [int] NOT NULL, ");
+            stringBuilder.Append("[InstanceType] [nvarchar](4000), ");
+            stringBuilder.Append("[Method] [nvarchar](4000), ");
+            stringBuilder.Append("[ParametersTypes] [nvarchar](4000), ");
+            stringBuilder.AppendLine("[Arguments] [nvarchar](4000)); ");
+
+            stringBuilder.AppendFormat("UPDATE TOP ({0}) {1}.{2} ", specification.MaxTasks, sqlSettings.WiseQueueDefaultSchema, taskTableName);
+            stringBuilder.AppendFormat("SET State = {0}, ", (short)TaskStates.Pending);
+            stringBuilder.AppendFormat("ServerId = {0} ", specification.ServerId);
+            //stringBuilder.Append("RepeatCount = RepeatCount - 1 ");
+            stringBuilder.Append("OUTPUT inserted.* INTO @TempTable ");
+            stringBuilder.AppendFormat("Where (State = {0} ", (short)TaskStates.New);
+            stringBuilder.AppendFormat("OR ( (State = {0} OR State = {1}) AND [ServerId] IS NULL)) ", (short)TaskStates.Pending, (short)TaskStates.Running);
+            stringBuilder.AppendFormat("AND (QueueId = {0}) AND ([ExecuteAt] <= GETUTCDATE()) AND [RepeatCrashCount] > 0;", specification.QueueId);
+
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine("SELECT * FROM @TempTable");
+
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    using (IDbCommand command = connectionFactory.CreateCommand(connection, transaction))
+                    {
+                        command.CommandText = stringBuilder.ToString();
+                        using (IDataReader rdr = command.ExecuteReader())
+                        {
+                            taskModels = new List<TaskModel>();
+                            while (rdr.Read())
+                            {
+                                Int64 id = (Int64)rdr["Id"];
+                                Int64 queueId = (Int64)rdr["QueueId"];
+                                Int64 serverId = (Int64)rdr["ServerId"];
+                                TaskStates taskState = (TaskStates)(short)rdr["State"];
+
+                                int repeatCrashCount = (int)rdr["RepeatCrashCount"];
+
+                                string typeDetails = (string)rdr["InstanceType"];
+                                string methodDetails = (string)rdr["Method"];
+                                string parameterDetails = (string)rdr["ParametersTypes"];
+                                string argumentDetails = (string)rdr["Arguments"];
+                                TaskEntity taskEntity = new TaskEntity
+                                {
+                                    Id = id,
+                                    QueueId = queueId,
+                                    ServerId = serverId,
+                                    TaskState = taskState,
+                                    InstanceType = typeDetails,
+                                    Method = methodDetails,
+                                    ParametersTypes = parameterDetails,
+                                    Arguments = argumentDetails,
+                                    RepeatCrashCount = repeatCrashCount
+                                };
+
+                                TaskModel taskModel = taskConverter.Convert(taskEntity);
+                                taskModels.Add(taskModel);
+                            }
+                        }
+                    }
+                    if (taskModels.Count > 0)
+                    {
+                        transaction.Commit();
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Get task that has been marked for cancellation.
+        /// </summary>
+        /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
+        /// <param name="taskIds">List of tasks' identifiers that have been canceled.</param>
+        /// <returns>True if there is at minimum one task that has been marked for cancel.</returns>
+        public bool TryGetCancelTasks(TaskRequestSpecification specification, out List<Int64> taskIds)
+        {
+            const string selectStatement = "select [Id] from {0}.{1} where [QueueId] = {2} and [ServerId] = {3} and [State] = {4}";
+
+            string sqlCommand = string.Format(selectStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, specification.QueueId, specification.ServerId, (int)TaskStates.Cancel);
+
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                {
+                    command.CommandText = sqlCommand;
+                    using (IDataReader rdr = command.ExecuteReader())
+                    {
+                        taskIds = new List<Int64>();
+                        while (rdr.Read())
+                        {
+                            Int64 id = (Int64)rdr["Id"];
+                            taskIds.Add(id);
+                        }
+                    }
+                }
+            }
+
+            return taskIds.Count > 0;
+        }
 
         /// <summary>
         /// Insert a task into the storage.
@@ -128,105 +246,18 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         }
 
         /// <summary>
-        /// Get available task from the storage.
-        /// </summary>
-        /// <param name="specification">The <see cref="TaskRequestSpecification"/> instance.</param>
-        /// <param name="taskModels">List of <see cref="TaskModel"/> instances if it has been found</param>
-        /// <returns>True if the list of TaskModel instances has been populated. Otherwise, false.</returns>
-        public bool TryGetAvailableTask(TaskRequestSpecification specification, out List<TaskModel> taskModels)
-        {
-            if (specification == null)
-                throw new ArgumentNullException("specification");
-
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("Declare @TempTable table ([Id] [bigint], ");
-            stringBuilder.Append("[QueueId] [bigint], ");
-            stringBuilder.Append("[ServerId] [bigint] NULL, ");
-            stringBuilder.Append("[State] [smallint], ");
-            stringBuilder.Append("[CompletedAt] [datetime] NULL, ");
-            stringBuilder.Append("[ExecuteAt] [datetime] NOT NULL, ");
-            stringBuilder.Append("[RepeatCrashCount] [int] NOT NULL, ");
-            stringBuilder.Append("[InstanceType] [nvarchar](4000), ");
-            stringBuilder.Append("[Method] [nvarchar](4000), ");
-            stringBuilder.Append("[ParametersTypes] [nvarchar](4000), ");
-            stringBuilder.AppendLine("[Arguments] [nvarchar](4000)); ");
-
-            stringBuilder.AppendFormat("UPDATE TOP ({0}) {1}.{2} ", specification.MaxTasks, sqlSettings.WiseQueueDefaultSchema, taskTableName);
-            stringBuilder.AppendFormat("SET State = {0}, ", (short)TaskStates.Pending);
-            stringBuilder.AppendFormat("ServerId = {0} ", specification.ServerId);
-            //stringBuilder.Append("RepeatCount = RepeatCount - 1 ");
-            stringBuilder.Append("OUTPUT inserted.* INTO @TempTable ");
-            stringBuilder.AppendFormat("Where (State = {0} ", (short)TaskStates.New);
-            stringBuilder.AppendFormat("OR ( (State = {0} OR State = {1}) AND [ServerId] IS NULL)) ", (short)TaskStates.Pending, (short)TaskStates.Running);
-            stringBuilder.AppendFormat("AND (QueueId = {0}) AND ([ExecuteAt] <= GETUTCDATE()) AND [RepeatCrashCount] > 0;", specification.QueueId);
-
-            stringBuilder.AppendLine();
-            stringBuilder.AppendLine("SELECT * FROM @TempTable");
-
-            using (IDbConnection connection = connectionFactory.CreateConnection())
-            {                
-                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted))
-                {
-                    using (IDbCommand command = connectionFactory.CreateCommand(connection, transaction))
-                    {
-                        command.CommandText = stringBuilder.ToString();
-                        using (IDataReader rdr = command.ExecuteReader())
-                        {
-                            taskModels = new List<TaskModel>();
-                            while (rdr.Read())
-                            {
-                                Int64 id = (Int64) rdr["Id"];
-                                Int64 queueId = (Int64) rdr["QueueId"];
-                                TaskStates taskState = (TaskStates) (short) rdr["State"];
-
-                                int repeatCrashCount = (int)rdr["RepeatCrashCount"];
-
-                                string typeDetails = (string) rdr["InstanceType"];
-                                string methodDetails = (string) rdr["Method"];
-                                string parameterDetails = (string) rdr["ParametersTypes"];
-                                string argumentDetails = (string) rdr["Arguments"];
-                                TaskEntity taskEntity = new TaskEntity
-                                {
-                                    Id = id,
-                                    QueueId = queueId,
-                                    TaskState = taskState,
-                                    InstanceType = typeDetails,
-                                    Method = methodDetails,
-                                    ParametersTypes = parameterDetails,
-                                    Arguments = argumentDetails,
-                                    RepeatCrashCount = repeatCrashCount
-                                };
-
-                                TaskModel taskModel = taskConverter.Convert(taskEntity);
-                                taskModels.Add(taskModel);
-                            }
-                        }
-                    }
-                    if (taskModels.Count > 0)
-                    {
-                        transaction.Commit();
-                        return true;
-                    }
-                }
-                
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Set task's state.
         /// </summary>
-        /// <param name="id">The task's identifier.</param>
-        /// <param name="taskState">New task's state that we are going to set.</param>
-        public void SetTaskState(Int64 id, TaskStates taskState)
+        /// <param name="taskStateModel">The <see cref="WiseQueue.Core.Common.Models.Tasks.TaskStateModel"/> instance.</param>
+        public void SetTaskState(TaskStateModel taskStateModel)
         {
-            //TODO: if [id] == null then task should be mark as cancelled.
-            const string updateStatement = "UPDATE {0}.{1} SET [State]={2}, [CompletedAt]='{3}' WHERE [Id] = {4}";
+            const string updateStatement = "UPDATE {0}.{1} SET [State]={2}, [CompletedAt]=GETUTCDATE() WHERE [Id] = {3} AND [QueueId] = {4} AND [ServerId] = {5}";
 
-            string sqlCommand = string.Format(updateStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, (short)taskState, DateTime.UtcNow.ToString("s"), id);
+            string sqlCommand = string.Format(updateStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, (short)taskStateModel.TaskState, taskStateModel.Id, taskStateModel.QueueId, taskStateModel.ServerId);
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
+                //TODO: Transaction ???
                 using (IDbCommand command = connectionFactory.CreateCommand(connection))
                 {
                     command.CommandText = sqlCommand;
@@ -236,54 +267,29 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         }
 
         /// <summary>
-        /// Get task that has been marked for cancellation.
-        /// </summary>
-        /// <param name="queueId">The queue identifier.</param>
-        /// <param name="serverId">The server identifier.</param>
-        /// <param name="taskIds">List of tasks' identifiers that have been canceled.</param>
-        /// <returns>True if there is at minimum one task that has been marked for cancel.</returns>
-        public bool TryGetCancelTasks(Int64 queueId, Int64 serverId, out List<Int64> taskIds)
-        {
-            const string selectStatement = "select [Id] from {0}.{1} where [QueueId] = {2} and [ServerId] = {3} and [State] = {4}";
-
-            string sqlCommand = string.Format(selectStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, queueId, serverId, (int)TaskStates.Cancel);
-
-            using (IDbConnection connection = connectionFactory.CreateConnection())
-            {
-                using (IDbCommand command = connectionFactory.CreateCommand(connection))
-                {
-                    command.CommandText = sqlCommand;
-                    using (IDataReader rdr = command.ExecuteReader())
-                    {
-                        taskIds = new List<Int64>();
-                        while (rdr.Read())
-                        {
-                            Int64 id = (Int64)rdr["Id"];
-                            taskIds.Add(id);
-                        }
-                    }
-                }
-            }
-
-            return taskIds.Count > 0;
-        }
-
-        /// <summary>
         /// Try to restart the task.
         /// </summary>
-        /// <param name="taskId">The task' identifier.</param>
+        /// <param name="taskStateModel">The <see cref="TaskStateModel"/> instance.</param>
         /// <param name="timeShift">Time shift.</param>
         /// <param name="repeatCrashCount">Count of attempts that will be used for reruning this task after its crashed.</param>
         /// <param name="msg">Message that explains the restart.</param>
         /// <param name="exception">Exception that explains the restart.</param>
-        public void RestartTask(Int64 taskId, TimeSpan timeShift, int repeatCrashCount, string msg, Exception exception)
+        public void RestartTask(TaskStateModel taskStateModel, TimeSpan timeShift, int repeatCrashCount, string msg, Exception exception)
         {
-            const string updateStatement = "UPDATE {0}.{1} SET [ExecuteAt]=GETUTCDATE() +'{2}', [RepeatCrashCount]='{3}', [ServerId] = NULL, [State] = {4}  WHERE [Id] = {5}";
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendFormat("UPDATE {0}.{1}", sqlSettings.WiseQueueDefaultSchema, taskTableName);
+            if (repeatCrashCount == 0)
+                stringBuilder.AppendFormat("SET [ExecuteAt]=GETUTCDATE(), [RepeatCrashCount]=0, [State] = {0}", (short)TaskStates.Failed);
+            else
+                stringBuilder.AppendFormat("SET [ExecuteAt]=GETUTCDATE() +'{0}', [RepeatCrashCount]={1}, [ServerId] = NULL, [State] = {2}", timeShift, repeatCrashCount, (short)TaskStates.New);
 
-            string sqlCommand = string.Format(updateStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, timeShift, repeatCrashCount, (short)TaskStates.New, taskId);
+            stringBuilder.AppendFormat("WHERE [Id] = {0} AND [QueueId] = {1} AND [ServerId] = {2}", taskStateModel.Id, taskStateModel.QueueId, taskStateModel.ServerId);
+
+            string sqlCommand = stringBuilder.ToString();
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
+                //TODO: Transaction ???
                 using (IDbCommand command = connectionFactory.CreateCommand(connection))
                 {
                     command.CommandText = sqlCommand;

@@ -71,6 +71,7 @@
     <Compile Include="Models\Servers\ServerHeartbeatModel.cs" />
     <Compile Include="Models\Servers\ServerModel.cs" />
     <Compile Include="Models\Tasks\ActivationData.cs" />
+    <Compile Include="Models\Tasks\TaskStateModel.cs" />
     <Compile Include="Models\Tasks\ScheduleInformation.cs" />
     <Compile Include="Models\Tasks\TaskActivationDetailsModel.cs" />
     <Compile Include="Entities\Tasks\TaskEntity.cs" />
