@@ -139,11 +139,7 @@ namespace WiseQueue.Domain.Common.Management.Tasks
 
             logger.WriteDebug("Preparing for stopping task... Updating the task in the database...");
 
-            QueueModel defaultQueue = queueManager.GetDefaultQueue();
-            long queueId = defaultQueue.Id;//TODO: From the parameters
-            long serverId = 2; //TODO: From the parameters
-            TaskStateModel taskStateModel = new TaskStateModel(taskId, queueId, serverId, TaskStates.Cancel);
-            taskDataContext.SetTaskState(taskStateModel);
+            taskDataContext.StopTask(taskId);
 
             logger.WriteDebug("The task has been marked as cancelled. Task identifier = {0}", taskId);
 
@@ -299,21 +295,30 @@ namespace WiseQueue.Domain.Common.Management.Tasks
 
         private void RestartTask(TaskModel taskModel, string msg, Exception ex)
         {
-            int repeatCrashCount = taskModel.ScheduleInformation.RepeatCrashCount;
-            if (repeatCrashCount <= 1)
+            int repeatCrashCount = taskModel.ScheduleInformation.RepeatCrashCount - 1;
+            //if (repeatCrashCount <= 1)
+            //{
+            //    logger.WriteTrace("All restart attempts have been expired. Task will be mark as failed.");
+            //    //TODO: Set RepeatCrashCount to 0
+            //    //TODO: Add message why task has been failed.
+            //    TaskStateModel taskStateModel = new TaskStateModel(taskModel.Id, taskModel.QueueId, taskModel.ServerId, TaskStates.Failed);
+            //    taskDataContext.SetTaskState(taskStateModel);
+            //}
+            //else
+            //{
+            TaskStateModel taskStateModel;
+            if (repeatCrashCount > 0)
             {
-                logger.WriteTrace("All restart attempts have been expired. Task will be mark as failed.");
-                //TODO: Set RepeatCrashCount to 0
-                //TODO: Add message why task has been failed.
-                TaskStateModel taskStateModel = new TaskStateModel(taskModel.Id, taskModel.QueueId, taskModel.ServerId, TaskStates.Failed);
-                taskDataContext.SetTaskState(taskStateModel);
+                logger.WriteTrace("Task will be restarted.");
+                taskStateModel = new TaskStateModel(taskModel.Id, taskModel.QueueId, taskModel.ServerId, TaskStates.New);
             }
             else
             {
-                logger.WriteTrace("Task wull be restarting.");
-                TaskStateModel taskStateModel = new TaskStateModel(taskModel.Id, taskModel.QueueId, taskModel.ServerId, TaskStates.New);
-                taskDataContext.RestartTask(taskStateModel, timeShiftAfterCrash, taskModel.ScheduleInformation.RepeatCrashCount - 1, msg, ex);
+                logger.WriteTrace("Task will be failed.");
+                taskStateModel = new TaskStateModel(taskModel.Id, taskModel.QueueId, taskModel.ServerId, TaskStates.Failed);
             }
+            taskDataContext.RestartTask(taskStateModel, timeShiftAfterCrash, repeatCrashCount, msg, ex);
+            //}
         }
 
         #endregion

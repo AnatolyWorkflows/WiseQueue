@@ -40,6 +40,12 @@ namespace WiseQueue.Core.Common.DataContexts
         void SetTaskState(TaskStateModel taskStateModel);
 
         /// <summary>
+        /// Stop task by its identifier.
+        /// </summary>
+        /// <param name="taskId">The task identifier.</param>
+        void StopTask(Int64 taskId);
+
+        /// <summary>
         /// Try to restart the task.
         /// </summary>
         /// <param name="taskStateModel">The <see cref="TaskStateModel"/> instance.</param>

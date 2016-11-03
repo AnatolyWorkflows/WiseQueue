@@ -267,6 +267,27 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         }
 
         /// <summary>
+        /// Stop task by its identifier.
+        /// </summary>
+        /// <param name="taskId">The task identifier.</param>
+        public void StopTask(Int64 taskId)
+        {
+            const string updateStatement = "UPDATE {0}.{1} SET [State]={2}, [CompletedAt]=GETUTCDATE() WHERE [Id] = {3} AND [State] <= {4}";
+
+            string sqlCommand = string.Format(updateStatement, sqlSettings.WiseQueueDefaultSchema, taskTableName, (short)TaskStates.Cancel, taskId, (short)TaskStates.Running);
+
+            using (IDbConnection connection = connectionFactory.CreateConnection())
+            {
+                //TODO: Transaction ???
+                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                {
+                    command.CommandText = sqlCommand;
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
         /// Try to restart the task.
         /// </summary>
         /// <param name="taskStateModel">The <see cref="TaskStateModel"/> instance.</param>
@@ -277,8 +298,8 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
         public void RestartTask(TaskStateModel taskStateModel, TimeSpan timeShift, int repeatCrashCount, string msg, Exception exception)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat("UPDATE {0}.{1}", sqlSettings.WiseQueueDefaultSchema, taskTableName);
-            if (repeatCrashCount == 0)
+            stringBuilder.AppendFormat("UPDATE {0}.{1} ", sqlSettings.WiseQueueDefaultSchema, taskTableName);
+            if (repeatCrashCount <= 0)
                 stringBuilder.AppendFormat("SET [ExecuteAt]=GETUTCDATE(), [RepeatCrashCount]=0, [State] = {0}", (short)TaskStates.Failed);
             else
                 stringBuilder.AppendFormat("SET [ExecuteAt]=GETUTCDATE() +'{0}', [RepeatCrashCount]={1}, [ServerId] = NULL, [State] = {2}", timeShift, repeatCrashCount, (short)TaskStates.New);
