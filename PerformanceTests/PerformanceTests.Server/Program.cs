@@ -19,7 +19,7 @@ namespace PerformanceTests.Server
                                "Initial Catalog=WiseQueues;" +
                                "Integrated Security=SSPI;";
            
-            ServerConfiguration serverConfiguration = new ServerConfiguration(1000);
+            ServerConfiguration serverConfiguration = new ServerConfiguration(20);
 
             using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
                 .UseNLog()

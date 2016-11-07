@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 using Common.Core.BaseClasses;
 using Common.Core.Logging;
@@ -123,7 +124,7 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
 
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.ReadCommitted))
+                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
                 {
                     using (IDbCommand command = connectionFactory.CreateCommand(connection, transaction))
                     {
@@ -234,11 +235,25 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             logger.WriteTrace("Executing sql command...");
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
-                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                using (SqlCommand command = (SqlCommand)connectionFactory.CreateCommand(connection))
                 {
-                    command.CommandText = sqlCommand;
+                    command.CommandText = string.Format("{0}.InsertTask", sqlSettings.WiseQueueDefaultSchema);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@QueueId", queueId);
+                    command.Parameters.AddWithValue("@State", taskEntity.TaskState);
+                    command.Parameters.AddWithValue("@InstanceType", instanceType);
+                    command.Parameters.AddWithValue("@Method", method);
+                    command.Parameters.AddWithValue("@ParametersTypes", parametersTypes);
+                    command.Parameters.AddWithValue("@Arguments", arguments);
+
                     Int64 taskId = (Int64)command.ExecuteScalar();
 
+                    //var returnParameter = command.Parameters.Add("@ReturnVal", SqlDbType.BigInt);
+                    //returnParameter.Direction = ParameterDirection.ReturnValue;
+                    
+                    //command.ExecuteNonQuery();
+                    //Int64 taskId = (Int64)returnParameter.Value;
+                    
                     logger.WriteTrace("The command has been executed. TaskId = {0}", taskId);
                     return taskId;
                 }
@@ -258,10 +273,14 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
                 //TODO: Transaction ???
-                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
                 {
-                    command.CommandText = sqlCommand;
-                    command.ExecuteNonQuery();
+                    using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                    {
+                        command.CommandText = sqlCommand;
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
                 }
             }
         }
@@ -279,10 +298,14 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
                 //TODO: Transaction ???
-                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
                 {
-                    command.CommandText = sqlCommand;
-                    command.ExecuteNonQuery();
+                    using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                    {
+                        command.CommandText = sqlCommand;
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
                 }
             }
         }
@@ -311,10 +334,14 @@ namespace WiseQueue.Domain.MsSql.MsSqlDataContext
             using (IDbConnection connection = connectionFactory.CreateConnection())
             {
                 //TODO: Transaction ???
-                using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
                 {
-                    command.CommandText = sqlCommand;
-                    command.ExecuteNonQuery();
+                    using (IDbCommand command = connectionFactory.CreateCommand(connection))
+                    {
+                        command.CommandText = sqlCommand;
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
                 }
             }
         }

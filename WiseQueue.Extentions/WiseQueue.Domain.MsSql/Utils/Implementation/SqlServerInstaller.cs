@@ -58,16 +58,17 @@ namespace WiseQueue.Domain.MsSql.Utils.Implementation
             string script = resourceReaderHelper.ReadStringResource(currentType.Assembly, "Scripts.DatabaseScripts.sql");
 
             script = script.Replace("#{WiseQueueSchema}", !string.IsNullOrWhiteSpace(schema) ? schema : sqlSettings.WiseQueueDefaultSchema);
-            using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
-            {
+            //We have transaction inside the script.
+            //using (IDbTransaction transaction = connection.BeginTransaction(IsolationLevel.Serializable))
+            //{
                 using (var command = connection.CreateCommand())
                 {
-                    command.Transaction = transaction;
+                    //command.Transaction = transaction;
                     command.CommandText = script;
                     command.ExecuteNonQuery();
                 }
-                transaction.Commit();
-            }
+                //transaction.Commit();
+            //}
         }
 
         #endregion
