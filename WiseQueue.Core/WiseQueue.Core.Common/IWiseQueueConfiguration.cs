@@ -10,7 +10,5 @@ namespace WiseQueue.Core.Common
         void BindToItself<TObject>(TObject obj);
 
         TComponent Get<TComponent>();
-
-        void Activate();
     }
 }

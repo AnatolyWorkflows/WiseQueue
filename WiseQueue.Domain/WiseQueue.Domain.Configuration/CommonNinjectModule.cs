@@ -13,9 +13,9 @@ using WiseQueue.Domain.Client.Management;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 using WiseQueue.Domain.Common.Management;
-using WiseQueue.Domain.Common.Management.Tasks;
 using WiseQueue.Domain.MicrosoftExpressionCache;
 using WiseQueue.Domain.Server.Management;
+using WiseQueue.Domain.Server.Management.Tasks;
 
 //using IResourceReaderHelper = Common.Core.ResourceHelper.IResourceReaderHelper;
 
@@ -34,9 +34,7 @@ namespace WiseQueue.Domain.Configuration
 
             Bind<IResourceReaderHelper>().To<ResourceReaderHelper>();
 
-            Bind<IServerConverter>().To<ServerConverter>();
             Bind<ITaskConverter>().To<TaskConverter>();
-            Bind<IQueueConverter>().To<QueueConverter>();
             
             //TODO: CachedExpressionCompiler in another assembly. I guess it shouldn't be here.
             Bind<ICachedExpressionCompiler>().To<CachedExpressionCompiler>();
@@ -49,7 +47,6 @@ namespace WiseQueue.Domain.Configuration
             
             Bind<IMainManagerManager>().To<MainManagerManager>().InSingletonScope();
             Bind<ITaskManager>().To<TaskManager>().InSingletonScope();            
-            Bind<IQueueManager>().To<QueueManager>().InSingletonScope();
 
             Bind<ITaskBuilder>().To<TaskBuilder>().InSingletonScope();
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 
 namespace Common.Core.Logging
 {
@@ -52,6 +53,36 @@ namespace Common.Core.Logging
         void WriteInfo(string msg, params object[] args);
         #endregion
 
+        #region Warnings...
+        /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        void WriteWarning(string msg);
+
+        /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        /// <param name="args">Arguments</param>
+        void WriteWarning(string msg, params object[] args);
+
+        /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        /// <param name="exception"><see cref="Exception"/> that will be added into the message.</param>
+        void WriteWarning(Exception exception, string msg);
+
+        /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        /// <param name="args">Arguments</param>
+        /// <param name="exception"><see cref="Exception"/> that will be added into the message.</param>
+        void WriteWarning(Exception exception, string msg, params object[] args);
+        #endregion
+
         #region Error...
         /// <summary>
         /// Write error message into the log.
@@ -80,6 +111,6 @@ namespace Common.Core.Logging
         /// <param name="args">Arguments</param>
         /// <param name="exception"><see cref="Exception"/> that will be added into the message.</param>
         void WriteError(Exception exception, string msg, params object[] args);
-        #endregion
+        #endregion        
     }
 }

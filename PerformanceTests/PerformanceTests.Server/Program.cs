@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WiseQueue.Core.Common;
 using WiseQueue.Core.Server;
-using WiseQueue.Domain.Configuration;
+using WiseQueue.Domain.Common;
 using WiseQueue.Domain.MsSql;
 using WiseQueue.Domain.NLogger;
+using WiseQueue.Domain.Server;
 
 namespace PerformanceTests.Server
 {
@@ -26,8 +23,6 @@ namespace PerformanceTests.Server
                 .UseServer(serverConfiguration)
                 .UseSqlServer(connectionString))
             {
-                configuration.Activate();
-
                 Console.WriteLine("**** Waiting for tasks...");
                 Console.ReadLine();
             }

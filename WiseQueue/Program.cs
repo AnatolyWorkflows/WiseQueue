@@ -3,9 +3,12 @@ using System.Threading;
 using WiseQueue.Core.Client;
 using WiseQueue.Core.Common;
 using WiseQueue.Core.Server;
-using WiseQueue.Domain.Configuration;
+using WiseQueue.Domain.Client;
+using WiseQueue.Domain.Common;
 using WiseQueue.Domain.NLogger;
 using WiseQueue.Domain.MsSql;
+using WiseQueue.Domain.MsSqlEntityFramework;
+using WiseQueue.Domain.Server;
 
 namespace WiseQueue
 {
@@ -50,16 +53,16 @@ namespace WiseQueue
                                "Integrated Security=SSPI;";
 
 
-            ClientConfiguration clientConfiguration = new ClientConfiguration(3, TimeSpan.FromSeconds(10));
+            Core.Client.ClientConfiguration clientConfiguration = new Core.Client.ClientConfiguration(3, TimeSpan.FromSeconds(10));
             ServerConfiguration serverConfiguration = new ServerConfiguration(3);
 
             using (IWiseQueueConfiguration configuration = WiseQueueGlobalConfiguration.WiseQueueConfiguration
                 .UseNLog()
                 .UseClient(clientConfiguration)
-                .UseServer(serverConfiguration)
-                .UseSqlServer(connectionString))
+                //.UseServer(serverConfiguration)
+                //.UseSqlServer(connectionString))
+                .UseEntitySqlServer(connectionString))
             {
-                configuration.Activate();
 
                 //Int64 taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello"));
                 //taskId = ClientManager.StartNewTask(() => new MyClass().Test("Hello2"));

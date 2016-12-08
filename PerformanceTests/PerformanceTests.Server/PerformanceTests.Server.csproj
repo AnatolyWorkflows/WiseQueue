@@ -53,10 +53,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Client\WiseQueue.Core.Client.csproj">
-      <Project>{F17B2910-0E65-4011-836C-F86E7EAC48F3}</Project>
-      <Name>WiseQueue.Core.Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
@@ -65,11 +61,15 @@
       <Project>{A71F3FD7-8095-4A9C-98A7-D777E4CCF45E}</Project>
       <Name>WiseQueue.Core.Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\WiseQueue.Domain\WiseQueue.Domain.Configuration\WiseQueue.Domain.Configuration.csproj">
-      <Project>{380FFB9B-79F2-4D7D-B8A9-E25A609F8FCD}</Project>
-      <Name>WiseQueue.Domain.Configuration</Name>
+    <ProjectReference Include="..\..\WiseQueue.Domain\WiseQueue.Domain.Common\WiseQueue.Domain.Common.csproj">
+      <Project>{87F1056B-411A-4F53-8435-344103B74E43}</Project>
+      <Name>WiseQueue.Domain.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\WiseQueue.Extentions\WiseQueue.Domain.MsSql\WiseQueue.Domain.MsSql.csproj">
+    <ProjectReference Include="..\..\WiseQueue.Domain\WiseQueue.Domain.Server\WiseQueue.Domain.Server.csproj">
+      <Project>{A285C288-F7C0-40F2-BAE5-CB9F67BA19A8}</Project>
+      <Name>WiseQueue.Domain.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\WiseQueue.Extentions\Adapters\WiseQueue.Domain.MsSql\WiseQueue.Domain.MsSql.csproj">
       <Project>{1475F837-95C8-46A8-89D2-CEFE6B45C28C}</Project>
       <Name>WiseQueue.Domain.MsSql</Name>
     </ProjectReference>

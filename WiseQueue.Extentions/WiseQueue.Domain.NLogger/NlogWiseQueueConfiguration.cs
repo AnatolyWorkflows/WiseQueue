@@ -5,8 +5,7 @@ namespace WiseQueue.Domain.NLogger
 {
     public static class NlogWiseQueueConfiguration
     {
-        public static IWiseQueueConfiguration UseNLog(
-           this IWiseQueueConfiguration configuration)
+        public static IWiseQueueConfiguration UseNLog(this IWiseQueueConfiguration configuration)
         {
             if (configuration == null)
                 throw new ArgumentNullException("configuration");

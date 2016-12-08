@@ -44,8 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundClient.cs" />
+    <Compile Include="ClientNinjectModule.cs" />
     <Compile Include="Management\ClientManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ClientConfigurationExtention.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">

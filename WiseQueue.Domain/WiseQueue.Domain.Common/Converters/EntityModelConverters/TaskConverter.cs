@@ -5,7 +5,7 @@ using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Entities.Tasks;
-using WiseQueue.Core.Common.Models.Tasks;
+using WiseQueue.Domain.Common.Models.Tasks;
 
 namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
 {
@@ -59,7 +59,7 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
 
             ScheduleInformation scheduleInformation = new ScheduleInformation(taskEntity.RepeatCrashCount);
 
-            TaskModel taskModel = new TaskModel(taskEntity.Id, taskEntity.QueueId, taskEntity.ServerId, activationData, taskEntity.TaskState, scheduleInformation);
+            TaskModel taskModel = new TaskModel(taskEntity.Id, taskEntity.TaskState, activationData, scheduleInformation);
 
             return taskModel;
         }
@@ -78,7 +78,6 @@ namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
             TaskEntity entity = new TaskEntity
             {
                 Id = taskModel.Id,
-                QueueId = taskModel.QueueId,
                 InstanceType = jsonConverter.ConvertToJson(taskModel.ActivationData.InstanceType),
                 Method = taskModel.ActivationData.Method.Name,
                 ParametersTypes = jsonConverter.ConvertToJson(taskModel.ActivationData.ArgumentTypes),

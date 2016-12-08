@@ -1,11 +1,12 @@
 ﻿using System;
+using Common.Core.Interfaces.DataAccessLayer;
 
 namespace WiseQueue.Core.Common.Entities.Tasks
 {
     /// <summary>
     /// Class contains all fields that are using to store information about a task.
     /// </summary>
-    public class TaskEntity
+    public class TaskEntity: IObjectIdentity
     {
         #region Properties...
 
@@ -17,7 +18,7 @@ namespace WiseQueue.Core.Common.Entities.Tasks
         /// <summary>
         /// The queue's identifier where the task will be put.
         /// </summary>
-        public Int64 QueueId { get; set; }
+        public string QueueName { get; set; }
 
         /// <summary>
         /// The server identifier.
@@ -64,8 +65,8 @@ namespace WiseQueue.Core.Common.Entities.Tasks
         /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return string.Format("Id: {0}; TaskState: {1}; QueueId: {2}; taskActivationDetails: {3}", Id, TaskState,
-                QueueId, "TODO:"); //TODO: ToString().
+            return string.Format("Id: {0}; TaskState: {1}; QueueName: {2}; taskActivationDetails: {3}", Id, TaskState,
+                QueueName, "TODO:"); //TODO: ToString().
         }
 
         #endregion

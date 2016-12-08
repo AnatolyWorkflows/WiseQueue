@@ -2,30 +2,54 @@
 using System.Linq.Expressions;
 using Common.Core.Logging;
 using WiseQueue.Core.Client.Managment;
-using WiseQueue.Core.Common.Management;
+using WiseQueue.Core.Common.Converters;
+using WiseQueue.Core.Common.DataContexts;
+using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Management.Implementation;
-using WiseQueue.Core.Common.Management.TaskManagment;
+using WiseQueue.Core.Common.Repositories;
+using WiseQueue.Domain.Common.Models;
+using WiseQueue.Domain.Common.Models.Tasks;
 
 namespace WiseQueue.Domain.Client.Management
 {
     public class ClientManager : BaseManager, IClientManager
     {
+        private readonly ITaskRepository taskRepository;
+
         /// <summary>
-        /// The <see cref="ITaskManager"/> instance.
+        /// The <see cref="ITaskDataContext"/> instance.
         /// </summary>
-        private readonly ITaskManager taskManager;
+        private readonly ITaskDataContext taskDataContext;
+
+        private readonly IQueueDataContext queueDataContext;
+
+        /// <summary>
+        /// The <see cref="IExpressionConverter"/> instance.
+        /// </summary>
+        private readonly IExpressionConverter expressionConverter;
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="taskManager">The <see cref="ITaskManager"/> instance.</param>
+        /// <param name="taskDataContext">The <see cref="ITaskDataContext"/> instance.</param>
+        /// <param name="expressionConverter">The <see cref="IExpressionConverter"/> instance.</param>
         /// <param name="loggerFactory">The <see cref="ICommonLoggerFactory"/> instance.</param>
         /// <exception cref="ArgumentNullException"><paramref name="loggerFactory"/> is <see langword="null" />.</exception>
-        public ClientManager(ITaskManager taskManager, ICommonLoggerFactory loggerFactory) : base("Client Manager", loggerFactory)
+        public ClientManager(ITaskRepository taskRepository, ITaskDataContext taskDataContext, IQueueDataContext queueDataContext, IExpressionConverter expressionConverter, ICommonLoggerFactory loggerFactory) : base("Client Manager", loggerFactory)
         {
-            if (taskManager == null)
-                throw new ArgumentNullException("taskManager");
-            this.taskManager = taskManager;
+            if (taskRepository == null)
+                throw new ArgumentNullException(nameof(taskRepository));
+            if (taskDataContext == null)
+                throw new ArgumentNullException("taskDataContext");
+            if (queueDataContext == null)
+                throw new ArgumentNullException(nameof(queueDataContext));
+            if (expressionConverter == null)
+                throw new ArgumentNullException(nameof(expressionConverter));
+
+            this.taskRepository = taskRepository;
+            this.taskDataContext = taskDataContext;
+            this.queueDataContext = queueDataContext;
+            this.expressionConverter = expressionConverter;
         }
 
         #region Implementation of IClientManager
@@ -39,9 +63,24 @@ namespace WiseQueue.Domain.Client.Management
         {
             logger.WriteDebug("Starting a new task...");
 
-            Int64 taskId = taskManager.StartTask(task);
+            string queueName = "default";
+            logger.WriteTrace("Getting queue identifier by name {0}...", queueName);
 
-            logger.WriteDebug("The task has been put into the database. Task identifier = {0}", taskId);
+            QueueModel queue = queueDataContext.GetQueueByName(queueName);
+
+            ActivationData activationData = expressionConverter.Convert(task);
+            int maxRerunCount = 3; //TODO: Settigns
+            ScheduleInformation schedule = new ScheduleInformation(maxRerunCount);
+            TaskModel taskModel = new TaskModel(activationData, schedule);
+
+            logger.WriteTrace("The expression has been converted. Inserting the task into the database...");
+
+            //Int64 taskId = taskDataContext.InsertTask(queueName, taskModel);
+            taskModel = taskRepository.Insert(taskModel);
+            Int64 taskId = taskModel.Id;
+
+            logger.WriteDebug("The task has been started. Task identifier = {0}", taskId);
+
             return taskId;
         }
 
@@ -53,39 +92,16 @@ namespace WiseQueue.Domain.Client.Management
         {
             logger.WriteDebug("Stopping the task (id = {0})...", taskId);
 
-            taskManager.StopTask(taskId);
+            TaskStateChangeModel taskStateChangeModel = new TaskStateChangeModel(taskId, TaskStates.Cancel);
+            taskDataContext.SetTaskState(taskStateChangeModel);
+
+            logger.WriteDebug("The task has been marked as canceled. Task identifier = {0}", taskId);
+
+            //TODO: Wait response from the task if needed.
 
             logger.WriteDebug("The task has been stopped (id = {0})", taskId);
         }
 
-        #endregion        
-
-        #region Implementation of IManager
-
-        /// <summary>
-        /// Start manager.
-        /// </summary>
-        public void Start()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Stop.
-        /// </summary>
-        public void Stop()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Calling this function if manager should do its job.
-        /// </summary>
-        public void Execute()
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        #endregion       
     }
 }

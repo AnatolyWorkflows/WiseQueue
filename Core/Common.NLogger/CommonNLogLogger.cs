@@ -99,6 +99,46 @@ namespace Common.NLogger
         }
 
         /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        public void WriteWarning(string msg)
+        {
+            logger.Warn(msg);
+        }
+
+        /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        /// <param name="args">Arguments</param>
+        public void WriteWarning(string msg, params object[] args)
+        {
+            logger.Warn(msg, args);
+        }
+
+        /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        /// <param name="exception"><see cref="Exception"/> that will be added into the message.</param>
+        public void WriteWarning(Exception exception, string msg)
+        {
+            logger.Warn(exception, msg);
+        }
+
+        /// <summary>
+        /// Write warning message into the log.
+        /// </summary>
+        /// <param name="msg">A message.</param>
+        /// <param name="args">Arguments</param>
+        /// <param name="exception"><see cref="Exception"/> that will be added into the message.</param>
+        public void WriteWarning(Exception exception, string msg, params object[] args)
+        {
+            logger.Warn(exception, msg, args);
+        }
+
+        /// <summary>
         /// Write error message into the log.
         /// </summary>
         /// <param name="msg">A message.</param>

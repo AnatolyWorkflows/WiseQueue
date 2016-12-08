@@ -41,6 +41,14 @@
   <ItemGroup>
     <Compile Include="BaseClasses\BaseLoggerObject.cs" />
     <Compile Include="BaseClasses\BaseResult.cs" />
+    <Compile Include="Errors\ResponseResult.cs" />
+    <Compile Include="Interfaces\DataAccessLayer\IDataContext.cs" />
+    <Compile Include="Interfaces\DataAccessLayer\IDataContextFactory.cs" />
+    <Compile Include="Interfaces\DataAccessLayer\IEntityModelMapper.cs" />
+    <Compile Include="Interfaces\DataAccessLayer\IObjectIdentity.cs" />
+    <Compile Include="Interfaces\DataAccessLayer\IRepository.cs" />
+    <Compile Include="Interfaces\DataAccessLayer\ISpecification.cs" />
+    <Compile Include="Interfaces\DataAccessLayer\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IExecutableManager.cs" />
     <Compile Include="Interfaces\IStartStoppable.cs" />
     <Compile Include="Interfaces\IStopwatchManager.cs" />

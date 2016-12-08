@@ -3,12 +3,11 @@ using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Entities.Tasks;
-using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Tests;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
+using WiseQueue.Domain.Common.Models.Tasks;
 using WiseQueue.Domain.MicrosoftExpressionCache;
-using WiseQueue.Domain.Common.Management.Tasks;
 
 namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
 {
@@ -44,7 +43,7 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
             TestTaskConverterClass instance = new TestTaskConverterClass();
 
             ActivationData activationData = expressionConverter.Convert(() => instance.SimpleMethod(5));
-            TaskModel taskModel = new TaskModel(1, 2, 3, activationData, TaskStates.New, new ScheduleInformation(1));
+            TaskModel taskModel = new TaskModel(1, TaskStates.New, activationData, new ScheduleInformation(1));
 
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
             Assert.IsNotNull(taskEntity);
@@ -53,7 +52,6 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
             Assert.IsNotNull(actual);
 
             Assert.AreEqual(taskEntity.Id, actual.Id);
-            Assert.AreEqual(taskEntity.QueueId, actual.QueueId);
             Assert.AreEqual(taskEntity.TaskState, actual.TaskState);            
         }
 
@@ -69,7 +67,7 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
 
             ActivationData activationData = expressionConverter.Convert(() => instance.MethodJustClass(TaskCancellationToken.Null));
 
-            TaskModel taskModel = new TaskModel(1, 2, 3, activationData, TaskStates.New, new ScheduleInformation(1));
+            TaskModel taskModel = new TaskModel(1, TaskStates.New, activationData, new ScheduleInformation(1));
 
             TaskEntity taskEntity = taskConverter.Convert(taskModel);
             Assert.IsNotNull(taskEntity);
@@ -78,7 +76,6 @@ namespace WiseQueue.Domain.Common.Tests.EntityModelConverters
             Assert.IsNotNull(actual);
 
             Assert.AreEqual(taskEntity.Id, actual.Id);
-            Assert.AreEqual(taskEntity.QueueId, actual.QueueId);
             Assert.AreEqual(taskEntity.TaskState, actual.TaskState);
         }
     }

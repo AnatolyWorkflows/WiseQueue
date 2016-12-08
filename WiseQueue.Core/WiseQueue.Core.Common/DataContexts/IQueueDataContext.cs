@@ -18,16 +18,10 @@ namespace WiseQueue.Core.Common.DataContexts
         QueueModel GetQueueByName(string queueName);
 
         /// <summary>
-        /// Insert queue.
+        /// Insert ф queue.
         /// </summary>
-        /// <param name="queueEntity">The <see cref="QueueModel"/> instance.</param>
+        /// <param name="queue">The <see cref="QueueModel"/> instance.</param>
         /// <returns>The queue identifier.</returns>
-        Int64 InsertQueue(QueueModel queueEntity);
-
-        /// <summary>
-        /// Get available queues.
-        /// </summary>
-        /// <returns><c>List</c> of <see cref="QueueEntity"/> instances.</returns>
-        IReadOnlyCollection<QueueModel> GetAvailableQueues();
+        Int64 InsertQueue(QueueModel queue);
     }
 }

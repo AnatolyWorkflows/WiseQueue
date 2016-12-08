@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\packages\AutoMapper.5.2.0\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -49,20 +53,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\EntityModelConverters\QueueConverter.cs" />
-    <Compile Include="Converters\EntityModelConverters\ServerConverter.cs" />
+    <Compile Include="AutoMapperConfiguration.cs" />
+    <Compile Include="CommonNinjectModule.cs" />
     <Compile Include="Converters\EntityModelConverters\TaskConverter.cs" />
     <Compile Include="Converters\ExpressionConverter.cs" />
     <Compile Include="Converters\JsonConverter.cs" />
-    <Compile Include="Management\HistoricalManager.cs" />
-    <Compile Include="Management\MainManagerManager.cs" />
-    <Compile Include="Management\QueueManager.cs" />
-    <Compile Include="Management\Tasks\RunningTask.cs" />
-    <Compile Include="Management\Tasks\TaskBuilder.cs" />
-    <Compile Include="Management\Tasks\TaskCancellationToken.cs" />
-    <Compile Include="Management\Tasks\TaskManager.cs" />
-    <Compile Include="Management\Tasks\TaskWrapper.cs" />
+    <Compile Include="Mapping\EntityModelMapper.cs" />
+    <Compile Include="Models\QueueModel.cs" />
+    <Compile Include="Models\Servers\ServerHeartbeatModel.cs" />
+    <Compile Include="Models\Servers\ServerModel.cs" />
+    <Compile Include="Models\Tasks\ActivationData.cs" />
+    <Compile Include="Models\Tasks\ScheduleInformation.cs" />
+    <Compile Include="Models\Tasks\TaskActivationDetailsModel.cs" />
+    <Compile Include="Models\Tasks\TaskModel.cs" />
+    <Compile Include="Models\Tasks\TaskStateChangeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\TaskRepository.cs" />
+    <Compile Include="TaskCancellationToken.cs" />
+    <Compile Include="WiseQueueConfiguration.cs" />
+    <Compile Include="WiseQueueGlobalConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Common.Core\Common.Core.csproj">
@@ -76,10 +85,6 @@
     <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Common\WiseQueue.Core.Common.csproj">
       <Project>{AC44C918-E44B-4942-AE25-D7290B89093E}</Project>
       <Name>WiseQueue.Core.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\WiseQueue.Core\WiseQueue.Core.Server\WiseQueue.Core.Server.csproj">
-      <Project>{A71F3FD7-8095-4A9C-98A7-D777E4CCF45E}</Project>
-      <Name>WiseQueue.Core.Server</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\WiseQueue.Extentions\WiseQueue.Domain.MicrosoftExpressionCache\WiseQueue.Domain.MicrosoftExpressionCache.csproj">
       <Project>{D98CCBE1-16A0-4CD5-BC3C-28374A56CB6F}</Project>

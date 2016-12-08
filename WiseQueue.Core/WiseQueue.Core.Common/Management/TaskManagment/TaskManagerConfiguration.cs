@@ -8,14 +8,11 @@ namespace WiseQueue.Core.Common.Management.TaskManagment
         public TimeSpan TimeShiftAfterCrash { get; set; }
         public int MaxRerunAttempts { get; set; }
 
-        public TaskManagerState State { get; set; }
-
         public TaskManagerConfiguration()
         {
             MaxTaskPerQueue = 4;
             MaxRerunAttempts = 2;
             TimeShiftAfterCrash = TimeSpan.FromSeconds(20);
-            State = TaskManagerState.Both;
         }
     }
 }

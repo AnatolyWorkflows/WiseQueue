@@ -10,9 +10,9 @@ namespace WiseQueue.Core.Common.Specifications
         #region Properties...
 
         /// <summary>
-        /// The queue's identifier in which we are going to search for a new task.
+        /// The queue's name in which we are going to search for a new task.
         /// </summary>
-        public Int64 QueueId { get; private set; }
+        public string QueueName { get; private set; }
 
         /// <summary>
         /// Current server identifier.
@@ -29,12 +29,12 @@ namespace WiseQueue.Core.Common.Specifications
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="queueId">The queue's identifier in which we are going to search for a new task.</param>
+        /// <param name="queueName">The queue's name in which we are going to search for a new task.</param>
         /// <param name="serverId">Current server identifier.</param>
         /// <param name="maxTasks">Max amount of tasks that will be requested.</param>
-        public TaskRequestSpecification(Int64 queueId, Int64 serverId, int maxTasks = 10)
+        public TaskRequestSpecification(string queueName, Int64 serverId, int maxTasks = 10)
         {
-            QueueId = queueId;
+            QueueName = queueName;
             ServerId = serverId;
             MaxTasks = maxTasks;
         }

@@ -10,7 +10,7 @@ using Common.Core.BaseClasses;
 using Common.Core.Logging;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
-using WiseQueue.Core.Common.Models.Tasks;
+using WiseQueue.Domain.Common.Models.Tasks;
 
 namespace WiseQueue.Domain.Common.Converters
 {

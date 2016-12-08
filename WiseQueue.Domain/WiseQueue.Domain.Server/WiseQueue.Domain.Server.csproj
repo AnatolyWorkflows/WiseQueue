@@ -45,7 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Management\ServerManager.cs" />
+    <Compile Include="Management\Tasks\RunningTask.cs" />
+    <Compile Include="Management\Tasks\TaskBuilder.cs" />
+    <Compile Include="Management\Tasks\TaskManager.cs" />
+    <Compile Include="Management\Tasks\TaskWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerNinjectModule.cs" />
+    <Compile Include="ServerConfigurationExtention.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
