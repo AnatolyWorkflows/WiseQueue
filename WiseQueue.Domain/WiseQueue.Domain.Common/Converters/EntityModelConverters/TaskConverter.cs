@@ -5,7 +5,7 @@ using Common.Core.Logging;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Entities.Tasks;
-using WiseQueue.Domain.Common.Models.Tasks;
+using WiseQueue.Core.Common.Models.Tasks;
 
 namespace WiseQueue.Domain.Common.Converters.EntityModelConverters
 {

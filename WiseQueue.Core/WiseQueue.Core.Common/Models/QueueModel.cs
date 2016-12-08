@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace WiseQueue.Domain.Common.Models.Servers
+namespace WiseQueue.Core.Common.Models
 {
     /// <summary>
-    /// Server model.
+    /// Queue model.
     /// </summary>
-    public class ServerModel
+    public class QueueModel
     {
         #region Fields...
         /// <summary>
@@ -22,27 +22,23 @@ namespace WiseQueue.Domain.Common.Models.Servers
         /// Server's description.
         /// </summary>
         private string description;
-
-        /// <summary>
-        /// During <c>this</c> time next heartbeat should be sent.
-        /// </summary>
-        private TimeSpan heartbeatLifetime;
         #endregion
-        
+
         #region Properties...
 
         /// <summary>
         /// Server's identifier.
         /// </summary>
+        /// <exception cref="ArgumentException" accessor="set">The identifier should be 0 for a new model or great then 0 for an existing one.</exception>
         public Int64 Id
         {
             get { return id; }
             set
             {
                 if (id < 0)
-                    throw new ArgumentException("The identifier shoyld be 0 for a new model or greate then 0 for an existing one.", "value");
+                    throw new ArgumentException("The identifier should be 0 for a new model or great then 0 for an existing one.", "value");
 
-               id = value;
+                id = value;
             }
         }
 
@@ -77,22 +73,6 @@ namespace WiseQueue.Domain.Common.Models.Servers
             }
         }
 
-        /// <summary>
-        /// During <c>this</c> time next heartbeat should be sent.
-        /// </summary>
-        /// <exception cref="ArgumentException" accessor="set">The heartbeat time should be equal or greater then 1 second</exception>
-        public TimeSpan HeartbeatLifetime
-        {
-            get { return heartbeatLifetime; }
-            set
-            {
-                if (heartbeatLifetime.TotalSeconds < 1)
-                    throw new ArgumentException("The heartbeat time should be equal or greater then 1 second", "value");
-
-                heartbeatLifetime = value;
-            }
-        }
-
         #endregion
 
         #region Constructors...
@@ -100,26 +80,21 @@ namespace WiseQueue.Domain.Common.Models.Servers
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name">Server's <c>name</c>.</param>
-        /// <param name="heartbeatLifetime">During <c>this</c> time next heartbeat should be sent.</param>
-        public ServerModel(string name, TimeSpan heartbeatLifetime) : this(name, string.Empty, heartbeatLifetime)
+        /// <param name="name">Queue's <c>name</c>.</param>
+        public QueueModel(string name): this(name, string.Empty)
         {
-            id = 0;
         }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="name">Server's <c>name</c>.</param>
-        /// <param name="description">Server's <c>description</c>.</param>
-        /// <param name="heartbeatLifetime">During <c>this</c> time next heartbeat should be sent.</param>
+        /// <param name="name">Queue's <c>name</c>.</param>
+        /// <param name="description">Queue's <c>description</c>.</param>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <see langword="null" />.</exception>
-        public ServerModel(string name, string description, TimeSpan heartbeatLifetime)
+        public QueueModel(string name, string description)
         {
-            id = 0;
             Name = name;
             Description = description;
-            HeartbeatLifetime = heartbeatLifetime;
         }
 
         #endregion
@@ -127,13 +102,12 @@ namespace WiseQueue.Domain.Common.Models.Servers
         #region Overrides of Object
 
         /// <summary>
-        /// Returns a string that represents the current <c>object</c>.
+        /// Returns a string that represents the current object.
         /// </summary>
-        /// <returns>A string that represents the current <c>object</c>.</returns>
+        /// <returns>A string that represents the current object.</returns>
         public override string ToString()
         {
-            return string.Format("Id: {0}; Name: {1}; HeartbeatLifetime: {2}; Description: {3}", Id, Name,
-                HeartbeatLifetime, Description);
+            return string.Format("Id: {0}; Name: {1}; Description: {2}", Id, Name, Description);
         }
 
         #endregion

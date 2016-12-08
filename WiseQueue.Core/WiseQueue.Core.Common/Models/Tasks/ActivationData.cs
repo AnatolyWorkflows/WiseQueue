@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace WiseQueue.Domain.Common.Models.Tasks
+namespace WiseQueue.Core.Common.Models.Tasks
 {
     public class ActivationData
     {

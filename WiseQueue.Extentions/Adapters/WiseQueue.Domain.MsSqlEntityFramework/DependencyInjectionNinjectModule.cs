@@ -41,7 +41,7 @@ namespace WiseQueue.Domain.MsSqlEntityFramework
             MsSqlSettings settings = new MsSqlSettings(nameOrConnectionString);
 
             Bind<MsSqlSettings>().ToConstant(settings);
-            //Bind<IDataContext>().To<WiseQueuesDataContext>();
+            Bind<IDataContext>().To<WiseQueuesDataContext>();
             Bind<IDataContextFactory>().To<WiseQueuesDataContextFactory>();            
 
             IResourceReaderHelper resourceReader = Kernel.Get<IResourceReaderHelper>();

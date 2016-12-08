@@ -3,10 +3,10 @@ using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
 using WiseQueue.Core.Common.Entities.Tasks;
+using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Tests;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
-using WiseQueue.Domain.Common.Models.Tasks;
 using WiseQueue.Domain.MicrosoftExpressionCache;
 
 namespace WiseQueue.Domain.Common.Tests.EntityModelConverters

@@ -1,7 +1,7 @@
 ﻿using System;
 using WiseQueue.Core.Common.Entities.Tasks;
 
-namespace WiseQueue.Domain.Common.Models.Tasks
+namespace WiseQueue.Core.Common.Models.Tasks
 {
     public class TaskStateChangeModel
     {

@@ -2,7 +2,7 @@
 using Common.Core.Interfaces.DataAccessLayer;
 using WiseQueue.Core.Common.Entities.Tasks;
 
-namespace WiseQueue.Domain.Common.Models.Tasks
+namespace WiseQueue.Core.Common.Models.Tasks
 {
     /// <summary>
     /// <c>Task</c> model.

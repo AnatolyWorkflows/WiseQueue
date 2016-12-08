@@ -7,9 +7,12 @@ using Ninject.Modules;
 using WiseQueue.Core.Common.Caching;
 using WiseQueue.Core.Common.Converters;
 using WiseQueue.Core.Common.Converters.EntityModelConverters;
+using WiseQueue.Core.Common.DataContexts;
+using WiseQueue.Core.Common.Repositories;
 using WiseQueue.Domain.Common.Converters;
 using WiseQueue.Domain.Common.Converters.EntityModelConverters;
 using WiseQueue.Domain.Common.Mapping;
+using WiseQueue.Domain.Common.Repositories;
 using WiseQueue.Domain.MicrosoftExpressionCache;
 
 //using IResourceReaderHelper = Common.Core.ResourceHelper.IResourceReaderHelper;
@@ -28,6 +31,8 @@ namespace WiseQueue.Domain.Common
             IMapper mapper = AutoMapperConfiguration.CreateMapper();
             Bind<IMapper>().ToConstant(mapper);
             Bind<IEntityModelMapper>().To<EntityModelMapper>();
+
+            Bind<ITaskRepository>().To<TaskRepository>();
 
             Bind<IResourceReader>().To<ResourceReader>();
 

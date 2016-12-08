@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WiseQueue.Domain.Common.Models.Servers
+namespace WiseQueue.Core.Common.Models.Servers
 {
     /// <summary>
     /// Server's heartbeat model.

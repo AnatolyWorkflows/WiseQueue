@@ -6,10 +6,10 @@ using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Entities.Tasks;
 using WiseQueue.Core.Common.Management.Implementation;
 using WiseQueue.Core.Common.Management.TaskManagment;
+using WiseQueue.Core.Common.Models;
+using WiseQueue.Core.Common.Models.Tasks;
 using WiseQueue.Core.Common.Specifications;
 using WiseQueue.Core.Server.Management;
-using WiseQueue.Domain.Common.Models;
-using WiseQueue.Domain.Common.Models.Tasks;
 
 namespace WiseQueue.Domain.Server.Management.Tasks
 {

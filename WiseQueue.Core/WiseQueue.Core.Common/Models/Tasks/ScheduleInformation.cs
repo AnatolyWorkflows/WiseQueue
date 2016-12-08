@@ -1,4 +1,4 @@
-﻿namespace WiseQueue.Domain.Common.Models.Tasks
+﻿namespace WiseQueue.Core.Common.Models.Tasks
 {
     public class ScheduleInformation
     {

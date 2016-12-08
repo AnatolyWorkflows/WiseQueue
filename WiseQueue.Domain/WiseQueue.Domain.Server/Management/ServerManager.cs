@@ -6,9 +6,9 @@ using Common.Core.Logging;
 using WiseQueue.Core.Common.DataContexts;
 using WiseQueue.Core.Common.Management.Implementation;
 using WiseQueue.Core.Common.Management.TaskManagment;
+using WiseQueue.Core.Common.Models;
+using WiseQueue.Core.Common.Models.Servers;
 using WiseQueue.Core.Server.Management;
-using WiseQueue.Domain.Common.Models;
-using WiseQueue.Domain.Common.Models.Servers;
 
 namespace WiseQueue.Domain.Server.Management
 {
